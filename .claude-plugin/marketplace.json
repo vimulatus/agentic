@@ -1,0 +1,12 @@
+{
+  "name": "vimulatus-personal",
+  "owner": {
+    "name": "Vimulatus"
+  },
+  "plugins": [
+    {
+      "name": "default",
+      "source": "./"
+    }
+  ]
+}
