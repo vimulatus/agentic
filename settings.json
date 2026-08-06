@@ -1,17 +1,3 @@
 {
-  "tui": "fullscreen",
-  "editorMode": "vim",
-  "skipAutoPermissionPrompt": true,
-  "respectGitIgnore": false,
-  "skipWorkflowUsageWarning": true,
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
-  "includeGitInstructions": false,
-  "disableArtifact": true,
-  "statusLine": {
-    "type": "command",
-    "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/statusline-command.sh"
-  }
+  "skipWorkflowUsageWarning": true
 }
