@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Title</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#161a21; --line:#242a33;
+    --text:#e6e8eb; --muted:#9aa3ad; --accent:#7aa2f7;
+    --good:#9ece6a; --warn:#e0af68; --bad:#f7768e;
+    --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font:16px/1.6 system-ui,-apple-system,Segoe UI,sans-serif;
+  }
+  .page{max-width:1080px; margin:0 auto; padding:48px 24px; display:flex; gap:40px}
+  main{max-width:72ch; flex:1; min-width:0}
+
+  /* Sticky nav. Drop it when the page has five sections or fewer. */
+  nav{position:sticky; top:48px; align-self:flex-start; width:200px; font-size:14px}
+  nav a{display:block; padding:4px 0; color:var(--muted); text-decoration:none}
+  nav a:hover{color:var(--text)}
+  @media(max-width:860px){ nav{display:none} .page{padding:32px 20px} }
+
+  h1{font-size:30px; line-height:1.2; margin:0 0 8px}
+  h2{font-size:20px; margin:40px 0 12px}
+  .sub{color:var(--muted); margin:0 0 32px}
+
+  /* The answer. Always open, always first. */
+  .answer{
+    background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--accent); border-radius:8px; padding:20px 24px;
+  }
+  .answer p:first-child{margin-top:0} .answer p:last-child{margin-bottom:0}
+
+  /* One collapsed row per section. The summary states the outcome. */
+  details{background:var(--panel); border:1px solid var(--line); border-radius:8px; margin:10px 0}
+  summary{
+    cursor:pointer; padding:14px 20px; display:flex; gap:12px; align-items:baseline;
+    font-weight:600; list-style:none;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"▸"; color:var(--muted); font-weight:400}
+  details[open]>summary::before{content:"▾"}
+  details[open]>summary{border-bottom:1px solid var(--line)}
+  summary .out{margin-left:auto; font-weight:400; font-size:14px; color:var(--muted)}
+  .body{padding:4px 20px 18px}
+
+  .pill{font-size:12px; padding:2px 8px; border-radius:20px; border:1px solid var(--line); color:var(--muted)}
+  .pill.good{color:var(--good)} .pill.warn{color:var(--warn)} .pill.bad{color:var(--bad)}
+
+  table{border-collapse:collapse; width:100%; font-size:15px; margin:12px 0}
+  th,td{text-align:left; padding:8px 12px; border-bottom:1px solid var(--line)}
+  th{color:var(--muted); font-weight:600}
+
+  code{font-family:var(--mono); font-size:.9em; background:#1c2129; padding:1px 5px; border-radius:4px}
+  pre{background:#1c2129; border:1px solid var(--line); border-radius:8px; padding:14px 16px; overflow:auto}
+  pre code{background:none; padding:0}
+  a{color:var(--accent)}
+
+  /* Explainer toy: the reader moves the input, the output follows. */
+  .toy{background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:18px 20px; margin:12px 0}
+  .toy label{display:flex; gap:12px; align-items:center; color:var(--muted); font-size:14px}
+  .toy output{font-family:var(--mono); font-size:18px; color:var(--accent)}
+  button{
+    background:#1c2129; color:var(--text); border:1px solid var(--line);
+    border-radius:6px; padding:6px 12px; font:inherit; font-size:14px; cursor:pointer;
+  }
+  button:hover{border-color:var(--accent)}
+  button:disabled{opacity:.4; cursor:not-allowed}
+</style>
+</head>
+<body>
+<div class="page">
+<main>
+  <h1>Title</h1>
+  <p class="sub">One line on what this page is and who it is for.</p>
+
+  <div class="answer">
+    <p>The answer, in three lines. The reader who stops here still has it.</p>
+  </div>
+
+  <h2 id="s1">Section</h2>
+
+  <details open>
+    <summary>Phase 1 — Migrate the writer <span class="out">done</span></summary>
+    <div class="body">
+      <p>The detail lives here. Cite the source next to the claim: <code>src/pay/refund.ts:42</code>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Phase 2 — Backfill the old rows <span class="out">2d</span></summary>
+    <div class="body">
+      <table>
+        <tr><th>Step</th><th>Risk</th></tr>
+        <tr><td>Copy in batches of 1000</td><td><span class="pill good">low</span></td></tr>
+      </table>
+    </div>
+  </details>
+
+  <!-- Explainer only. Delete for a plan or a report. -->
+  <div class="toy">
+    <label>Batch size
+      <input type="range" min="100" max="5000" step="100" value="1000" oninput="out.value=`${this.value} rows → ${Math.ceil(2e6/this.value)} batches`">
+      <output id="out">1000 rows → 2000 batches</output>
+    </label>
+  </div>
+</main>
+
+<nav>
+  <a href="#s1">Section</a>
+</nav>
+</div>
+</body>
+</html>
