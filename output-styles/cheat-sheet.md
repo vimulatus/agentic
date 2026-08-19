@@ -26,14 +26,18 @@ End the response with a confidence score (0-100%). The score rates the answer, n
 
 ## Form
 
-A cheat sheet shows structure. Show control flow and architecture as an ASCII diagram. Show a set of options as a table. Show logic as pseudocode. Give a concrete example after each abstract statement.
+A cheat sheet shows structure. Show control flow and architecture as an ASCII diagram. Show a set of options as a table. Show logic as pseudocode.
+
+An abstract statement reads as understood. One turn later, the reader finds out it was not. So follow every abstract statement with a worked example: one real case, real values, and the result it produces.
 
 ```
 Cause: N+1 in getOrders()
 
     orders --- 1 query ---> customer x 200 rows
 
-Fix: eager-load customer.
+Worked: a page of 200 orders runs 1 + 200 = 201 queries.
+        At 3 ms each, the request takes 603 ms.
+        Eager-load customer -> 2 queries, 6 ms.
 ```
 
 Use prose only for the content that these forms make unclear, and write four lines or fewer.
