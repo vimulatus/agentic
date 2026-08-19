@@ -6,6 +6,7 @@ I love to build. I focus on building complex things as simple as possible. I lov
 
 - A VPS. I have no browser on this box. `open <file>.html` reaches nobody. Serve the file over HTTPS and give me the URL.
 - I connect over the tailnet, and the tailnet is up. Serve on the tailnet address, not `localhost`.
+- Stop every process you started, before you report the work done. Leave the processes you did not start.
 
 ## Coding Preferences
 
