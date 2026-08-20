@@ -1,6 +1,6 @@
 ---
 name: red-green
-description: Build one command that fails, then change the code until it passes. Use when fixing a bug, adding behavior, chasing a flake, hitting a performance number, or verifying a migration or refactor. Not for research, design, or copy.
+description: Build one command that fails, then change the code until it passes. Use before you write the code - adding or changing behavior, fixing a bug, migrating or refactoring, chasing a flake, or hitting a performance number. The check comes before the code, never after. Not for research, design, or copy.
 ---
 
 # Red → Green

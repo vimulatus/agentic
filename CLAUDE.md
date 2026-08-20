@@ -13,7 +13,7 @@ I love to build. I focus on building complex things as simple as possible. I lov
 - Keep things simple.
 - Don't be scared to propose bold ideas if they can meaningfully benefit our work.
 - Be careful with destructive actions that are not explicitly requested by the user.
-- Don't write endless smoke tests, "regression tests" for feature deletions, etc. Tests should be focused, not slop.
+- A code change is done when a check that failed now passes. Build the check first. One check per behavior, not a suite.
 - Comments should be used to clarify functionality and how code is used. Don't comment every line, but describe, concisely, how functions are used above function definitions, classes, etc.
 - Keep comments up to date when making changes.
 
