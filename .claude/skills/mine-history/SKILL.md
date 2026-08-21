@@ -1,22 +1,44 @@
 ---
 name: mine-history
-description: Read past sessions to find what Claude keeps getting wrong and what it keeps rebuilding, then propose the skill, script, hook, or rule that fixes it. Use when the user asks what skills he should build, what he could automate, what he keeps repeating or correcting, or to mine his history. Not for this session, which is retro.
+description: Read past sessions to find what Claude keeps getting wrong and what it keeps rebuilding, then propose the skill, script, hook, or rule that fixes it. Use when the user asks what skills he should build, what he could automate, what he keeps repeating or correcting, whether a named skill, hook, or rule is worth adding back, or to mine his history. Not for this session, which is retro.
 ---
 
 # Mine history
 
 What he corrects is a missing rule. What he retypes is a missing skill. What Claude rebuilds every session is a missing script or hook.
 
-Quote the prompt or the command, or drop the candidate. A pattern you infer without evidence is a guess.
+Quote the prompt or the command, or drop the candidate.
+
+A hit is a **coordinate**, not evidence. Read the turns on both sides before you name it. Step 6.
+
+A transcript says what was true that day. Check the claim against disk today.
+
+## He names a tool and asks if it is worth it
+
+Search for the **symptom** it prevents. Its name finds only the day he typed it.
+
+1. Read the tool. Name the failure it exists to stop, in one line.
+2. Write that failure as it appears in a transcript: what he types when it happens, what Claude did in the turns before.
+3. Mine both corpora for that shape, then steps 5 to 9 as written.
+4. Check the tool against disk now: installed, deleted, or never there.
+
+```
+Tool      codebase-design
+Stops     Claude shipping code with no design pass
+He types  "why is this so complex", "you rewrote the whole file", a second ask to restructure
+Claude    Edit across 6 files in one task, no read of the module it lands in
+```
+
+Count sessions of the symptom, never mentions of the name.
 
 ## 1. Read what already exists
 
 Before you mine. A candidate that a document already covers is not a candidate.
 
 ```bash
-cat /home/vasu/projects/agentic/CLAUDE.md
-ls /home/vasu/projects/agentic/skills/ /home/vasu/projects/agentic/.claude/skills/
-cat /home/vasu/projects/agentic/output-styles/*.md
+cat ~/Documents/projects/agentic/CLAUDE.md
+ls ~/Documents/projects/agentic/skills/ ~/Documents/projects/agentic/.claude/skills/
+cat ~/Documents/projects/agentic/output-styles/*.md
 ```
 
 ## 2. Pull corpus A: what he typed
@@ -36,12 +58,12 @@ wc -l /tmp/prompts.tsv
 
 Three columns: session file, turn uuid, the prompt. Read the whole file in one pass.
 
-Do not shard corpus A. It is small, and step 5 counts a pattern across sessions. A shard hides the sessions in every other shard, so sharding destroys the count it depends on.
+Do not shard corpus A. A shard hides the sessions in every other shard, and step 5 counts across sessions.
 
 | Scope | Change |
 |---|---|
 | Every project (default) | as written |
-| One project | replace `.` with `./-home-vasu-projects-<name>` |
+| One project | replace `.` with `./-Users-vasumittal-Documents-projects-<name>` |
 | Recent only | add `-mtime -30` to `find` |
 
 The `length < 400` cut drops pastes and specs. Corrections are short. Raise it to `1200` when the harvest is thin.
@@ -50,14 +72,14 @@ Both corpora take the same three scope changes.
 
 ## 3. Pull corpus B: what Claude did
 
-Corpus A cannot show a ritual Claude rebuilds every session. He never types it, so it never lands in his prompts.
+Corpus A cannot show a ritual. He never types it.
 
-This corpus is large: over 20,000 tool calls, and one project alone runs ~58k tokens of ordered actions. Fan out.
+This corpus is large: over 20,000 tool calls. Fan out.
 
 **Shard by project, not by time.** A ritual belongs to a project. A ritual that two project agents both name is a global one, so the shard boundary doubles as the confidence test.
 
 ```bash
-du -sm /home/vasu/.claude/projects/*/ | sort -rn | head -8
+du -sm ~/.claude/projects/*/ | sort -rn | head -8
 ```
 
 Take every project over 10M as its own shard. Group the rest into one shard.
@@ -79,6 +101,7 @@ find <SHARD> -name '*.jsonl' -print0 | xargs -0 jq -rR '
 > A ritual is a sequence, not a command. `git status` and `grep` rank high because they are primitives.
 > A ritual runs 3 or more steps in a fixed order, carries flags or paths or a container name, and is
 > a sequence a reader would otherwise have to reconstruct. Drop everything else.
+> Keep a sequence where writing it down removes a decision. Drop one where it states the obvious.
 >
 > Return one block per ritual and nothing else. No prose, no summary.
 >
@@ -102,16 +125,7 @@ The parent never reads the action files. It reads the blocks.
 | **Repeat** | A | the same setup, the same constraint, the same ceremony typed in new sessions | a skill |
 | **Ritual** | B | the same commands, in the same order, rebuilt from scratch in new sessions | a skill, a script, or a hook |
 
-A long instruction he types from scratch every time is the strongest repeat. It is a skill body he is writing by hand.
-
-A ritual is a **sequence**, not a command. `git status` ranks high because it is a primitive. Claude reaches for it the way it reaches for a verb, and no document changes that.
-
-| Ritual | Primitive |
-|---|---|
-| Three or more steps, in a fixed order | One step |
-| Claude gets the order wrong sometimes | Claude never gets it wrong |
-| The steps carry flags, paths, or a container name | Bare, or the argument is the task |
-| Writing it down removes a decision | Writing it down states the obvious |
+A long instruction he types from scratch every session is the strongest repeat. It is a skill body he writes by hand.
 
 ## 5. Count sessions, not hits
 
@@ -123,22 +137,31 @@ A ritual is a **sequence**, not a command. `git status` ranks high because it is
 | B | the `Sessions` line each agent returned |
 | B, across shards | a ritual named by 2 or more agents is a global candidate. One agent means it belongs to that project |
 
-Drop everything below the line. One-offs are noise, and a rule built from one is a rule Claude has to fight later.
+Read the window, step 6, before a hit joins a count. A hit you read alone inflates the count.
 
-## 6. Read the turn that caused it
+A rule built from one session is a rule Claude has to fight later.
 
-Only for the survivors. A correction without the action before it has no cause.
+## 6. Read the window on both sides
+
+Every hit, before you call it a finding. The turns before it hold the cause. The turns after it hold whether the cause survived.
 
 ```bash
 F=<column 1>; U=<column 2>
 N=$(grep -n "$U" "$F" | head -1 | cut -d: -f1)
-sed -n "$((N-6)),$((N))p" "$F" | jq -rR 'fromjson? | select(.message)
+sed -n "$(( N>8 ? N-8 : 1 )),$((N+8))p" "$F" | jq -rR 'fromjson? | select(.message)
   | "[\(.type)] " + (.message.content
     | if type=="string" then .
       else [.[] | if .type=="text" then .text elif .type=="tool_use" then "«\(.name)»" else empty end] | join(" ")
       end
     | gsub("\\s+";" ") | .[0:300])'
 ```
+
+| The window shows | Read the hit as |
+|---|---|
+| He restates the same ask after the answer | the answer missed. A finding |
+| He accepts and moves on | the answer landed. Not a finding |
+| He is quoting a document, or pasting output | not his words. Drop it |
+| The tool or path he names is gone from disk | true that day, stale today |
 
 ## 7. Route each survivor to one home
 
@@ -154,7 +177,7 @@ sed -n "$((N-6)),$((N))p" "$F" | jq -rR 'fromjson? | select(.message)
 | A ritual where nothing varies but the arguments | a script or a CLI, and one line in `CLAUDE.md` that names it |
 | A ritual that must fire without being asked | a hook in `settings.json`, via `update-config` |
 
-The last row is the only home Claude cannot reach on its own. A skill fires when the model chooses it. A hook fires because the harness runs it. "Every time X happens, do Y" is a hook.
+"Every time X happens, do Y" is a hook. A skill fires when the model chooses it. A hook fires because the harness runs it.
 
 One home each. A finding that wants two homes is two findings, or it is one you have not named yet.
 
