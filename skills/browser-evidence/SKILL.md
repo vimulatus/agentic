@@ -1,0 +1,62 @@
+---
+name: browser-evidence
+description: Drive the agent-browser CLI the house way - one isolated session per task, auth state in .agent-auth/, evidence under .agent-evidence/<task>/. Use when verifying a web UI change, capturing before and after screenshots, or investigating the running app in a browser. Not for the command reference, which ships with the CLI.
+---
+
+# Browser evidence
+
+```
+gitignore ──> session ──> auth ──> drive ──> evidence ──> close your session
+```
+
+The command catalog is not in this file. It ships with the CLI and it is version-matched:
+
+```bash
+agent-browser skills get core     # load this first
+```
+
+Everything below is the house layer on top of it.
+
+## Before the browser opens
+
+Both directories stay out of git. Run this first, once per task:
+
+```bash
+ignore="$(git rev-parse --show-toplevel)/.gitignore"
+[ -s "$ignore" ] && [ -n "$(tail -c1 "$ignore")" ] && echo >> "$ignore"   # keep the last rule intact
+for d in .agent-auth/ .agent-evidence/; do
+  grep -qxF "$d" "$ignore" 2>/dev/null || echo "$d" >> "$ignore"
+done
+```
+
+## One session per task
+
+- Pass `--session <task>` on every command. `<task>` is a kebab-case slug for the work, one per worktree.
+- Close your own session. `close --all` kills the browser of every parallel project.
+
+## Auth
+
+- State lives at `<root>/.agent-auth/<host>.json`.
+- **Restore first.** The file exists, so pass `--state` and skip the login.
+- No file: log in, then `state save <root>/.agent-auth/<host>.json`.
+- Passwords reach the CLI through the vault (`auth save` / `auth login`) or through `--password-stdin`. Shell history is a leak.
+- A gated page, no state file and no credentials: stop and report `auth required`.
+- These files hold live session cookies. They stay out of every commit.
+
+## Evidence
+
+- Everything lands in `<root>/.agent-evidence/<task>/` — screenshots, recordings, console dumps.
+- Name each file for the claim it supports: `login-shows-error.png`, not `screenshot-3.png`.
+
+## Proof
+
+- A screenshot is not proof. Name the expected text or selector: `get text`, `is visible`, `wait --text`.
+- Capture `console` and `errors` on every functional check. A console error or a failed request is a **fail**.
+- Report the claim, the command that proved it, and the path to the file.
+
+## Done
+
+- [ ] `.agent-auth/` and `.agent-evidence/` are in `.gitignore`.
+- [ ] Every claim names the text or the selector that proved it.
+- [ ] Console and errors are captured, and they are clean.
+- [ ] Your session is closed. Every other session still runs.
