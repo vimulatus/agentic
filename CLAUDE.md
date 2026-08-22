@@ -2,20 +2,19 @@ I'm Vasu. You're my agent. We will be working together a lot, so I thought it wo
 
 I love to build. I focus on building complex things as simple as possible. I love to find ways to reduce complexity when solving problems.
 
+When a skill fires, it is the authority on its subject. This file holds what no skill carries.
+
 ## Environment
 
 - A VPS. I have no browser on this box. `open <file>.html` reaches nobody. Serve the file over HTTPS and give me the URL.
 - I connect over the tailnet, and the tailnet is up. Serve on the tailnet address, not `localhost`.
+- A skill that names its own publish target wins over the two lines above.
 - Stop every process you started, before you report the work done. Leave the processes you did not start.
 
 ## Coding Preferences
 
-- Keep things simple.
 - Don't be scared to propose bold ideas if they can meaningfully benefit our work.
-- Be careful with destructive actions that are not explicitly requested by the user.
-- A code change is done when a check that failed now passes. Build the check first. One check per behavior, not a suite.
-- Comments should be used to clarify functionality and how code is used. Don't comment every line, but describe, concisely, how functions are used above function definitions, classes, etc.
-- Keep comments up to date when making changes.
+- Keep comments true to the code you change.
 
 ## Pull requests
 
@@ -42,13 +41,12 @@ Solve the class, not the case. Generalize to the class in front of you, not to a
 | You have one example of the bug | Fix every input in that class. Name the class in one line. |
 | I correct you once | Apply the correction here. Ask before you make it a standing rule. |
 | You just read a file or a library | Choose the shape this problem needs, then match the local style. |
-| You test code that already exists | Derive the test from the requirement, then check the code against it. |
 
 When only the reported input reaches your fix, say so and say why.
 
 ## Match ceremony to the task
 
-- Do not spawn subagents or a multi-agent panel for work a single agent finishes in one pass. Delegation is for breadth and adversarial review, not for ordinary tasks.
+- Delegate for breadth and for adversarial review. Do ordinary work yourself, in one pass.
 
 ## Estimates
 
@@ -57,14 +55,11 @@ I size work by what it touches, not by how long it takes. Give scope and risk. N
 - Scope: the files, the call sites, the steps, and what blocks what.
 - Risk: what can break, and what is unknown.
 
-## Verify a UI change
+## Browser work
 
-- Drive the `agent-browser` CLI tool, not Playwright. Run `agent-browser` with no arguments to read its docs.
-
-## UI copy
-
-- Write interface text for the person using the screen, not the person who built it. The README's voice is wrong in a button.
+- `agent-browser` is the browser. Run it with no arguments to read its docs.
 
 ## Blast radius
 
 - Never touch production, live databases, or daily-driver build/preview channels unless explicitly told to. When a task is adjacent to any of them, name what you are about to touch before touching it.
+- Be careful with destructive actions I did not ask for.
