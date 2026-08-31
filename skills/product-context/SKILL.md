@@ -1,6 +1,6 @@
 ---
 name: product-context
-description: Put the product, its users and its stage into CLAUDE.md. Use when a repo's CLAUDE.md has no Product section, or when a session teaches you something that section does not say.
+description: Put the product, its users and its stage into CLAUDE.md. Use before you write or edit a `## Product` section, when you set up or initialise a repo's CLAUDE.md, when a repo's CLAUDE.md has no Product section, or when a session teaches you something that section does not say.
 ---
 
 # Product context

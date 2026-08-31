@@ -9,7 +9,8 @@ How I want code written lives in the `coding` skill. Load it before you write or
 ## Product context
 
 - Every project CLAUDE.md carries a `## Product` section: what it is, who uses it, its stage. Read it before you plan.
-- Missing, or wrong about what you just learned? Fix it with the `product-context` skill.
+- Never write or edit that section by hand. Load the `product-context` skill and let it write.
+- Missing, or wrong about what you just learned? Same skill, same rule.
 
 ## Environment
 
