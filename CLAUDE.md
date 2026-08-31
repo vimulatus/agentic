@@ -6,15 +6,19 @@ When a skill fires, it is the authority on its subject. This file holds what no 
 
 ## Environment
 
-- A VPS. I have no browser on this box. `open <file>.html` reaches nobody. Serve the file over HTTPS and give me the URL.
-- I connect over the tailnet, and the tailnet is up. Serve on the tailnet address, not `localhost`.
-- A skill that names its own publish target wins over the two lines above.
 - Stop every process you started, before you report the work done. Leave the processes you did not start.
 
 ## Coding Preferences
 
 - Don't be scared to propose bold ideas if they can meaningfully benefit our work.
 - Keep comments true to the code you change.
+
+## Git
+
+- Keep the history linear. Rebase onto `origin/main`. Never merge `main` into a branch.
+- Land a branch with a rebase or a squash. A merge commit is not an option.
+- Write conventional commits: `type(scope): subject`. Types: feat, fix, docs, refactor, test, chore.
+- The subject is imperative, lowercase, and has no full stop. One logical change per commit.
 
 ## Pull requests
 

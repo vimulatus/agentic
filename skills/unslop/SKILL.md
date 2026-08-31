@@ -1,6 +1,6 @@
 ---
 name: unslop
-description: Cut the tells that mark code as machine written: narrating comments, unearned abstraction, defensive scaffolding, AI vocabulary. Use whenever you write or edit code, and again on the diff before you report done.
+description: "Cut the tells that mark code as machine written: narrating comments, unearned abstraction, defensive scaffolding, AI vocabulary. Use whenever you write or edit code, and again on the diff before you report done."
 ---
 
 # Unslop
