@@ -27,7 +27,7 @@ How I want code written lives in the `coding` skill. Load it before you write or
 ## Pull requests
 
 - Rebase onto the latest base branch before you open the PR.
-- After you file it, start a background monitor. Watch until every status check passes.
+- After you file it, the `babysit-pr` skill takes it to ready. Load it.
 - Title: simple, plain words.
 - Body: the problem first, in the fewest clear lines. Then how you solved it.
 - A PR that changes UI carries screenshots, before and after.
