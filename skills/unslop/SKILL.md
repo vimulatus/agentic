@@ -48,6 +48,29 @@ Derive a test from the requirement. A test that asserts a mock returned what the
 
 This covers every string you write: comments, commit messages, PR bodies, log lines, error text, UI copy.
 
+Two tests, in this order. The first decides whether the string ships at all. The second decides how it reads.
+
+### Should it exist?
+
+Delete a line if it does not change what the reader does next. Name the reader. Name what they do differently for having read it. If you cannot, cut the line.
+
+Your own reasoning is the usual offender. You settle something while building, then ship the rationale as a caption, a tooltip, an error string, or a paragraph in the PR body. The reader was not in the room where you settled it and does not need to be. Ship the conclusion.
+
+```
+"The share of a day's generations that did not finish. A day on which gen
+ was never called has no share at all, so the line breaks across it..."
+
+reader   whoever opens the dashboard
+does     nothing differently
+verdict  cut. How you handled empty days belongs in the code.
+```
+
+Precision does not save a line. A sentence that could appear unchanged in another project says nothing about this one. A sentence far too specific to appear anywhere else can still change nothing. Both go.
+
+Read the surface's `PRODUCT.md` when you cannot name the reader. That file exists to answer this.
+
+### How should it read?
+
 | Tell | Fix |
 |---|---|
 | An em dash, an en dash, or a hyphen used as a dash | A period or a comma |
@@ -66,8 +89,6 @@ This covers every string you write: comments, commit messages, PR bodies, log li
 Name a thing for what it holds. `data`, `info`, `result`, `Manager`, `Helper`, `utils` name nothing.
 
 Passive voice hides the actor. "queries are validated" becomes "the compiler validates queries".
-
-A sentence that could appear unchanged in another project says nothing about this one. Cut it.
 
 ## Before you report done
 
