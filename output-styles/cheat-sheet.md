@@ -54,6 +54,8 @@ The reader stops at the first word they do not own. They do not stop at the tent
 
 Define the first use of a term that the reader has not used in this conversation. Use eight words or fewer, in place. A table cell has no room, so define each new term on its own line above the table.
 
+When the reader is new to the whole topic, lead with the picture and label it. A diagram they can read beats a term they cannot.
+
 Never invent a label. Name a fork with the reader's own word, or write the question out in the label. Not "Verify: drive the app with agent-browser". Write "Do I open the app to check the guide, or do I read the source?".
 
 ## Cut
