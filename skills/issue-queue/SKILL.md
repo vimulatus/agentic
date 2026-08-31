@@ -1,15 +1,34 @@
 ---
 name: issue-queue
-description: Triage the open GitHub issues and drive them to PRs one at a time with the dev subagent, stacking a PR on the PR it depends on. Use when the user asks to work the backlog, fix several issues in one session, or run an orchestrator session. Not for one named issue, which dev takes alone.
+description: Drive the open GitHub issues to PRs one at a time with the dev subagent, and watch for new ones. Use when the user asks to work the backlog, or to keep working as issues come in. Not for one named issue, which dev takes alone.
 ---
 
 # Issue queue
 
 You hold the queue. `dev` holds the code.
 
-Work the queue until it is empty. Stop when you are **blocked**.
+Work the queue until it is empty, then idle on the watch. Stop when Vasu says stop, or when you are **blocked**.
 
 ## 1 — Build the queue
+
+Arm the watch first. An issue filed after this line still reaches you.
+
+```bash
+seen=$(mktemp)
+gh issue list --state open --limit 100 --json number --jq '.[].number' > "$seen"
+while true; do
+  sleep 60
+  open=$(gh issue list --state open --limit 100 --json number,title \
+    --jq '.[] | "\(.number)\t\(.title)"' 2>/dev/null) || continue
+  printf '%s\n' "$open" | while IFS=$'\t' read -r n t; do
+    [ -n "$n" ] && ! grep -qx "$n" "$seen" && { echo "new issue #$n: $t"; echo "$n" >> "$seen"; }
+  done
+done
+```
+
+Run it with the `Monitor` tool, `persistent: true`. One event per issue number you have not seen. A reopened issue counts as new.
+
+Then list what is open now.
 
 ```
 gh issue list --state open --limit 100 --json number,title,labels,body
@@ -74,6 +93,27 @@ Run `gh stack sync` again after a PR in the stack merges. It fast-forwards trunk
 
 `gh stack view --short` reads the stack. `gh stack submit --auto` opens PRs without the interactive editor.
 
+## A new issue arrives
+
+The watch fires mid-run. Read the body with `gh issue view <n>`, put it in a lane, and act.
+
+| The new issue | Do |
+|---|---|
+| Skip lane | report the one line. Carry on |
+| independent of the run in flight | slot it into the queue by the step 2 rules |
+| the run in flight needs its code | `TaskStop` the `dev` run, take the new issue first, then re-run the one you stopped |
+| supersedes the run in flight | `TaskStop` the `dev` run, delete its branch, re-triage both |
+
+Never interrupt a `dev` run for an issue that only shares a file. The rebase costs less than the restart.
+
+```
+Worked: #52 lands while dev works #47 on feat/login-route.
+
+  #52 asks for the Session model that #47 imports -> stop #47, run #52,
+      then cut feat/login-route again on #52's PR branch.
+  #52 asks for a new settings page      -> queue it. #47 finishes untouched.
+```
+
 ## Blocked
 
 Three states are blocked. Report what you tried, take the next independent issue, and come back when Vasu answers.
@@ -86,4 +126,6 @@ Three states are blocked. Report what you tried, take the next independent issue
 
 After each PR, one line: the issue, the PR URL, its base.
 
-At the end, one table: issue, PR, base, state. Then the Skip lane, unchanged.
+When the queue empties, one table: issue, PR, base, state. Then the Skip lane, unchanged. Say the watch is still armed, and stay in the session.
+
+When Vasu says stop, `TaskStop` the watch and report the same table.
