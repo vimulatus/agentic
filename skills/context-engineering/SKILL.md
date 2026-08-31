@@ -1,6 +1,6 @@
 ---
 name: context-engineering
-description: Write and prune the documents Claude reads - skills and CLAUDE.md. Use when creating or editing either, when a skill does not fire on its own, or when a document has grown long.
+description: Write and prune the documents Claude reads - a SKILL.md, a CLAUDE.md, a rule file. Use before you add or edit one, when a skill does not fire on its own, or when a document runs long.
 ---
 
 # Context engineering
@@ -62,6 +62,25 @@ You win twice: fewer words, and one hook Claude hangs the behavior on.
 - Use the same word in your prompts, your documents, and your code. Shared vocabulary is what makes a skill fire.
 
 Hunt for the passage that collapses into one word. Most documents carry several.
+
+## Invocation
+
+A skill fires one of two ways. Pick one before you write the description.
+
+| | Model-invoked | User-invoked |
+|---|---|---|
+| Fires on | the agent reading the description, or you typing the name | you typing the name |
+| Frontmatter | omit `disable-model-invocation`. Write the trigger description | `disable-model-invocation: true`. The description drops to a one-line human summary |
+| Context cost | the description sits in context on every turn | none |
+| Reach | another skill can invoke it | you are the only caller |
+
+Model-invoke a skill when the agent has to reach it on its own, or another skill has to. Everything else is user-invoked and costs nothing.
+
+Split a model-invoked skill out of a larger one when it owns a distinct leading word - a word you already type. That word buys the always-loaded description.
+
+Two user-invoked skills cannot share reference through each other. Neither holds a description, so neither can fire the other. Put the shared reference in a plain file and point both at it.
+
+When the user-invoked skills outgrow your memory, write one **router** skill that names them and says when to reach for each. One name to remember instead of many. A router hints. It cannot fire them.
 
 ## Descriptions
 
