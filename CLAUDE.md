@@ -6,6 +6,11 @@ When a skill fires, it is the authority on its subject. This file holds what no 
 
 How I want code written lives in the `coding` skill. Load it before you write or edit code.
 
+## Product context
+
+- Every project CLAUDE.md carries a `## Product` section: what it is, who uses it, its stage. Read it before you plan.
+- Missing, or wrong about what you just learned? Fix it with the `product-context` skill.
+
 ## Environment
 
 - Stop every process you started, before you report the work done. Leave the processes you did not start.
