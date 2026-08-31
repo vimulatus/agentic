@@ -30,6 +30,8 @@ How I want code written lives in the `coding` skill. Load it before you write or
 - After you file it, start a background monitor. Watch until every status check passes.
 - Title: simple, plain words.
 - Body: the problem first, in the fewest clear lines. Then how you solved it.
+- A PR that changes UI carries screenshots, before and after.
+- `.agent-evidence/` stays out of git. Upload with the `fs` skill and embed the URLs in the body.
 - Close every issue the PR resolves, not only the one you opened it for.
 
 ## Issues
