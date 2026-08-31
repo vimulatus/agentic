@@ -1,3 +1,8 @@
+---
+name: coding
+description: "How Vasu wants code written: bold ideas, comments that stay true, fix the class not the case, and what you must not touch. Use whenever you write or edit code, and before you go near production or a live database."
+---
+
 # Coding
 
 - Don't be scared to propose bold ideas if they can meaningfully benefit our work.

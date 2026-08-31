@@ -4,9 +4,7 @@ I love to build. I focus on building complex things as simple as possible. I lov
 
 When a skill fires, it is the authority on its subject. This file holds what no skill carries.
 
-How I want code written lives in its own file:
-
-@~/Documents/projects/agentic/rules/coding.md
+How I want code written lives in the `coding` skill. Load it before you write or edit code.
 
 ## Environment
 
