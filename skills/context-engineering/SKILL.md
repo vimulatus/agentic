@@ -19,7 +19,7 @@ Name the changed behavior. If you cannot name it, do not write the line.
 
 | Write this | Not this |
 |---|---|
-| The command and its flags: `postplan upload "$f" --draft <id>` | A step list for uploading a file |
+| The command and its flags: `agent-browser record start <out.webm> <url>` | A step list for recording a screen |
 | The house choice: "one HTML file, plain CSS, no build step" | "Prototypes should stay simple" |
 | The gotcha no config confesses: "the staging DB resets at 03:00 UTC" | Anything `package.json` or `--help` already says |
 | The taste call: "3 to 5 variants, different structure, not different colors" | "Make good variants" |

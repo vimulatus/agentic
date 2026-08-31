@@ -1,6 +1,6 @@
 ---
 name: mine-history
-description: Read past sessions to find what Claude keeps getting wrong and what it keeps rebuilding, then propose the skill, script, hook, or rule that fixes it. Use when the user asks what skills he should build, what he could automate, what he keeps repeating or correcting, whether a named skill, hook, or rule is worth adding back, or to mine his history. Not for this session, which is retro.
+description: Read past sessions to find what Claude keeps getting wrong and what it keeps rebuilding, then propose the skill, script, hook, or rule that fixes it. Use when the user asks what skills he should build, what he could automate, what he keeps repeating or correcting, whether a named skill, hook, or rule is worth adding back, or to mine his history. Not for the current session.
 ---
 
 # Mine history

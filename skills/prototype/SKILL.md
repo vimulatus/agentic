@@ -1,11 +1,11 @@
 ---
 name: prototype
-description: Build a single-file HTML prototype and publish it to Postplan. Use when the user asks to prototype, mock up, explore variants, or "show me" a behavior before it is built - for backend state machines and flows (Logic branch) or for screens and layouts (UI branch). Not for production code.
+description: Build a single-file HTML prototype. Use when the user asks to prototype, mock up, explore variants, or "show me" a behavior before it is built - for backend state machines and flows (Logic branch) or for screens and layouts (UI branch). Not for production code.
 ---
 
 # Prototype
 
-The shell, the theme and the publish step come from the `handout` skill. This is the mode the reader drives.
+The shell, the theme and the delivery step come from the `handout` skill. This is the mode the reader drives.
 
 ## Pick the branch
 
@@ -71,4 +71,4 @@ Several **radically different** takes on one route, fast to flip between.
 | Legible type and spacing | Animation, icon sets |
 | Works in one browser | Responsive, a11y audit, tests |
 
-Publish it the way `handout` publishes: `postplan upload "$f" --description "Refund state machine - 3 edge cases"`.
+Deliver it the way `handout` delivers: write the file, `open` it, give the path.

@@ -1,11 +1,11 @@
 ---
 name: handout
-description: Answer with one dark HTML page and publish it to Postplan. Use when the user asks for a plan, a report, or an interactive explainer - or when the answer is too long or too branched to read in chat. Not for a prototype, which has its own skill.
+description: Answer with one dark HTML page. Use when the user asks for a plan, a report, or an interactive explainer - or when the answer is too long or too branched to read in chat. Not for a prototype, which has its own skill.
 ---
 
 # Handout
 
-One HTML file. Plain CSS. Dark. No build step. It lives in `/tmp` until Postplan has it.
+One HTML file. Plain CSS. Dark. No build step.
 
 Start from `template.html`. It carries the theme and the disclosure pattern. Colour carries state only.
 
@@ -45,12 +45,12 @@ The reader moves an input and watches the output follow. A diagram nobody can to
 - Seed it in the interesting state, not the empty one.
 - Show the intermediate value, not only the result. The middle step is the lesson.
 
-## Publish
+## Deliver
+
+Write the page to `handouts/<task>.html`, then open it:
 
 ```bash
-f=$(mktemp /tmp/handout-XXXX.html)   # write the page here
-postplan upload "$f" --description "Refund backfill - 3 phases"
-rm "$f"
+open handouts/refund-backfill.html
 ```
 
-Give the user the URL, and one line on what is inside. To revise the same page, pass `--draft <id>`.
+Give the user the path, and one line on what is inside. To revise it, edit the same file.
