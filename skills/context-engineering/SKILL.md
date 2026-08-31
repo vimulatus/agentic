@@ -84,13 +84,39 @@ test covering it. Not for debugging a test that
 already fails.
 ```
 
+A pointer to a sibling file is the same shape. The wording decides whether Claude opens the file. The target does not. A must-have file behind a weak pointer is a variance bug: some runs open it, some do not.
+
+```
+See the reference file for more details.        <- Claude decides. It decides no.
+
+Read references/logic.md for the state-machine  <- a trigger.
+notation. Use when the prototype models a flow
+or a backend state machine.
+```
+
 ## Form
 
 One heading per branch. A table or a code block per rule set. Prose only where both of those fail, and four lines at most.
 
 - Prompt the positive. A prohibition puts the banned behavior into context and makes it more available, not less. Write "match the surrounding style", not "do not invent a new style".
-- Keep one file until a branch grows long and only some runs reach it. Then move that branch to a sibling file and point at it.
+- Keep a concept whole. Its definition, its rules and its caveats sit under one heading. A reader who lands on one part gets the neighbors free.
 - State what done looks like when it is checkable. "Every changed model has a migration" drives more work than "update the migrations".
+
+## Progressive disclosure
+
+Branching is the test. Inline what every branch needs. Move out what only some branches reach.
+
+| The file | Do |
+|---|---|
+| Every run reads all of it | Keep one file. When it runs long, cut lines |
+| Only some runs reach a section | Move it to a sibling file. Point at it |
+| A later step tempts Claude to call the job done early | Move the later step out. Out of view, it stops competing |
+
+```
+Worked: the prototype skill branches Logic and UI.
+        Both branches publish      -> the publish command stays in-file.
+        Only Logic draws a machine -> references/logic.md.
+```
 
 ## CLAUDE.md
 
