@@ -71,4 +71,4 @@ Several **radically different** takes on one route, fast to flip between.
 | Legible type and spacing | Animation, icon sets |
 | Works in one browser | Responsive, a11y audit, tests |
 
-Deliver it the way `handout` delivers: write the file, `open` it, give the path.
+Deliver it the way `handout` delivers: write the file, publish it with the Artifact tool, give the URL.

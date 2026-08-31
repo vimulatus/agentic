@@ -57,10 +57,8 @@ The reader moves an input and watches the output follow. A diagram nobody can to
 
 ## Deliver
 
-Write the page to `handouts/<task>.html`, then open it:
+Write the page to `handouts/<task>.html`, then publish it with the Artifact tool. Give the user the URL, and one line on what is inside.
 
-```bash
-open handouts/refund-backfill.html
-```
-
-Give the user the path, and one line on what is inside. To revise it, edit the same file.
+- `template.html` is body content. The Artifact tool wraps it. Never write `<html>`, `<head>` or `<body>`.
+- The page commits to dark. `:root` sets `color-scheme:dark`, and `body` paints its own background.
+- To revise it, edit the same file and publish it again. The URL stays the same.

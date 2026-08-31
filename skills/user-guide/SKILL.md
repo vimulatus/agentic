@@ -13,9 +13,11 @@ One guide, one task. Write for the person on the screen.
 |---|---|---|
 | a docs site: `docs/`, `mkdocs.yml`, `docusaurus.config.*`, `*.mdx` | `docs/guides/<task>.md` | the docs site |
 | a served dir: `public/`, `static/` | `public/guides/<task>.html`, self-contained | `/guides/<task>` |
-| neither | ask where it should live | - |
+| neither | `guides/<task>.html`, self-contained | an Artifact URL |
 
 Name the target and the route before you write. Assets sit beside the page, in `<task>/`.
+
+An Artifact carries no sibling files. On that row, embed every shot and every video as a `data:` URI, and keep the page under 16 MB.
 
 ## Walk the flow first
 
