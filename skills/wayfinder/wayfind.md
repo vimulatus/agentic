@@ -25,18 +25,21 @@ Send every blindspot that waits on no other answer to the `research` skill now. 
 
 Call the `grilling` skill on what the research cannot answer.
 
-## 4. Spec
+## 4. Tickets
 
-Call `to-spec`. Read the research files first, so the spec carries their findings.
+Read the research files first, so the tickets carry their findings. Then call `to-tickets`.
 
-Publish the spec as a child of the map issue. It is the slice. Apply no label.
+It files one parent issue and a sub-issue per ticket. The parent is the slice: make it a child of the map issue.
 
-## 5. Tickets
+```
+map #1
+  \-- parent #12   the slice
+        |-- #13    ticket
+        \-- #14    ticket
+```
 
-Call `to-tickets` on that spec. File its tickets as children of the spec issue, and apply no label. The child edge is the record; `to-tickets` offers a `ready-for-agent` label, and you have instructed otherwise.
+`to-tickets` says "vertical slice". At this level that word means **ticket**: one context window, green on its own. `cut.md` already cut the slice. Do not cut it again.
 
-`to-tickets` says "vertical slice". At this level that word means **ticket**: one context window, green on its own. The slice was already cut in `cut.md`. Do not cut it again.
-
-## 6. Stop
+## 5. Stop
 
 Write the decisions into the map. Name the ticket to start. Leave the next slice at one line.

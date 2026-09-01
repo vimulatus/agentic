@@ -21,7 +21,7 @@ The map is the one open issue labelled `map`. Its state names the level.
 | The map | Level | Read |
 |---|---|---|
 | does not exist | L1 cut | `cut.md`, to name the destination and cut the slices |
-| the current slice has no spec issue | L2 wayfind | `wayfind.md`, to take one slice to a spec |
+| the current slice has no parent issue | L2 wayfind | `wayfind.md`, to take one slice to its tickets |
 | the current slice has open tickets | L3 dispatch | `dispatch.md`, to pick the approach for one ticket |
 
 ## The stop rule

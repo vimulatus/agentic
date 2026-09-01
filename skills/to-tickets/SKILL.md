@@ -1,105 +1,156 @@
 ---
 name: to-tickets
-description: Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket locally, or native blocking links on a real tracker).
+description: Turn a plan, spec, or the current conversation into one parent issue with a sub-issue per tracer-bullet ticket, wired with GitHub's native sub-issue and blocked-by edges. Use when the work is bigger than one ticket. Not for a single bug or chore, which goes straight to `dev`.
 disable-model-invocation: true
 ---
 
 # To Tickets
 
-Break a plan, spec, or conversation into a set of **tickets**: tracer-bullet vertical slices, each declaring the tickets that **block** it.
+One **parent issue** holds the work. One **sub-issue** per **ticket**: a tracer-bullet vertical slice, sized for one context window.
 
-The issue tracker and triage label vocabulary should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
+```
+parent #12  Feedback capture
+  |-- #13  POST /feedback            no blockers
+  |-- #14  the feedback form         blocked by #13
+  \-- #15  email the feedback out    blocked by #13
+```
 
-## Process
+You file. Someone else builds. Apply no label.
 
-### 1. Gather context
+## Before you start
 
-Work from whatever is already in the conversation context. If the user passes a reference (a spec path, an issue number or URL) as an argument, fetch it and read its full body and comments.
+Run `git remote -v`. No remote means no issue tracker. Say so and stop.
 
-### 2. Explore the codebase (optional)
+## 1. Gather context
 
-If you have not already explored the codebase, do so to understand the current state of the code. Ticket titles and descriptions should use the project's domain glossary vocabulary, and respect ADRs in the area you're touching.
+Work from what the conversation already holds. If the user passes a reference - a path, an issue number, a URL - read its full body and its comments.
 
-Look for opportunities to prefactor the code to make the implementation easier. "Make the change easy, then make the easy change."
+## 2. Read the code
 
-### 3. Draft vertical slices
+If you have not read the code yet, read it. Use the project's domain vocabulary in every title and every body. Respect the ADRs in the area you touch.
 
-Break the work into **tracer bullet** tickets.
+Look for a prefactor that makes the change easy. "Make the change easy, then make the easy change."
+
+## 3. Find the seam
+
+Name the seam at which this work gets tested. Prefer a seam that already exists. Take the highest one you can. The fewer seams, the better. One is the target.
+
+## 4. Cut the tickets
 
 <vertical-slice-rules>
 
-- Each slice cuts a narrow but COMPLETE path through every layer (schema, API, UI, tests): vertical, NOT a horizontal slice of one layer
-- A completed slice is demoable or verifiable on its own
-- Each slice is sized to fit in a single fresh context window
-- Any prefactoring should be done first
+- Each ticket cuts a narrow but COMPLETE path through every layer (schema, API, UI, tests). Vertical, never a horizontal slice of one layer.
+- A finished ticket is demoable or verifiable on its own.
+- Each ticket fits one fresh context window.
+- The prefactor goes first.
 
 </vertical-slice-rules>
 
-Give each ticket its **blocking edges**: the other tickets that must complete before it can start. A ticket with no blockers can start immediately.
+Give each ticket its **blocking edges**: the tickets that must close before it can start. A ticket with no blockers can start now.
 
-**Wide refactors are the exception to vertical slicing.** A **wide refactor** is one mechanical change (rename a column, retype a shared symbol) whose **blast radius** fans across the whole codebase, so a single edit breaks thousands of call sites at once and no vertical slice can land green. Don't force it into a tracer bullet; sequence it as **expand–contract**. First expand: add the new form beside the old so nothing breaks. Then migrate the call sites over in batches sized by blast radius (per package, per directory), each batch its own ticket blocked by the expand, keeping CI green batch to batch because the old form still exists. Finally contract: delete the old form once no caller remains, in a ticket blocked by every migrate batch. When even the batches can't stay green alone, keep the sequence but let them share an integration branch that all block a final integrate-and-verify ticket; green is promised only there.
+**A wide refactor is the exception to vertical slicing.** A wide refactor is one mechanical change - rename a column, retype a shared symbol - whose **blast radius** fans across the codebase, so a single edit breaks thousands of call sites at once and no vertical slice can land green. Do not force it into a tracer bullet. Sequence it as **expand-contract**. First expand: add the new form beside the old, so nothing breaks. Then migrate the call sites in batches sized by blast radius, per package or per directory, each batch its own ticket blocked by the expand. CI stays green batch to batch, because the old form still exists. Finally contract: delete the old form once no caller remains, in a ticket blocked by every migrate batch. When even a batch cannot stay green alone, keep the sequence, but let the batches share an integration branch that they all block. Green is promised only at that final integrate-and-verify ticket.
 
-### 4. Quiz the user
+## 5. Quiz the user
 
-Present the proposed breakdown as a numbered list. For each ticket, show:
-
-- **Title**: short descriptive name
-- **Blocked by**: which other tickets (if any) must complete first
-- **What it delivers**: the end-to-end behaviour this ticket makes work
+Show the seam. Then show the tickets as a numbered list. For each ticket: the title, what it delivers, and what blocks it.
 
 Ask the user:
 
-- Does the granularity feel right? (too coarse / too fine)
-- Are the blocking edges correct: does each ticket only depend on tickets that genuinely gate it?
-- Should any tickets be merged or split further?
+- Is the seam the one you expected?
+- Is the granularity right - too coarse, too fine?
+- Does each ticket depend only on what genuinely gates it?
+- Should any tickets merge or split?
 
-Iterate until the user approves the breakdown.
+Iterate until the user approves. Only then do you file.
 
-### 5. Publish the tickets to the configured tracker
+## 6. File
 
-Publish the approved tickets. **How** depends on the tracker `/setup-matt-pocock-skills` configured; the tickets are the same either way, only the shape of the blocking edges changes:
+The parent first, so each ticket can name it. Then the tickets, in dependency order, blockers first.
 
-- **Local files** → write one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
-- **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers. Use the platform's native blocking / sub-issue relationship where it has one; otherwise set each ticket's "Blocked by" to the blocking issues. Apply the `ready-for-agent` triage label unless instructed otherwise; the tickets are agent-grabbable by construction.
+```bash
+repo=$(gh repo view --json nameWithOwner -q .nameWithOwner)
 
-Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
+# the parent
+p=$(gh issue create --title "<title>" --body-file <parent.md>); p=${p##*/}
 
-Do NOT close or modify any parent issue.
+# one ticket
+c=$(gh issue create --title "<title>" --body-file <ticket.md>); c=${c##*/}
 
-<local-ticket-template>
+# make it a sub-issue of the parent
+cid=$(gh api "repos/$repo/issues/$c" --jq .id)
+gh api "repos/$repo/issues/$p/sub_issues" -F sub_issue_id="$cid"
 
-# <NN>: <Ticket title>
+# a blocking edge: ticket $c is blocked by ticket $b
+bid=$(gh api "repos/$repo/issues/$b" --jq .id)
+gh api "repos/$repo/issues/$c/dependencies/blocked_by" -F issue_id="$bid"
+```
 
-**What to build:** the end-to-end behaviour this ticket makes work, from the user's perspective, not a layer-by-layer implementation list.
+Both endpoints take the issue's `id`, never its number. `-F` sends it as a number; `-f` would send a string and fail.
 
-**Blocked by:** the numbers/titles of the tickets that gate this one, or "None (can start immediately)".
+When every ticket is filed, list them in the parent with `gh issue edit $p --body-file <parent.md>`.
 
-**Status:** ready-for-agent
+## 7. Close the parent
 
-- [ ] Acceptance criterion 1
-- [ ] Acceptance criterion 2
+GitHub does not close a parent when its last sub-issue closes. The agent that closes a sub-issue closes the parent.
 
-</local-ticket-template>
+After you close a ticket, read its `Parent:` line, then ask whether you closed the last one:
 
-<issue-template>
+```bash
+gh api "repos/$repo/issues/$p" --jq '.sub_issues_summary | .completed == .total'
+```
 
-## Parent
+`true` - you closed the last ticket. Run `gh issue close $p`.
+`false` - tickets remain. Leave the parent open.
 
-A reference to the parent issue on the tracker (if the source was an existing issue, otherwise omit this section).
+## 8. A finding, mid-flight
+
+You report. Someone else investigates.
+
+| Does someone have to build something? | Where it goes |
+|---|---|
+| Yes | a new sub-issue of the parent, with its blocking edges. File it by §6, then add it to the parent's Tickets list. |
+| No | a comment on the parent. |
+
+A decision, a constraint, a dead end, a thing you learned: comment. A behaviour someone must change: sub-issue.
+
+Never edit a ticket someone is already building. Never close the parent early.
+
+## Templates
+
+Keep both bodies short. Evidence only from an investigation that already happened: the snippet and the file path.
+
+<parent-template>
+
+## Current behaviour
+
+What happens today, in the fewest clear lines.
+
+## Expected behaviour
+
+What should happen instead, from the user's perspective.
+
+## Tickets
+
+- #13 <title>
+- #14 <title>
+
+</parent-template>
+
+<ticket-template>
+
+**Parent:** #<parent>
+
+**Blocked by:** #<n>, #<n> - or "None. Can start now."
 
 ## What to build
 
-The end-to-end behaviour this ticket makes work, from the user's perspective, not layer-by-layer implementation.
+The end-to-end behaviour this ticket makes work, from the user's perspective. Not a layer-by-layer implementation list.
 
 ## Acceptance criteria
 
 - [ ] Criterion 1
 - [ ] Criterion 2
 
-## Blocked by
+</ticket-template>
 
-- A reference to each blocking ticket, or "None (can start immediately)".
-
-</issue-template>
-
-In either form, avoid specific file paths or code snippets: they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.
+No file paths, no code snippets: they go stale fast. One exception - a prototype produced a snippet that carries a decision more precisely than prose can, such as a state machine, a reducer, a schema, or a type shape. Inline it, say it came from a prototype, and trim it to the decision. Not a working demo.
