@@ -5,17 +5,18 @@ R=$'\033[0m'; DIM=$'\033[2m'; B=$'\033[1m'
 GRN=$'\033[38;5;114m'; YEL=$'\033[38;5;179m'; RED=$'\033[38;5;174m'
 CYA=$'\033[38;5;110m'; MAG=$'\033[38;5;140m'; GRY=$'\033[38;5;245m'
 
-LEFTW=58        # column where the usage gutter starts
 CACHE_TTL=5
+SEP=" ${DIM}│${R} "
 
-IFS=$'\t' read -r cur_dir session_id used win_size five_h seven_d < <(
+IFS=$'\t' read -r cur_dir session_id used five_h five_r seven_d seven_r < <(
   printf '%s' "$input" | jq -r '[
     (.workspace.current_dir // .cwd // ""),
     (.session_id // "nosession"),
     (.context_window.used_percentage // -1 | tostring),
-    (.context_window.context_window_size // 0 | tostring),
     (.rate_limits.five_hour.used_percentage // -1 | tostring),
-    (.rate_limits.seven_day.used_percentage // -1 | tostring)
+    (.rate_limits.five_hour.resets_at // "" | tostring),
+    (.rate_limits.seven_day.used_percentage // -1 | tostring),
+    (.rate_limits.seven_day.resets_at // "" | tostring)
   ] | @tsv'
 )
 [ -n "$cur_dir" ] || cur_dir=$PWD
@@ -43,53 +44,64 @@ if stale; then
 fi
 IFS=$'\t' read -r branch staged modified wt < "$cache"
 
-# ---------- line 1 left: dir [worktree] | branch +staged ~modified ----------
-p1="${cur_dir##*/}"; l1="${MAG}${B}${p1}${R}"
-if [ -n "$wt" ]; then
-  p1+=" ⑂$wt"; l1+=" ${YEL}⑂${R}${DIM}${wt}${R}"
-fi
+# ---------- dir [worktree] │ branch +staged ~modified ----------
+line="${MAG}${B}${cur_dir##*/}${R}"
+[ -n "$wt" ] && line+=" ${YEL}⑂${R}${DIM}${wt}${R}"
 if [ -n "$branch" ]; then
-  p1+="  │  $branch"; l1+="  ${DIM}│${R}  ${CYA}${branch}${R}"
-  [ "${staged:-0}" -gt 0 ] 2>/dev/null && { p1+=" +$staged"; l1+=" ${GRN}+${staged}${R}"; }
-  [ "${modified:-0}" -gt 0 ] 2>/dev/null && { p1+=" ~$modified"; l1+=" ${YEL}~${modified}${R}"; }
+  line+="${SEP}${CYA}${branch}${R}"
+  [ "${staged:-0}" -gt 0 ] 2>/dev/null && line+=" ${GRN}+${staged}${R}"
+  [ "${modified:-0}" -gt 0 ] 2>/dev/null && line+=" ${YEL}~${modified}${R}"
 fi
 
-# ---------- line 2 left: context bar ----------
-if [ "${used%%.*}" -ge 0 ] 2>/dev/null && [ "${win_size%%.*}" -gt 0 ] 2>/dev/null; then
-  tok=$(awk "BEGIN{printf \"%d\", ($used/100)*$win_size}")
+# ---------- context ----------
+if [ "${used%%.*}" -ge 0 ] 2>/dev/null; then
   pct=${used%%.*}
-  if   [ "$tok" -lt 150000 ]; then c=$GRN
-  elif [ "$tok" -le 320000 ]; then c=$YEL
+  if   [ "$pct" -lt 50 ]; then c=$GRN
+  elif [ "$pct" -lt 80 ]; then c=$YEL
   else c=$RED; fi
-  filled=$(( pct * 12 / 100 )); [ $filled -gt 12 ] && filled=12
-  bar=""; for ((i=0;i<12;i++)); do [ $i -lt $filled ] && bar+="█" || bar+="░"; done
-  tokk=$(awk "BEGIN{printf \"%.1fK\", $tok/1000}")
-  wink=$(awk "BEGIN{printf \"%dK\", $win_size/1000}")
-  p2="$bar $tokk/$wink ${pct}%"
-  l2="${c}${bar}${R} ${c}${tokk}${R}${DIM}/${wink}${R} ${c}${pct}%${R}"
+  line+="${SEP}${GRY}ctx${R} ${c}${pct}%${R}"
 else
-  p2="░░░░░░░░░░░░ no messages yet"
-  l2="${DIM}░░░░░░░░░░░░ no messages yet${R}"
+  line+="${SEP}${GRY}ctx${R} ${DIM}--${R}"
 fi
 
-# ---------- right gutter: rate limits ----------
-limit_color() {
-  local v=${1%%.*}
-  if   [ "$v" -lt 50 ]; then printf '%s' "$GRN"
-  elif [ "$v" -lt 80 ]; then printf '%s' "$YEL"
-  else printf '%s' "$RED"; fi
+# ---------- rate limits: label, used, time until reset ----------
+# resets_at arrives as epoch seconds, or as an ISO 8601 string. Read both.
+to_epoch() {
+  local s=$1
+  case "$s" in
+    ''|null) return 1 ;;
+    *[!0-9]*)
+      s=${s%%.*}; s=${s%%+*}; s=${s%Z}
+      date -j -u -f "%Y-%m-%dT%H:%M:%S" "$s" +%s 2>/dev/null \
+        || date -u -d "$1" +%s 2>/dev/null \
+        || return 1 ;;
+    *) printf '%s' "$s" ;;
+  esac
 }
-gutter() { # $1 label  $2 value
-  if [ "${2%%.*}" -ge 0 ] 2>/dev/null; then
-    printf '%s\t%s' "$1 ${2%%.*}%" "${GRY}${1}${R} $(limit_color "$2")${2%%.*}%${R}"
+countdown() {
+  local at rem d h m
+  at=$(to_epoch "$1") || return 1
+  rem=$(( at - $(date +%s) ))
+  [ "$rem" -le 0 ] && { printf 'now'; return 0; }
+  d=$(( rem / 86400 )); h=$(( rem % 86400 / 3600 )); m=$(( rem % 3600 / 60 ))
+  if   [ "$d" -gt 0 ]; then printf '%dd%dh' "$d" "$h"
+  elif [ "$h" -gt 0 ]; then printf '%dh%dm' "$h" "$m"
+  else printf '%dm' "$m"; fi
+}
+limit() { # $1 label  $2 used  $3 resets_at
+  local v=${2%%.*} c t
+  line+="${SEP}${GRY}${1}${R} "
+  if [ "$v" -ge 0 ] 2>/dev/null; then
+    if   [ "$v" -lt 50 ]; then c=$GRN
+    elif [ "$v" -lt 80 ]; then c=$YEL
+    else c=$RED; fi
+    line+="${c}${v}%${R}"
   else
-    printf '%s\t%s' "$1   --" "${GRY}${1}${R} ${DIM}--${R}"
+    line+="${DIM}--${R}"
   fi
+  t=$(countdown "$3") && line+=" ${DIM}↻${t}${R}"
 }
-IFS=$'\t' read -r g1p g1c < <(gutter "5h" "$five_h")
-IFS=$'\t' read -r g2p g2c < <(gutter "7d" "$seven_d")
+limit "5h" "$five_h" "$five_r"
+limit "7d" "$seven_d" "$seven_r"
 
-pad() { local n=$(( LEFTW - ${#1} )); [ $n -lt 2 ] && n=2; printf '%*s' $n ''; }
-
-printf '%s%s%s\n' "$l1" "$(pad "$p1")" "$g1c"
-printf '%s%s%s\n' "$l2" "$(pad "$p2")" "$g2c"
+printf '%s\n' "$line"
