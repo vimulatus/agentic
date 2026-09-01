@@ -1,6 +1,7 @@
 ---
 name: issue-queue
-description: Drive the open GitHub issues to PRs one at a time with the dev subagent, and watch for new ones. Use when the user asks to work the backlog, or to keep working as issues come in. Not for one named issue, which dev takes alone.
+description: Drive the open GitHub issues to PRs with the dev subagent, one at a time or several in parallel, and watch for new ones. Use when the user asks to work the backlog, or to keep working as issues come in. Not for one named issue, which dev takes alone.
+argument-hint: "[--workers <n>]"
 ---
 
 # Issue queue
@@ -8,6 +9,19 @@ description: Drive the open GitHub issues to PRs one at a time with the dev suba
 You hold the queue. `dev` holds the code.
 
 Work the queue until it is empty, then idle on the watch. Stop when Vasu says stop, or when you are **blocked**.
+
+## Workers
+
+`--workers <n>` is how many `dev` subagents run at once. No argument means `--workers 1`.
+
+| Argument | Behaviour |
+|---|---|
+| absent, or `--workers 1` | one issue at a time, top to bottom |
+| `--workers <n>`, n > 1 | up to n independent issues at once, one worktree each |
+
+A value below 1, or one that is not a number, is an error. Say so and use 1.
+
+Parallel does not change the order. It changes how many issues from the **frontier** run at the same time. See step 4.
 
 ## 1 — Build the queue
 
@@ -51,11 +65,13 @@ An issue depends on another when it needs that issue's code, or edits the same f
 - Independent issues run smallest first.
 - Two issues that edit the same lines are one issue. Merge them in the queue and say you did.
 
+The **frontier** is every Ready issue whose dependencies have all landed. A frontier issue can start now. Step 4 runs it.
+
 ## 3 — Pick the base branch
 
-You pick the base, not `dev`. The base is what makes the work stack.
+The base is what makes the work stack. You choose it. `dev` runs the command, in its own worktree.
 
-| The issue | Base | Command |
+| The issue | Base | Command in the brief |
 |---|---|---|
 | needs no code from an open PR | trunk | `git switch -c <branch> <trunk>` |
 | needs code from an open PR | that PR's branch | `gh stack checkout <PR#>` then `gh stack add <branch>` |
@@ -69,16 +85,34 @@ Worked: #14 needs the Session model from PR #40.
   gh stack add feat/login-route
 
 #14's PR now targets PR #40's branch, so its diff shows the route, not the model.
+PR #40 must already exist. Until it does, #14 is not on the frontier.
 ```
 
 `gh stack init <branch>` starts the first stack in a repo that has none.
 
-## 4 — Run one issue
+## 4 — Run the frontier
 
-Spawn the `dev` subagent, one at a time. It cannot see this conversation, so the brief carries:
+Keep `--workers` `dev` subagents busy. Spawn one per frontier issue. When an agent returns, land its PR (step 5), recompute the frontier, and spawn the next one.
+
+```
+Worked: --workers 3,  queue  #12 -> #14 -> #15,  #20,  #22
+
+  spawn   #12  #20  #22        the frontier, 3 agents
+  #20 returns  -> frontier is empty of new work, 2 agents run on
+  #12 returns  -> #14 unblocks -> spawn #14
+  #14 returns  -> spawn #15
+
+--workers 1: the frontier is one issue, and this is today's behaviour.
+```
+
+Each `dev` gets its own git worktree: pass `isolation: "worktree"` on the Agent call. Two agents in one working tree overwrite each other's files.
+
+Never run two issues that touch the same function at the same time, even when both sit on the frontier. Step 2 merges them into one issue. If you find the overlap only now, hold the second issue until the first lands.
+
+`dev` cannot see this conversation, so each brief carries:
 
 - the issue number — it reads the body itself with `gh issue view`
-- the branch you checked out, and the base branch its PR targets
+- the branch to cut, the base branch its PR targets, and the step 3 command that cuts it
 - the instruction to open the PR with `gh pr create --base <base>`
 - for a stacked issue: what the PR underneath already changed
 
@@ -101,8 +135,10 @@ The watch fires mid-run. Read the body with `gh issue view <n>`, put it in a lan
 |---|---|
 | Skip lane | report the one line. Carry on |
 | independent of the run in flight | slot it into the queue by the step 2 rules |
-| the run in flight needs its code | `TaskStop` the `dev` run, take the new issue first, then re-run the one you stopped |
-| supersedes the run in flight | `TaskStop` the `dev` run, delete its branch, re-triage both |
+| a run in flight needs its code | `TaskStop` that one run, take the new issue first, then re-run the one you stopped |
+| supersedes a run in flight | `TaskStop` that one run, delete its branch, re-triage both |
+
+`TaskStop` the one run the new issue collides with. The other agents keep working.
 
 Never interrupt a `dev` run for an issue that only shares a file. The rebase costs less than the restart.
 
