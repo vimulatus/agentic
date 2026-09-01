@@ -1,6 +1,6 @@
 ---
 name: context-engineering
-description: Write and prune the documents Claude reads - a SKILL.md, a CLAUDE.md, a rule file. Use before you add or edit one, when a skill does not fire on its own, or when a document runs long.
+description: Write and prune the documents Claude reads - SKILL.md, CLAUDE.md, rule files. Use before you add or edit one, when a skill does not fire, or when one runs long.
 ---
 
 # Context engineering
@@ -84,34 +84,37 @@ When the user-invoked skills outgrow your memory, write one **router** skill tha
 
 ## Descriptions
 
-A description is a trigger, not a summary. It sits in context on every turn, so every word pays rent.
+A trigger, not a summary. It sits in context on every turn.
 
 ```
-<what it does>. Use when <trigger>, <trigger>. [Not for <near miss>.]
+<what it does>. Use when <trigger>. [Not for <near miss>.]
 ```
 
-- Use the words you would type. Not the words that live inside the skill.
-- One trigger per distinct case. Two synonyms for one case are one trigger written twice.
-- Add `Not for X` when a near neighbor would otherwise steal the invocation.
+Three sentences. 30 words. Under budget beats complete.
 
 ```
-Helps with writing tests.                              <- a summary. It fires on nothing.
+Prose - 50 words, the real browser-evidence description:
+  Drive the agent-browser CLI the house way - one isolated session
+  per task, auth state in .agent-auth/, evidence under
+  .agent-evidence/<task>/. Use when verifying a web UI change,
+  capturing before and after screenshots, or investigating the
+  running app in a browser. Not for the command reference, which
+  ships with the CLI.
 
-Write and run tests for changed code. Use when the     <- a trigger.
-user asks for tests, or when a change lands with no
-test covering it. Not for debugging a test that
-already fails.
+Focused - 23 words:
+  Drive a browser and capture evidence. Use when verifying a web UI
+  change in the running app. Not for the agent-browser command
+  reference.
 ```
 
-A pointer to a sibling file is the same shape. The wording decides whether Claude opens the file. The target does not. A must-have file behind a weak pointer is a variance bug: some runs open it, some do not.
+Four cuts get you there:
 
-```
-See the reference file for more details.        <- Claude decides. It decides no.
-
-Read references/logic.md for the state-machine  <- a trigger.
-notation. Use when the prototype models a flow
-or a backend state machine.
-```
+| Cut | Because |
+|---|---|
+| The paths, the flags, the file names | Sentence one says what it does, not how it works |
+| Every trigger that fires on the same case | Three is plenty. Five means you listed synonyms |
+| The sentence that sells the skill | `The check comes before the code, never after` is body text |
+| The words that live inside the skill | Write the words you would type |
 
 ## Form
 
@@ -135,6 +138,16 @@ Branching is the test. Inline what every branch needs. Move out what only some b
 Worked: the prototype skill branches Logic and UI.
         Both branches publish      -> the publish command stays in-file.
         Only Logic draws a machine -> references/logic.md.
+```
+
+A pointer to a sibling file is a description too. The wording decides whether Claude opens the file. A must-have file behind a weak pointer is a variance bug: some runs open it, some do not.
+
+```
+See the reference file for more details.        <- Claude decides. It decides no.
+
+Read references/logic.md for the state-machine  <- a trigger.
+notation. Use when the prototype models a flow
+or a backend state machine.
 ```
 
 ## CLAUDE.md
