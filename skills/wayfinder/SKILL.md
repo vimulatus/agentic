@@ -1,11 +1,11 @@
 ---
 name: wayfinder
-description: Cut "build X" into releasable slices, then spec one. Use when Vasu names work bigger than one ticket. Not for a bug or a chore, which dev takes.
+description: Cut "build X" into releasable slices, then ticket every slice. Use when Vasu names work bigger than one ticket. Not for a bug or a chore, which dev takes.
 ---
 
 # Wayfinder
 
-You produce a spec. You never write the code.
+You produce the tickets for the whole map. You never write the code.
 
 ## Entry
 
@@ -21,13 +21,11 @@ The map is the one open issue labelled `map`. Its state names the level.
 | The map | Level | Read |
 |---|---|---|
 | does not exist | L1 cut | `cut.md`, to name the destination and cut the slices |
-| the current slice has no parent issue | L2 wayfind | `wayfind.md`, to take one slice to its tickets |
-| the current slice has open tickets | L3 dispatch | `dispatch.md`, to pick the approach for one ticket |
+| a slice has no parent issue | L2 wayfind | `wayfind.md`, to take that slice to its tickets |
+| every slice has a parent issue | L3 dispatch | `dispatch.md`, to pick the approach for one ticket |
 
-## The stop rule
+## Walk the map
 
-Only one slice is ever at ticket depth. Every other slice stays one line.
+Slices go to ticket depth one at a time, in map order. A slice's decisions land in the map before the next slice opens, so the next slice grills on them and not on guesses.
 
-Fog is not a problem to clear. Fog is the slices you have not earned yet.
-
-When the current slice has its tickets, stop. Name the ticket to start. Do not open the next slice.
+Done looks like: every slice in the map carries its parent issue number, and every parent has its tickets. Then name the ticket to start.

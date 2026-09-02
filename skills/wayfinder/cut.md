@@ -35,7 +35,7 @@ Infrastructure has no slice of its own. It rides along inside the first slice th
 
 ## 3. Order them
 
-The current slice is the thinnest one Vasu would actually run.
+The first slice is the thinnest one Vasu would actually run. Each slice after it builds on what has landed.
 
 ## 4. Write the map
 
@@ -49,9 +49,11 @@ One sentence.
 
 ## Slices
 
-1. <title> — current
+1. <title>
 2. <title>
 3. <title>
+
+A slice gains ` — #<parent>` when its tickets are filed.
 
 ## Ideas
 
@@ -67,4 +69,4 @@ What the destination excludes.
 
 </map-template>
 
-Then read `wayfind.md` for the current slice.
+Then read `wayfind.md` and walk the slices in order.

@@ -1,6 +1,6 @@
 # L2 — wayfind
 
-Take the current slice to a spec and its tickets. One slice, not the map.
+Take one slice to a spec and its tickets. The first slice in the map with no parent issue is the one.
 
 ## 1. Blindspot pass
 
@@ -14,8 +14,9 @@ Name what you do not know that you should know. Give each one its cheapest probe
 | Who else reads or writes this data | grep the consumers |
 | How it fails in production | read the error paths |
 | What was tried before | read the git history |
+| What an earlier slice already settled | read the map's decisions |
 
-Drop every blindspot the current slice does not touch.
+Drop every blindspot this slice does not touch.
 
 ## 2. Research, in parallel
 
@@ -23,7 +24,7 @@ Send every blindspot that waits on no other answer to the `research` skill now. 
 
 ## 3. Grill
 
-Call the `grilling` skill on what the research cannot answer.
+Call the `grilling` skill on what the research and the map's decisions cannot answer. A question the map answers is settled.
 
 ## 4. Tickets
 
@@ -33,13 +34,19 @@ It files one parent issue and a sub-issue per ticket. The parent is the slice: m
 
 ```
 map #1
-  \-- parent #12   the slice
-        |-- #13    ticket
-        \-- #14    ticket
+  |-- parent #12   slice 1
+  |     |-- #13    ticket
+  |     \-- #14    ticket
+  \-- parent #20   slice 2
+        \-- #21    ticket
 ```
 
 `to-tickets` says "vertical slice". At this level that word means **ticket**: one context window, green on its own. `cut.md` already cut the slice. Do not cut it again.
 
-## 5. Stop
+A ticket in a later slice may depend on a ticket in an earlier one. Name that ticket in its body, so `dev` reads it landed.
 
-Write the decisions into the map. Name the ticket to start. Leave the next slice at one line.
+## 5. Next slice
+
+Write the decisions into the map. Add ` — #<parent>` to the slice's line. Then return to step 1 for the next slice with no parent issue.
+
+When every slice has its parent, name the ticket to start.
