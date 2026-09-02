@@ -1,6 +1,6 @@
 ---
 name: user-guide
-description: Write a guide for the people who use the app, and host it where they can reach it. Use when the user asks for a user guide, a how-to, onboarding steps, or help docs for a feature. Not for a README or API docs, which serve developers.
+description: Write and host a guide for the people who use the app. Use when Vasu asks for a user guide, a how-to, or help docs. Not for developer docs.
 ---
 
 # User guide
@@ -70,9 +70,9 @@ agent-browser record stop
 
 ## Copy
 
-- Second person, present tense, imperative: "Open **Settings**".
-- The word on the screen, never the word in the schema. `tenant` in the DB is "workspace" to the reader.
-- Cut the reason a feature exists unless it changes what the reader clicks.
+The `copy` skill owns every string the reader sees. Load it before you write the steps.
+
+- Name the label the app shows, verbatim from `agent-browser snapshot`.
 
 ## Done
 
