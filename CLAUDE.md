@@ -30,6 +30,7 @@ How I want code written lives in the `coding` skill. Load it before you write or
 - After you file it, the `babysit-pr` skill takes it to ready. Load it.
 - Title: simple, plain words.
 - Body: the problem first, in the fewest clear lines. Then how you solved it.
+- Every assumption you made, where I would have answered a question, goes in the body under `## Assumptions`. One line each. No assumptions, no section.
 - A PR that changes UI carries screenshots, before and after.
 - `.agent-evidence/` stays out of git. Upload with the `fs` skill and embed the URLs in the body.
 - Close every issue the PR resolves, not only the one you opened it for.

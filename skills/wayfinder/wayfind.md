@@ -26,6 +26,8 @@ Send every blindspot that waits on no other answer to the `research` skill now. 
 
 Call the `grilling` skill on what the research and the map's decisions cannot answer. A question the map answers is settled.
 
+When Vasu is not there to answer, pick the answer you would defend and write it into the map's decisions as `assumed: <question> — <answer>`. Carry on. He overturns it when he reads the map.
+
 ## 4. Tickets
 
 Read the research files first, so the tickets carry their findings. Then call `to-tickets`.
