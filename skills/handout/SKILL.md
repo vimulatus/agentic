@@ -16,7 +16,7 @@ Start from `template.html`. It carries the theme and the disclosure pattern. Col
 | A plan before the work starts | **Plan** | Phases. Each phase collapses to its outcome. |
 | The findings of a long investigation | **Report** | The answer first. The evidence under it. |
 | To understand how something works | **Explainer** | One toy the reader drives. |
-| To understand a topic they are new to | **ELI5** | → the `eli5` skill |
+| To understand a topic they are new to | **ELI5** | Big pictures. Few words. One idea per screen. |
 | To see it before it is built | **Prototype** | → the `prototype` skill |
 
 ## Progressive disclosure
@@ -37,6 +37,15 @@ Start from `template.html`. It carries the theme and the disclosure pattern. Col
 - Open the first one. Close the rest.
 - Sticky nav past five sections.
 - Cite the source next to the claim: `src/pay/refund.ts:42`.
+
+## ELI5
+
+The reader knows nothing about the topic. Assume no term, no acronym, no background.
+
+- The picture carries the idea. The words label the picture.
+- One idea per screen. A screen with two ideas is two screens.
+- Name each thing with a word from the reader's life, then give the real term once, in brackets.
+- Cut every sentence that only a person who already knows the topic can read.
 
 ## Explainer
 
