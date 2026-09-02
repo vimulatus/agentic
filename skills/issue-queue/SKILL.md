@@ -1,7 +1,7 @@
 ---
 name: issue-queue
 description: Work the open GitHub issues to PRs with the dev subagent, and watch for new ones.
-argument-hint: "[--workers <n>]"
+argument-hint: "[--workers <n>] [--map <n>]"
 disable-model-invocation: true
 ---
 
@@ -23,6 +23,41 @@ Work the queue until it is empty, then idle on the watch. Stop when Vasu says st
 A value below 1, or one that is not a number, is an error. Say so and use 1.
 
 Parallel does not change the order. It changes how many issues from the **frontier** run at the same time. See step 4.
+
+## Scope
+
+`--map <n>` scopes the queue to one map: the open tickets that descend from map issue #n. The `wayfinder` skill writes the map.
+
+| Argument | The queue |
+|---|---|
+| absent | every open issue |
+| `--map <n>` | the open tickets under map #n |
+
+A ticket descends from the map through sub-issues: map -> slice -> ticket. This function lists them.
+
+```bash
+map_tickets() {
+  gh api graphql -F o='{owner}' -F r='{repo}' -F n="$1" -f query='
+    query($o:String!,$r:String!,$n:Int!){ repository(owner:$o,name:$r){ issue(number:$n){
+      subIssues(first:50){ nodes{ subIssues(first:50){ nodes{ number state title } } } } } } }' \
+    --jq '.data.repository.issue.subIssues.nodes[].subIssues.nodes[]
+          | select(.state=="OPEN") | "\(.number)\t\(.title)"'
+}
+```
+
+With `--map`, every `gh issue list` in step 1 becomes `map_tickets <n>`: the `seen` file, the poll, and the listing. Read each ticket's body with `gh issue view <n>`. An issue outside the map never enters the queue, and the watch never fires for it.
+
+Two queues run at once only when each holds its own `--map`. Two unscoped queues race for the same issues.
+
+```
+Worked: maps #1 and #30 are open, in two sessions.
+
+  session A   issue-queue --map 1 --workers 2   -> #13 #14
+  session B   issue-queue --map 30              -> #33
+
+  #45 lands with no parent      -> neither watch fires. Vasu runs it by hand
+  #46 lands under slice #32     -> session B's watch fires
+```
 
 ## 1 — Build the queue
 
@@ -164,5 +199,7 @@ Three states are blocked. Report what you tried, take the next independent issue
 After each PR, one line: the issue, the PR URL, its base.
 
 When the queue empties, one table: issue, PR, base, state. Then the Skip lane, unchanged. Say the watch is still armed, and stay in the session.
+
+When a `--map` queue empties, the current slice is done. Say so: the next slice waits on `wayfinder`, not on you.
 
 When Vasu says stop, `TaskStop` the watch and report the same table.
