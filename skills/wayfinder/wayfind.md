@@ -9,7 +9,7 @@ Name what you do not know that you should know. Give each one its cheapest probe
 | Blindspot | Probe |
 |---|---|
 | What the repo already does here | grep the call sites |
-| What the domain assumes and you do not | ask the user |
+| What the domain assumes and you do not | ask Vasu |
 | What the external API actually returns | read its docs |
 | Who else reads or writes this data | grep the consumers |
 | How it fails in production | read the error paths |

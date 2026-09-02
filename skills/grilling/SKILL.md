@@ -1,28 +1,32 @@
 ---
 name: grilling
-description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
+description: Grill Vasu relentlessly about a plan, a decision, or an idea. Use when Vasu wants a plan stress-tested, or says grill.
 ---
 
-Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
+# Grilling
 
-Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait for the user's answers before the next round.
+Interview Vasu relentlessly until you reach a shared understanding.
 
-Format a round like so:
+Map the work as a **design tree**: every decision branches into the decisions that hang off it. The **frontier** is every decision whose prerequisites are settled. Ask the whole frontier in one **round**, then wait.
+
+| Rule | Because |
+|---|---|
+| One round holds the whole frontier | Vasu answers once, not question by question |
+| Every question carries your recommended answer | Vasu answers by exception |
+| A question that waits on another open question goes to a later round | Its answer would be a guess |
+| A fact from the environment goes to a subagent, never to Vasu | Facts are your job. Decisions are Vasu's |
+| A running subagent blocks only the questions downstream of it | Ask the rest of the frontier now |
 
 ```
-❓ **Q1** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
+❓ **Q1** - **<title>**: <question, with the choices>
 
 ➡️ <your recommended answer>
 
 ---
 
-❓ **Q2** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
-
-➡️ <your recommended answer>
+❓ **Q2** - **<title>**: ...
 ```
 
-Each round the user answers reshapes the tree: settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a _later_ round, not this one.
+Each answered round pushes the frontier outward. Recompute it and ask the next round.
 
-Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent to find it; don't ask the user for anything you could look up yourself. Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest of the frontier now. The _decisions_ are the user's: put each to them and wait.
-
-The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.
+Done when the frontier is empty: every branch visited, nothing left silently assumed. Act only after Vasu confirms the shared understanding.

@@ -1,6 +1,6 @@
 ---
 name: product-context
-description: Put the product, its users and its stage into CLAUDE.md. Use before you write or edit a `## Product` section, when you set up or initialise a repo's CLAUDE.md, when a repo's CLAUDE.md has no Product section, or when a session teaches you something that section does not say.
+description: Put the product, its users and its stage into CLAUDE.md. Use when a CLAUDE.md has no Product section, or a session contradicts it.
 ---
 
 # Product context
@@ -12,7 +12,7 @@ The code says what the product does. It never says who it is for, where it is go
 
 <one line: what it does, and for whom>
 
-**Stage:** <where it is, in his words>
+**Stage:** <where it is, in Vasu's words>
 
 - **Users** — who they are, and what they use today instead of this
 - **Works when** — the outcome that means it worked
@@ -27,16 +27,9 @@ A line that changes no build decision does not go in the section.
 
 ## Grill for it
 
-Facts are your job, decisions are his. Read the README, the manifest, the routes, the models and the landing copy first. Draft every line the repo can answer.
+Read the README, the manifest, the routes, the models and the landing copy first. Draft every line the repo can answer.
 
-Then ask, in one round, only what is left. Number each question and give your recommended answer, so he answers by exception.
-
-```
-❓ **Q1 — <title>**: <question>
-➡️ <your recommended answer>
-```
-
-His answers open the next round. Stop when nothing is left assumed.
+Load `grilling` for what is left.
 
 Mark a line you guessed with a leading `?`. Drop the `?` when a session proves it.
 
@@ -47,7 +40,7 @@ Every session that contradicts the section rewrites it, in that session, before 
 | What you learn | What you change |
 |---|---|
 | A user you had not heard of | `Users` |
-| A feature he killed | `Non-goals`, and say why |
+| A feature Vasu killed | `Non-goals`, and say why |
 | A spike that people now depend on | `Stage`, and raise your rigor to match |
 | Anything that proves a `?` line | Drop the `?` |
 

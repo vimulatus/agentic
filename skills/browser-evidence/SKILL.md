@@ -1,6 +1,6 @@
 ---
 name: browser-evidence
-description: Drive the agent-browser CLI the house way - one isolated session per task, auth state in .agent-auth/, evidence under .agent-evidence/<task>/. Use when verifying a web UI change, capturing before and after screenshots, or investigating the running app in a browser. Not for the command reference, which ships with the CLI.
+description: Drive a browser and capture evidence. Use when verifying a web UI change in the running app. Not for the agent-browser command reference.
 ---
 
 # Browser evidence

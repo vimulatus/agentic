@@ -1,6 +1,6 @@
 ---
 name: babysit-pr
-description: Watch a PR you filed until it is ready to merge. Use right after you open a PR, or when the user asks you to babysit or land one. Not for reviewing someone else's PR.
+description: Watch a PR you filed until it is ready to merge. Use right after you open a PR, or when asked to babysit one. Not for someone else's PR.
 ---
 
 # Babysit a PR

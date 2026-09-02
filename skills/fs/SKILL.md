@@ -1,6 +1,6 @@
 ---
 name: fs
-description: Upload a file and get back a public URL on cdn.vmlts.com. Use when a screenshot, a recording or an image has to leave the repo - evidence on a PR, a shot in a user guide, a picture in a handout. Not for local files, which the file tools already reach.
+description: Upload a file and get a public URL. Use when a screenshot or a recording has to leave the repo. Not for a file the file tools already reach.
 ---
 
 # fs

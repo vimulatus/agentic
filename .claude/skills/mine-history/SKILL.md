@@ -1,11 +1,12 @@
 ---
 name: mine-history
-description: Read past sessions to find what Claude keeps getting wrong and what it keeps rebuilding, then propose the skill, script, hook, or rule that fixes it. Use when the user asks what skills he should build, what he could automate, what he keeps repeating or correcting, whether a named skill, hook, or rule is worth adding back, or to mine his history. Not for the current session.
+description: Mine past sessions for what Claude keeps getting wrong or rebuilding, then propose the fix.
+disable-model-invocation: true
 ---
 
 # Mine history
 
-What he corrects is a missing rule. What he retypes is a missing skill. What Claude rebuilds every session is a missing script or hook.
+What Vasu corrects is a missing rule. What Vasu retypes is a missing skill. What Claude rebuilds every session is a missing script or hook.
 
 Quote the prompt or the command, or drop the candidate.
 
@@ -13,19 +14,19 @@ A hit is a **coordinate**, not evidence. Read the turns on both sides before you
 
 A transcript says what was true that day. Check the claim against disk today.
 
-## He names a tool and asks if it is worth it
+## Vasu names a tool and asks if it is worth it
 
-Search for the **symptom** it prevents. Its name finds only the day he typed it.
+Search for the **symptom** it prevents. Its name finds only the day Vasu typed it.
 
 1. Read the tool. Name the failure it exists to stop, in one line.
-2. Write that failure as it appears in a transcript: what he types when it happens, what Claude did in the turns before.
+2. Write that failure as it appears in a transcript: what Vasu types when it happens, what Claude did in the turns before.
 3. Mine both corpora for that shape, then steps 5 to 9 as written.
 4. Check the tool against disk now: installed, deleted, or never there.
 
 ```
 Tool      codebase-design
 Stops     Claude shipping code with no design pass
-He types  "why is this so complex", "you rewrote the whole file", a second ask to restructure
+Vasu types  "why is this so complex", "you rewrote the whole file", a second ask to restructure
 Claude    Edit across 6 files in one task, no read of the module it lands in
 ```
 
@@ -41,7 +42,7 @@ ls ~/Documents/projects/agentic/skills/ ~/Documents/projects/agentic/.claude/ski
 cat ~/Documents/projects/agentic/output-styles/*.md
 ```
 
-## 2. Pull corpus A: what he typed
+## 2. Pull corpus A: what Vasu typed
 
 ```bash
 cd ~/.claude/projects
@@ -72,7 +73,7 @@ Both corpora take the same three scope changes.
 
 ## 3. Pull corpus B: what Claude did
 
-Corpus A cannot show a ritual. He never types it.
+Corpus A cannot show a ritual. Vasu never types it.
 
 This corpus is large: over 20,000 tool calls. Fan out.
 
@@ -125,7 +126,7 @@ The parent never reads the action files. It reads the blocks.
 | **Repeat** | A | the same setup, the same constraint, the same ceremony typed in new sessions | a skill |
 | **Ritual** | B | the same commands, in the same order, rebuilt from scratch in new sessions | a skill, a script, or a hook |
 
-A long instruction he types from scratch every session is the strongest repeat. It is a skill body he writes by hand.
+A long instruction Vasu types from scratch every session is the strongest repeat. It is a skill body Vasu writes by hand.
 
 ## 5. Count sessions, not hits
 
@@ -158,10 +159,10 @@ sed -n "$(( N>8 ? N-8 : 1 )),$((N+8))p" "$F" | jq -rR 'fromjson? | select(.messa
 
 | The window shows | Read the hit as |
 |---|---|
-| He restates the same ask after the answer | the answer missed. A finding |
-| He accepts and moves on | the answer landed. Not a finding |
-| He is quoting a document, or pasting output | not his words. Drop it |
-| The tool or path he names is gone from disk | true that day, stale today |
+| Vasu restates the same ask after the answer | the answer missed. A finding |
+| Vasu accepts and moves on | the answer landed. Not a finding |
+| Vasu is quoting a document, or pasting output | not Vasu's words. Drop it |
+| The tool or path Vasu names is gone from disk | true that day, stale today |
 
 ## 7. Route each survivor to one home
 
@@ -172,7 +173,7 @@ sed -n "$(( N>8 ? N-8 : 1 )),$((N+8))p" "$F" | jq -rR 'fromjson? | select(.messa
 | A stated rule that lost anyway | rewrite that line. Do not add a second one |
 | How the answer should read | `output-styles/cheat-sheet.md` |
 | A step Claude skipped, in work a skill already owns | a step in that skill |
-| A command with flags he retypes | one line in `CLAUDE.md` |
+| A command with flags Vasu retypes | one line in `CLAUDE.md` |
 | A ritual Claude rebuilds, where the steps are stable but the judgment is not | a new skill |
 | A ritual where nothing varies but the arguments | a script or a CLI, and one line in `CLAUDE.md` that names it |
 | A ritual that must fire without being asked | a hook in `settings.json`, via `update-config` |
@@ -195,9 +196,9 @@ Cost       what the user stops typing
 
 Stop there. The user picks what lands.
 
-## 9. Build what he picks
+## 9. Build what Vasu picks
 
-| He picks | Route to |
+| Vasu picks | Route to |
 |---|---|
 | a skill | `create-skill` |
 | a rule, a rewrite, an output-style edit | `context-engineering` |

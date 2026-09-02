@@ -35,7 +35,7 @@ Infrastructure has no slice of its own. It rides along inside the first slice th
 
 ## 3. Order them
 
-The current slice is the thinnest one the user would actually run.
+The current slice is the thinnest one Vasu would actually run.
 
 ## 4. Write the map
 
@@ -55,7 +55,7 @@ One sentence.
 
 ## Ideas
 
-Everything the user said they might build. Unordered, one line each. An idea becomes a slice only when the user promotes it.
+Everything Vasu said he might build. Unordered, one line each. An idea becomes a slice only when Vasu promotes it.
 
 ## Decisions
 

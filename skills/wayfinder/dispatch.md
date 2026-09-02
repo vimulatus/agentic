@@ -5,7 +5,7 @@ One open ticket. Pick the approach.
 | The ticket needs | Reach for |
 |---|---|
 | an external fact | `research`, in the background |
-| the user's taste, or a domain rule | `grilling` |
+| Vasu's taste, or a domain rule | `grilling` |
 | to be seen before it is decided | `prototype` |
 | code | `red-green`, then the `dev` subagent |
 | proof it works in the running app | `browser-evidence` |

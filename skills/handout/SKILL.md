@@ -1,6 +1,6 @@
 ---
 name: handout
-description: Answer with one dark HTML page. Use when the user asks for a plan, a report, or an interactive explainer - or when the answer is too long or too branched to read in chat. Not for a prototype, which has its own skill.
+description: Answer with one HTML page. Use when Vasu asks for a plan, a report, or an explainer, or when the answer is too long for chat. Not for a prototype.
 ---
 
 # Handout
@@ -57,7 +57,7 @@ The reader moves an input and watches the output follow. A diagram nobody can to
 
 ## Deliver
 
-Write the page to `handouts/<task>.html`, then publish it with the Artifact tool. Give the user the URL, and one line on what is inside.
+Write the page to `handouts/<task>.html`, then publish it with the Artifact tool. Give Vasu the URL, and one line on what is inside.
 
 - `template.html` is body content. The Artifact tool wraps it. Never write `<html>`, `<head>` or `<body>`.
 - The page commits to dark. `:root` sets `color-scheme:dark`, and `body` paints its own background.

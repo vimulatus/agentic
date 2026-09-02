@@ -1,6 +1,6 @@
 ---
 name: wayfinder
-description: Cut "build X" into releasable slices, then spec one. Use when the user names work bigger than one ticket. Not for a bug fix or a chore, which go straight to `dev`.
+description: Cut "build X" into releasable slices, then spec one. Use when Vasu names work bigger than one ticket. Not for a bug or a chore, which dev takes.
 ---
 
 # Wayfinder

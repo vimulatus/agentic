@@ -1,7 +1,6 @@
 ---
 name: to-tickets
-description: Turn a plan, spec, or the current conversation into one parent issue with a sub-issue per tracer-bullet ticket, wired with GitHub's native sub-issue and blocked-by edges. Use when the work is bigger than one ticket. Not for a single bug or chore, which goes straight to `dev`.
-disable-model-invocation: true
+description: File one parent issue and a sub-issue per ticket, with blocking edges. Use when a plan or a spec is ready to file. Not for one bug or chore, which dev takes.
 ---
 
 # To Tickets
@@ -23,7 +22,7 @@ Run `git remote -v`. No remote means no issue tracker. Say so and stop.
 
 ## 1. Gather context
 
-Work from what the conversation already holds. If the user passes a reference - a path, an issue number, a URL - read its full body and its comments.
+Work from what the conversation already holds. If Vasu passes a reference - a path, an issue number, a URL - read its full body and its comments.
 
 ## 2. Read the code
 
@@ -48,20 +47,28 @@ Name the seam at which this work gets tested. Prefer a seam that already exists.
 
 Give each ticket its **blocking edges**: the tickets that must close before it can start. A ticket with no blockers can start now.
 
-**A wide refactor is the exception to vertical slicing.** A wide refactor is one mechanical change - rename a column, retype a shared symbol - whose **blast radius** fans across the codebase, so a single edit breaks thousands of call sites at once and no vertical slice can land green. Do not force it into a tracer bullet. Sequence it as **expand-contract**. First expand: add the new form beside the old, so nothing breaks. Then migrate the call sites in batches sized by blast radius, per package or per directory, each batch its own ticket blocked by the expand. CI stays green batch to batch, because the old form still exists. Finally contract: delete the old form once no caller remains, in a ticket blocked by every migrate batch. When even a batch cannot stay green alone, keep the sequence, but let the batches share an integration branch that they all block. Green is promised only at that final integrate-and-verify ticket.
+**A wide refactor is the exception.** One mechanical change - rename a column, retype a shared symbol - whose **blast radius** fans across the codebase, so no vertical slice lands green. Sequence it as **expand-contract**:
 
-## 5. Quiz the user
+| Step | The ticket | Blocked by |
+|---|---|---|
+| Expand | Add the new form beside the old. Nothing breaks. | none |
+| Migrate | Move the call sites in batches sized by blast radius: per package, per directory. One ticket per batch. | Expand |
+| Contract | Delete the old form once no caller remains. | every Migrate batch |
+
+CI stays green batch to batch, because the old form still exists. When even a batch cannot stay green alone, keep the sequence, and let the batches share an integration branch that they all block. Green is promised only at that final integrate-and-verify ticket.
+
+## 5. Quiz Vasu
 
 Show the seam. Then show the tickets as a numbered list. For each ticket: the title, what it delivers, and what blocks it.
 
-Ask the user:
+Ask Vasu:
 
 - Is the seam the one you expected?
 - Is the granularity right - too coarse, too fine?
 - Does each ticket depend only on what genuinely gates it?
 - Should any tickets merge or split?
 
-Iterate until the user approves. Only then do you file.
+Iterate until Vasu approves. Only then do you file.
 
 ## 6. File
 

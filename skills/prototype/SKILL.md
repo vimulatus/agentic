@@ -1,11 +1,11 @@
 ---
 name: prototype
-description: Build a single-file HTML prototype. Use when the user asks to prototype, mock up, explore variants, or "show me" a behavior before it is built - for backend state machines and flows (Logic branch) or for screens and layouts (UI branch). Not for production code.
+description: Build a single-file HTML prototype. Use when Vasu wants to see a flow, a state machine, or a screen before it is built. Not for production code.
 ---
 
 # Prototype
 
-The shell, the theme and the delivery step come from the `handout` skill. This is the mode the reader drives.
+Load `handout` first. Its template, its theme and its Deliver step are yours. This skill is the mode the reader drives.
 
 ## Pick the branch
 

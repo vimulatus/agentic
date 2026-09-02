@@ -1,6 +1,6 @@
 ---
 name: red-green
-description: Build one command that fails, then change the code until it passes. Use before you write the code - adding or changing behavior, fixing a bug, migrating or refactoring, chasing a flake, or hitting a performance number. The check comes before the code, never after. Not for research, design, or copy.
+description: "Build one check that fails, then change the code until it passes. Use before you write code: a bug, a behavior, a refactor, a flake. Not for research, design, or copy."
 ---
 
 # Red → Green
@@ -35,7 +35,7 @@ Spend disproportionate effort here. Be relentless.
 
 ### When no command decides it
 
-Stop and ask the user. They are the check.
+Stop and ask Vasu. Vasu is the check.
 
 Say what you tried to build and why each attempt failed. Then ask for the one thing that unblocks you:
 

@@ -1,7 +1,8 @@
 ---
 name: issue-queue
-description: Drive the open GitHub issues to PRs with the dev subagent, one at a time or several in parallel, and watch for new ones. Use when the user asks to work the backlog, or to keep working as issues come in. Not for one named issue, which dev takes alone.
+description: Work the open GitHub issues to PRs with the dev subagent, and watch for new ones.
 argument-hint: "[--workers <n>]"
+disable-model-invocation: true
 ---
 
 # Issue queue
