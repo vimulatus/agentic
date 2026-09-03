@@ -1,6 +1,6 @@
 ---
 name: pr
-description: Open a pull request and take it to ready. Use when you are about to open a PR, when one you filed gets a comment, a review or a red check, or when asked to babysit one. Not for someone else's PR.
+description: Open a pull request and take it to ready. Use when you cut a branch, open a PR, or one you filed gets feedback or a red check. Not for someone else's PR.
 ---
 
 # PR
@@ -17,9 +17,7 @@ Vasu merges, never you. Stay in the session until you report ready, or you are *
 
 ## 1 — The branch and the commits
 
-Keep the history linear. Rebase onto the base branch. Never merge the base branch into your branch.
-
-Land a branch with a rebase or a squash. A merge commit is not an option.
+Keep the history linear. Rebase onto the base branch, and land the branch with a rebase or a squash.
 
 | The commit | The rule |
 |---|---|
@@ -35,7 +33,7 @@ Worked: you moved a helper and fixed the bug it hid.
   two commits -> fix(auth): reject a token with no exp   <- the bug
 ```
 
-Some repos are local only. Check for a remote before you fetch, push, or open a PR. No remote, no PR.
+Check for a remote before you fetch, push, or open a PR. Some repos are local only, and those have no PR.
 
 ## 2 — Open it
 
@@ -56,16 +54,16 @@ gh pr create --base <base> --title "<title>" --body-file <file>
 
 `.agent-evidence/` stays out of git. Upload each shot with `fs` and embed the URL.
 
-### Size the work, never the clock
+### Size
 
-Vasu sizes work by what it touches, not by how long it takes. Give scope and risk. Never give a duration or an effort, in any form, anywhere — the body, a comment, the ready report.
+Size the work by what it touches. Every size you write — the body, a comment, the ready report — is scope and risk.
 
 - **Scope**: the files, the call sites, the steps, and what blocks what.
 - **Risk**: what can break, and what is unknown.
 
 ```
-Wrong: "a small change, about an hour"
-Right: "3 files, 1 call site. Risk: the session cookie name is
+Clock: "a small change, about an hour"
+Size:  "3 files, 1 call site. Risk: the session cookie name is
         read by the mobile client too, and I could not test it."
 ```
 
@@ -94,7 +92,7 @@ while true; do
 done
 ```
 
-The watch reads three sources. A `comment` is a plain comment on the PR, and it carries review just as often as a `thread` does. Read every one.
+A plain `comment` carries review as often as a `thread` does. Read every one.
 
 ## 4 — An event lands
 
@@ -108,9 +106,7 @@ The watch reads three sources. A `comment` is a plain comment on the PR, and it 
 | `0 bad 0 pending`, `review=APPROVED`, no open thread | step 8 |
 | `pr CLOSED` | say so. Stop |
 
-One wake is one batch. Push once, because every push restarts the checks.
-
-Every push you make runs step 7.
+One wake is one batch. Push once, because every push restarts the checks, and every push runs step 7.
 
 ## 5 — A red check
 
@@ -128,15 +124,13 @@ Reproduce it locally and hand the failing command to `red-green`.
 
 ## 6 — Feedback
 
-Feedback arrives in three places. Answer all three the same way.
+Reply to every one. Resolve only the threads you changed code for.
 
 ```
-review thread   inline on a line   ->  reply on the thread, resolve when you changed code
+review thread   inline on a line   ->  reply on the thread, then resolve
 review body     the summary        ->  reply as a plain comment
 plain comment   on the PR itself   ->  reply as a plain comment
 ```
-
-Reply to every one. Resolve only the threads you changed code for.
 
 ```bash
 gh api graphql -f query='mutation($t:ID!,$b:String!){addPullRequestReviewThreadReply(
@@ -149,7 +143,7 @@ gh pr comment <N> --body "<reply>"
 
 The reply is one or two lines: what you did, and the commit sha.
 
-A resolved thread tells the reviewer "handled", so a false one costs them a second read of the whole diff. A suggestion you did not take, and a question, stay open — the reviewer decides. State your reason once and never argue in a thread.
+A resolved thread tells the reviewer "handled", so a false one costs them a second read of the whole diff. A suggestion you did not take, and a question, stay open — the reviewer decides. State your reason once.
 
 ```
 Worked: @sam writes "this map is rebuilt on every call".
@@ -175,13 +169,12 @@ gh pr view <N> --json body --jq .body > body.md
 gh pr edit <N> --body-file body.md
 ```
 
-The key carries the sha, so the old URL keeps working. A reviewer part way through the body does not lose the picture.
+The key carries the sha, so the old URL keeps working for a reviewer part way through the body.
 
 ```
 Worked: @sam asks for a 16px gap. You push a1b2c3d.
         The body still shows the 8px shot, so the reviewer reads a lie.
-        Retake -> after-a1b2c3d.png -> edit the body. One extra minute,
-        one fewer round trip.
+        Retake -> after-a1b2c3d.png -> edit the body.
 ```
 
 Text-only pushes need none of this.

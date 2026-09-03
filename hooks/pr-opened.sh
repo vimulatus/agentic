@@ -13,6 +13,6 @@ url=$(jq -r '[.tool_response? // {} | .. | strings] | join(" ")' <<<"$payload" 2
 jq -n --arg u "$url" '{
   hookSpecificOutput: {
     hookEventName: "PostToolUse",
-    additionalContext: ("You just opened \($u). Load the `vimulatus:pr` skill now and follow its watch sections. Arm the watch before you do anything else, and do not report the work done until the PR is ready or you are blocked.")
+    additionalContext: ("You opened \($u). Load the `vimulatus:pr` skill and start at step 3.")
   }
 }'
