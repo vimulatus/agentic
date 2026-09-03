@@ -1,6 +1,6 @@
 ---
 name: product-context
-description: Put the product, its users and its stage into CLAUDE.md. Use when a CLAUDE.md has no Product section, or a session contradicts it.
+description: Put the product, its users, its stage, and how to run, gate and ship it into CLAUDE.md. Use when a CLAUDE.md lacks a Product or Ship section, or a session contradicts one.
 ---
 
 # Product context
@@ -18,6 +18,18 @@ The code says what the product does. It never says who it is for, where it is go
 - **Works when** — the outcome that means it worked
 - **Non-goals** — what we will not build, and why
 ```
+
+Under it, the three commands every session rebuilds by hand. Vasu typed "How do I deploy this?" in eight sessions of one project.
+
+```markdown
+## Ship
+
+- **Run** — the command that starts the app, and the port it takes
+- **Gate** — the command that must pass before a push
+- **Ship** — how a change reaches users: the tag, the workflow, the manual step
+```
+
+A line the repo's scripts already state word for word does not go in. A line that names a port, a scope, a tag shape, or a manual click does.
 
 The stage is the strongest line in the section. A throwaway spike and a system on call earn opposite defaults, and you already know which is which.
 

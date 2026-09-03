@@ -1,6 +1,6 @@
 ---
 name: handout
-description: Answer with one HTML page. Use when Vasu asks for a plan, a report, or an explainer, or when the answer is too long for chat. Not for a prototype.
+description: Answer with one HTML page. Use when Vasu asks for a report or an explainer, or the answer is too long for chat. Not for a prototype, nor for work to build, which wayfinder tickets.
 ---
 
 # Handout
@@ -13,7 +13,8 @@ Start from `template.html`. It carries the theme and the disclosure pattern. Col
 
 | The user wants | Mode | The structure that carries it |
 |---|---|---|
-| A plan before the work starts | **Plan** | Phases. Each phase collapses to its outcome. |
+| A plan to read: a migration, a rollout, a sequence of phases | **Plan** | Phases. Each phase collapses to its outcome. |
+| A plan to build from | → the `wayfinder` skill. It tickets the slices; the page shows them | |
 | The findings of a long investigation | **Report** | The answer first. The evidence under it. |
 | To understand how something works | **Explainer** | One toy the reader drives. |
 | To understand a topic they are new to | **ELI5** | Big pictures. Few words. One idea per screen. |

@@ -1,6 +1,7 @@
 ---
 name: user-guide
-description: Write and host a guide for the people who use the app. Use when Vasu asks for a user guide, a how-to, or help docs. Not for developer docs.
+description: Write and host a guide for the people who use the app.
+disable-model-invocation: true
 ---
 
 # User guide

@@ -46,6 +46,8 @@ A non-dev drives the state machine through the cases that are hard to reason abo
 
 ## UI
 
+Load `frontend-design` first. Vasu rejected three rounds of variants built without it: "I like none of them. Use the frontend design skill and try again."
+
 Several **radically different** takes on one route, fast to flip between.
 
 ```
@@ -71,4 +73,4 @@ Several **radically different** takes on one route, fast to flip between.
 | Legible type and spacing | Animation, icon sets |
 | Works in one browser | Responsive, a11y audit, tests |
 
-Deliver it the way `handout` delivers: write the file, publish it with the Artifact tool, give the URL.
+Deliver it the way `handout` delivers: write the file, publish it with the Artifact tool, give the URL. On Vasu's own machine, `open` the file as well. Never a TUI, never a hosted planning tool: one HTML file he can open.
