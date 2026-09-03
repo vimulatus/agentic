@@ -26,6 +26,14 @@ A worker cannot see this conversation. The brief is all it gets. Every brief car
 
 Name the deliverable. A worker that returns a summary instead of a PR was briefed to.
 
+A brief is the task, not the steps. Vasu on a four-change brief with file paths: "I don't want such detailed. Just give me a summary of what we want it to do. I am sure it can figure out these details itself."
+
+## The return
+
+A worker's claim is a claim. Before you relay "done", "green", or a finding as fact, check it: open the PR, run the check, read the diff. One session relayed a worker's issue text and had to take it back: "I relayed that without checking it."
+
+When Vasu asks what a worker is doing, answer per worker: the task, how long it has run, what it has changed. "Still running" is not an answer.
+
 ## Isolation
 
 Pass `isolation: "worktree"` on every `Agent` call that writes code. Two workers in one working tree overwrite each other's files.
@@ -33,6 +41,12 @@ Pass `isolation: "worktree"` on every `Agent` call that writes code. Two workers
 Never run two workers on the same function at once. Merge the two tasks into one, or hold the second.
 
 A worktree is a full checkout. Read the free disk with `df -g .` before you spawn the fleet.
+
+A worktree dies with its task. When a worker's PR is open, or its branch is merged, remove the worktree and, once merged, its branch. Three projects carry a dozen dead `agent-*` worktrees each, and a `dev` spawned in one reads a stale `CLAUDE.md`.
+
+```bash
+${CLAUDE_SKILL_DIR}/scripts/prune-worktrees.sh [-n]    # removes worktrees whose branch is merged; -n lists
+```
 
 ## The frontier
 

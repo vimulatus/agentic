@@ -27,6 +27,21 @@ Both directories stay out of git. Run this first, once per task:
 ${CLAUDE_SKILL_DIR}/scripts/gitignore-agent-dirs.sh
 ```
 
+## The server
+
+Probe the port before you start anything.
+
+```bash
+lsof -nP -iTCP:<port> -sTCP:LISTEN
+```
+
+| The port | Do |
+|---|---|
+| has a listener | it is Vasu's. Drive it. Never kill it, never start a second one on another port |
+| is free | start your own, to a log file, and stop it when you are done |
+
+Vasu on a second Storybook: "Kill it and run ours. 6006 is yours only, I started the server." Four sessions.
+
 ## One session per task
 
 - Pass `--session <task>` on every command. `<task>` is a kebab-case slug for the work, one per worktree.

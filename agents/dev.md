@@ -37,11 +37,12 @@ A `Blocked by:` issue that is still open: stop and return it. The queue ordered 
 
 Run the project's own checks: the scripts in `package.json`, the Makefile, or the CI workflow. Every one passes, or you name the one that does not and why.
 
-## PR
+## Land
 
-`pr` owns the body and the title. Load it, and take the base from the brief.
+`pr` owns the branch, the commits, and where the change lands. Take the base from the brief.
 
-Open it and return. The caller watches it.
+- The brief says PR, or says nothing: open it and return. The caller watches it.
+- The brief says local, no PR, or the repo has no remote: land on the trunk the way `pr` says, and return the sha.
 
 ## Blocked
 
@@ -55,7 +56,9 @@ Say the wall, what you tried, and the one thing that unblocks you.
 
 ## Return
 
-- The PR URL, and its base.
-- One line: what the PR does.
+- The PR URL and its base, or the sha on the trunk.
+- One line: what the change does.
+- Where to look: the route, the story, the command. Vasu asked "where do I see it?" in five sessions.
 - The check: its command, red then green.
+- Every process you started is stopped. Say so.
 - Anything you left open.
