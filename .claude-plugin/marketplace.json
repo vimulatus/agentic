@@ -1,5 +1,6 @@
 {
   "name": "vimulatus-personal",
+  "description": "Vasu's skills, agents and hooks for running many projects with agents",
   "owner": {
     "name": "Vimulatus"
   },
