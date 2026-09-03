@@ -83,13 +83,9 @@ p=$(gh issue create --title "<title>" --body-file <parent.md>); p=${p##*/}
 # one ticket
 c=$(gh issue create --title "<title>" --body-file <ticket.md>); c=${c##*/}
 
-# make it a sub-issue of the parent
-cid=$(gh api "repos/$repo/issues/$c" --jq .id)
-gh api "repos/$repo/issues/$p/sub_issues" -F sub_issue_id="$cid"
-
-# a blocking edge: ticket $c is blocked by ticket $b
-bid=$(gh api "repos/$repo/issues/$b" --jq .id)
-gh api "repos/$repo/issues/$c/dependencies/blocked_by" -F issue_id="$bid"
+# the edges
+${CLAUDE_PLUGIN_ROOT}/skills/to-tickets/scripts/link.sh sub   "$p" "$c"    # $c is a sub-issue of $p
+${CLAUDE_PLUGIN_ROOT}/skills/to-tickets/scripts/link.sh block "$c" "$b"    # $c is blocked by $b
 ```
 
 Both endpoints take the issue's `id`, never its number. `-F` sends it as a number; `-f` would send a string and fail.

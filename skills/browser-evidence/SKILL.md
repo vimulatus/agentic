@@ -24,11 +24,7 @@ Everything below is the house layer on top of it.
 Both directories stay out of git. Run this first, once per task:
 
 ```bash
-ignore="$(git rev-parse --show-toplevel)/.gitignore"
-[ -s "$ignore" ] && [ -n "$(tail -c1 "$ignore")" ] && echo >> "$ignore"   # keep the last rule intact
-for d in .agent-auth/ .agent-evidence/; do
-  grep -qxF "$d" "$ignore" 2>/dev/null || echo "$d" >> "$ignore"
-done
+${CLAUDE_PLUGIN_ROOT}/skills/browser-evidence/scripts/gitignore-agent-dirs.sh
 ```
 
 ## One session per task

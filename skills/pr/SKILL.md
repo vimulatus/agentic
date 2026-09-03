@@ -69,28 +69,13 @@ Size:  "3 files, 1 call site. Risk: the session cookie name is
 
 ## 3 — Arm the watch
 
-Right after `gh pr create`. Run it with the `Monitor` tool, `persistent: true`. One event per state you have not seen, and it exits when the PR leaves `OPEN`.
+Right after `gh pr create`. Run it with the `Monitor` tool, `persistent: true`.
 
 ```bash
-pr=<N>; repo=<owner/name>; seen=$(mktemp); : > "$seen"
-while true; do
-  snap=$(gh pr view "$pr" -R "$repo" --json state,mergeable,reviewDecision,statusCheckRollup --jq '
-    "pr \(.state) mergeable=\(.mergeable) review=\(.reviewDecision // "NONE")",
-    ([.statusCheckRollup[]? | .conclusion // .state] | "checks \(map(select(.=="SUCCESS" or .=="SKIPPED"))|length) ok \(map(select(.=="FAILURE" or .=="TIMED_OUT" or .=="CANCELLED" or .=="ERROR" or .=="STARTUP_FAILURE"))|length) bad \(map(select(.=="PENDING" or .=="IN_PROGRESS" or .=="QUEUED" or .==null))|length) pending"),
-    (.statusCheckRollup[]? | select((.conclusion // .state) as $c | $c=="FAILURE" or $c=="TIMED_OUT" or $c=="ERROR" or $c=="STARTUP_FAILURE")
-     | "bad \(.name // .context) \(.detailsUrl // .targetUrl // "")")' 2>/dev/null) || { sleep 30; continue; }
-  comments=$(gh pr view "$pr" -R "$repo" --json comments \
-    --jq '.comments[]? | "comment \(.url) @\(.author.login): \(.body|gsub("\n";" ")|.[0:200])"' 2>/dev/null)
-  threads=$(gh api graphql -F owner="${repo%%/*}" -F repo="${repo##*/}" -F pr="$pr" -f query='
-    query($owner:String!,$repo:String!,$pr:Int!){repository(owner:$owner,name:$repo){pullRequest(number:$pr){
-      reviewThreads(first:100){nodes{id isResolved path comments(first:1){nodes{author{login} body}}}}}}}' \
-    --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved|not)
-          | "thread \(.id) \(.path) @\(.comments.nodes[0].author.login): \(.comments.nodes[0].body|gsub("\n";" ")|.[0:200])"' 2>/dev/null)
-  printf '%s\n%s\n%s\n' "$snap" "$comments" "$threads" | grep -v '^$' | awk '!a[$0]++' | grep -vxF -f "$seen" | tee -a "$seen"
-  case "$snap" in "pr OPEN"*) ;; *) echo "watch done"; break;; esac
-  sleep 30
-done
+${CLAUDE_PLUGIN_ROOT}/skills/pr/scripts/watch-pr.sh <N> [owner/name]
 ```
+
+One event per state you have not seen. It exits when the PR leaves `OPEN`.
 
 A plain `comment` carries review as often as a `thread` does. Read every one.
 
@@ -133,12 +118,10 @@ plain comment   on the PR itself   ->  reply as a plain comment
 ```
 
 ```bash
-gh api graphql -f query='mutation($t:ID!,$b:String!){addPullRequestReviewThreadReply(
-  input:{pullRequestReviewThreadId:$t, body:$b}){comment{url}}}' -F t=<threadId> -F b="<reply>"
+${CLAUDE_PLUGIN_ROOT}/skills/pr/scripts/thread.sh reply <threadId> "<reply>"
+${CLAUDE_PLUGIN_ROOT}/skills/pr/scripts/thread.sh resolve <threadId>
 
-gh api graphql -f query='mutation($t:ID!){resolveReviewThread(input:{threadId:$t}){thread{isResolved}}}' -F t=<threadId>
-
-gh pr comment <N> --body "<reply>"
+gh pr comment <N> --body "<reply>"    # a review body, or a plain comment
 ```
 
 The reply is one or two lines: what you did, and the commit sha.
@@ -163,13 +146,10 @@ After a push that changes what a user sees — a component, a route, a style, a 
 
 ```bash
 # browser-evidence writes the new shot, then:
-url=$(fs put .agent-evidence/<task>/after.png --bucket evidence --key <task>/after-<sha>.png)
-gh pr view <N> --json body --jq .body > body.md
-# swap the old URL for $url in body.md, then:
-gh pr edit <N> --body-file body.md
+${CLAUDE_PLUGIN_ROOT}/skills/pr/scripts/refresh-shot.sh <N> <task> .agent-evidence/<task>/after.png
 ```
 
-The key carries the sha, so the old URL keeps working for a reviewer part way through the body.
+It uploads under the current sha and swaps the URL. The old URL keeps working, so a reviewer part way through the body keeps the picture.
 
 ```
 Worked: @sam asks for a 16px gap. You push a1b2c3d.
