@@ -22,27 +22,16 @@ Work the queue until it is empty, then idle on the watch. Stop when Vasu says st
 
 A mapped issue never enters an unscoped queue. The two lanes are disjoint, so an unscoped queue and a `--map` queue run side by side and never race. Two unscoped queues still race each other.
 
-A ticket descends from the map through sub-issues: map -> slice -> ticket. An issue with no parent belongs to no map. One function per lane, both printing `<number>\t<title>`.
+A ticket descends from the map through sub-issues: map -> slice -> ticket. An issue with no parent belongs to no map. One script reads both lanes, printing `<number>\t<title>`.
 
 ```bash
-map_tickets() {
-  gh api graphql -F o='{owner}' -F r='{repo}' -F n="$1" -f query='
-    query($o:String!,$r:String!,$n:Int!){ repository(owner:$o,name:$r){ issue(number:$n){
-      subIssues(first:50){ nodes{ subIssues(first:50){ nodes{ number state title } } } } } } }' \
-    --jq '.data.repository.issue.subIssues.nodes[].subIssues.nodes[]
-          | select(.state=="OPEN") | "\(.number)\t\(.title)"'
-}
+QUEUE_LIST="${CLAUDE_PLUGIN_ROOT}/skills/issue-queue/scripts/queue-list.sh"
 
-orphan_issues() {
-  gh api graphql -F o='{owner}' -F r='{repo}' -f query='
-    query($o:String!,$r:String!){ repository(owner:$o,name:$r){
-      issues(first:100, states:OPEN, orderBy:{field:CREATED_AT,direction:ASC}){
-        nodes{ number title parent{ number } } } } }' \
-    --jq '.data.repository.issues.nodes[] | select(.parent==null) | "\(.number)\t\(.title)"'
-}
+"$QUEUE_LIST"              # the parentless issues
+"$QUEUE_LIST" --map <n>    # the open tickets under map #n
 ```
 
-`queue_list` is whichever one the argument picked: `map_tickets <n>`, or `orphan_issues`. Step 1 calls it for the `seen` file, the poll and the listing. Bare `gh issue list` is never the queue — it returns the mapped issues too. Read each body with `gh issue view <n>`.
+Pass the same flag everywhere. Bare `gh issue list` is never the queue — it returns the mapped issues too. Read each body with `gh issue view <n>`.
 
 ```
 Worked: maps #1 and #30 are open, in three sessions.
@@ -60,20 +49,12 @@ Worked: maps #1 and #30 are open, in three sessions.
 Arm the watch first. An issue filed after this line still reaches you.
 
 ```bash
-seen=$(mktemp)
-queue_list | cut -f1 > "$seen"
-while true; do
-  sleep 60
-  open=$(queue_list 2>/dev/null) || continue
-  printf '%s\n' "$open" | while IFS=$'\t' read -r n t; do
-    [ -n "$n" ] && ! grep -qx "$n" "$seen" && { echo "new issue #$n: $t"; echo "$n" >> "$seen"; }
-  done
-done
+${CLAUDE_PLUGIN_ROOT}/skills/issue-queue/scripts/watch-queue.sh [--map <n>]
 ```
 
-Run it with the `Monitor` tool, `persistent: true`. One event per issue number you have not seen. A reopened issue counts as new. Paste the `queue_list` definition above the loop, in the same command — a shell function does not survive from one tool call to the next.
+Run it with the `Monitor` tool, `persistent: true`. One event per issue number you have not seen. A reopened issue counts as new.
 
-Then run `queue_list` once and read every body with `gh issue view <n>`. Each issue lands in one lane.
+Then run `queue-list.sh` once and read every body with `gh issue view <n>`. Each issue lands in one lane.
 
 | Lane | The issue |
 |---|---|
@@ -146,8 +127,7 @@ Vasu merges the oldest PR first. So the oldest open PR is the only one that can 
 The **window** is the 5 oldest open PRs this queue filed. Run `pr` on those, and only those. This replaces the default: you do not babysit every PR you file.
 
 ```bash
-gh pr list --state open --author "@me" --json number,createdAt \
-  --jq 'sort_by(.createdAt) | .[].number'
+gh pr list --state open --author "@me" --json number,createdAt --jq 'sort_by(.createdAt) | .[].number'
 ```
 
 Oldest first, every PR you authored. Keep the ones this queue filed and take the first five. Another session's PR is not yours to watch, however old it is.

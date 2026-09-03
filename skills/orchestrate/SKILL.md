@@ -81,18 +81,7 @@ Additive up, multiplicative down. You climb slowly enough to find the wall, and 
 Arm it with the frontier. Run it with the `Monitor` tool, `persistent: true`. It emits on a crossing, and every fourth sample while the machine is `hot` or `cool`. That repeat is the clock the climb runs on: one ceiling move every two minutes, not one per sample.
 
 ```bash
-ncpu=$(sysctl -n hw.ncpu); state=cool; n=0
-while true; do
-  l1=$(sysctl -n vm.loadavg | awk '{print $2}')
-  free=$(memory_pressure -Q | awk '/free percentage/{print $NF+0}')
-  now=$(awk -v l="$l1" -v n="$ncpu" -v f="$free" 'BEGIN{
-    print (l/n>1.0 || f<15) ? "hot" : (l/n<0.7 && f>25) ? "cool" : "warm"}')
-  if [ "$now" != "$state" ] || { [ "$now" != warm ] && [ $((n % 4)) -eq 0 ]; }; then
-    echo "$now: load $l1 on $ncpu cores, memory free ${free}%"
-  fi
-  state=$now; n=$((n+1))
-  sleep 30
-done
+${CLAUDE_PLUGIN_ROOT}/skills/orchestrate/scripts/watch-load.sh
 ```
 
 `cool` and `hot` sit apart on purpose. One threshold flaps, and the fleet spends the run resizing itself.
@@ -115,15 +104,13 @@ The ceiling halves, so the workers already running are above it. Do not stop the
 
 There is no pause. `TaskStop` ends a worker and its work is gone, because a subagent does not resume. So the slot you never filled is worth more than the worker you would stop. Stop a worker only when the machine is still `hot` after the gate is serialized, and then stop the **youngest**: it has the least to lose. Put its task back on the frontier and say you did.
 
-Two workers in the gate at once is the usual spike. Serialize the gate instead of stopping either one. Put this in the brief:
+Two workers in the gate at once is the usual spike. Serialize the gate instead of stopping either one. Put the line in the brief, and the worker runs its gate under the lock:
 
 ```bash
-until mkdir /tmp/gate.lock 2>/dev/null; do sleep 5; done
-trap 'rmdir /tmp/gate.lock' EXIT
-<the gate command>
+${CLAUDE_PLUGIN_ROOT}/skills/orchestrate/scripts/gate-lock.sh <the gate command>
 ```
 
-`mkdir` is the lock because macOS ships no `flock`. A worker killed with `-9` leaves the directory behind. `rmdir` it when the frontier stalls with nothing in the gate.
+One worker in the gate at a time. The others wait, and none of them loses work.
 
 ## Report
 
