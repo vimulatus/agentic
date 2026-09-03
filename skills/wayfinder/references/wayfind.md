@@ -43,7 +43,7 @@ map #1
         \-- #21    ticket
 ```
 
-`to-tickets` says "vertical slice". At this level that word means **ticket**: one context window, green on its own. `cut.md` already cut the slice. Do not cut it again.
+`cut.md` already cut the slice. `to-tickets` cuts tickets inside it, one context window each. It does not cut the slice again.
 
 A ticket in a later slice may depend on a ticket in an earlier one. Name that ticket in its body, so `dev` reads it landed.
 

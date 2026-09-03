@@ -1,126 +1,101 @@
 ---
 name: to-tickets
-description: File one parent issue and a sub-issue per ticket, with blocking edges. Use when a plan or a spec is ready to file. Not for one bug or chore, which dev takes.
+description: File one issue, or a parent with a sub-issue per ticket and blocking edges. Use when a bug, a finding, a plan or a spec is ready to file. Not for building it.
 ---
 
-# To Tickets
+# To tickets
 
-One **parent issue** holds the work. One **sub-issue** per **ticket**: a tracer-bullet vertical slice, sized for one context window.
+You file. Someone else builds.
 
 ```
+one issue      a bug, a chore, a finding        -> §1, §2, §5
+a parent       a plan or a spec with tickets    -> §1 to §6
+
 parent #12  Feedback capture
   |-- #13  POST /feedback            no blockers
   |-- #14  the feedback form         blocked by #13
   \-- #15  email the feedback out    blocked by #13
 ```
 
-You file. Someone else builds. Apply no label.
+A **ticket** is one sub-issue: a narrow, complete path through every layer, demoable on its own, sized for one context window.
 
 ## Before you start
 
-Run `git remote -v`. No remote means no issue tracker. Say so and stop.
+`git remote -v`. No remote means no tracker. Say so and stop.
 
-## 1. Gather context
+## 1 — Search first
 
-Work from what the conversation already holds. If Vasu passes a reference - a path, an issue number, a URL - read its full body and its comments.
+```bash
+gh issue list --search "<two or three words from the title>" --state all --limit 20
+```
 
-## 2. Read the code
+An open issue that already names the behaviour: comment on it, do not file. Vasu asked "why did you create 1243 when 1114 already exists" once. Once is enough.
 
-If you have not read the code yet, read it. Use the project's domain vocabulary in every title and every body. Respect the ADRs in the area you touch.
+## 2 — Read the code
 
-Look for a prefactor that makes the change easy. "Make the change easy, then make the easy change."
+Read the code the work touches, and the project's own words for it. Every title and body uses those words.
 
-## 3. Find the seam
+For a plan, look for the **prefactor**: the change that makes the change easy. It goes first.
 
-Name the seam at which this work gets tested. Prefer a seam that already exists. Take the highest one you can. The fewer seams, the better. One is the target.
+## 3 — Cut the tickets
 
-## 4. Cut the tickets
-
-<vertical-slice-rules>
-
-- Each ticket cuts a narrow but COMPLETE path through every layer (schema, API, UI, tests). Vertical, never a horizontal slice of one layer.
+- Each ticket cuts a narrow but complete path through every layer: schema, API, UI, tests. Never one layer.
 - A finished ticket is demoable or verifiable on its own.
 - Each ticket fits one fresh context window.
 - The prefactor goes first.
 
-</vertical-slice-rules>
+Give each ticket its **blocking edges**: the tickets that must close before it starts. A ticket with no blockers can start now.
 
-Give each ticket its **blocking edges**: the tickets that must close before it can start. A ticket with no blockers can start now.
-
-**A wide refactor is the exception.** One mechanical change - rename a column, retype a shared symbol - whose **blast radius** fans across the codebase, so no vertical slice lands green. Sequence it as **expand-contract**:
+**A wide refactor is the exception.** One mechanical change whose blast radius fans across the codebase, so no ticket lands green alone. Sequence it as **expand-contract**:
 
 | Step | The ticket | Blocked by |
 |---|---|---|
 | Expand | Add the new form beside the old. Nothing breaks. | none |
-| Migrate | Move the call sites in batches sized by blast radius: per package, per directory. One ticket per batch. | Expand |
+| Migrate | Move the call sites in batches: per package, per directory. One ticket per batch. | Expand |
 | Contract | Delete the old form once no caller remains. | every Migrate batch |
 
-CI stays green batch to batch, because the old form still exists. When even a batch cannot stay green alone, keep the sequence, and let the batches share an integration branch that they all block. Green is promised only at that final integrate-and-verify ticket.
+## 4 — One round
 
-## 5. Quiz Vasu
+Show the tickets as a numbered list: title, what it delivers, what blocks it. Under it, the calls you made and would take a correction on: the granularity, an edge, a merge or a split. One round, recommended answers, Vasu answers by exception. `grilling` owns the form.
 
-Show the seam. Then show the tickets as a numbered list. For each ticket: the title, what it delivers, and what blocks it.
+Vasu away: file as recommended, and say so in the parent.
 
-Ask Vasu:
+## 5 — File
 
-- Is the seam the one you expected?
-- Is the granularity right - too coarse, too fine?
-- Does each ticket depend only on what genuinely gates it?
-- Should any tickets merge or split?
-
-Iterate until Vasu approves. Only then do you file.
-
-## 6. File
-
-The parent first, so each ticket can name it. Then the tickets, in dependency order, blockers first.
+Read the project's labels first. A project that labels by area or by kind gets its labels. No convention, no label.
 
 ```bash
-repo=$(gh repo view --json nameWithOwner -q .nameWithOwner)
+gh label list --limit 60 --json name --jq '.[].name'
+```
 
-# the parent
+The parent first, so each ticket can name it. Then the tickets, blockers first.
+
+```bash
 p=$(gh issue create --title "<title>" --body-file <parent.md>); p=${p##*/}
-
-# one ticket
 c=$(gh issue create --title "<title>" --body-file <ticket.md>); c=${c##*/}
 
-# the edges
 ${CLAUDE_SKILL_DIR}/scripts/link.sh sub   "$p" "$c"    # $c is a sub-issue of $p
 ${CLAUDE_SKILL_DIR}/scripts/link.sh block "$c" "$b"    # $c is blocked by $b
 ```
 
-Both endpoints take the issue's `id`, never its number. `-F` sends it as a number; `-f` would send a string and fail.
-
 When every ticket is filed, list them in the parent with `gh issue edit $p --body-file <parent.md>`.
 
-## 7. Close the parent
+A parent closes when its last ticket closes. GitHub does not do that. The `pr` skill does, at merge.
 
-GitHub does not close a parent when its last sub-issue closes. The agent that closes a sub-issue closes the parent.
-
-After you close a ticket, read its `Parent:` line, then ask whether you closed the last one:
-
-```bash
-gh api "repos/$repo/issues/$p" --jq '.sub_issues_summary | .completed == .total'
-```
-
-`true` - you closed the last ticket. Run `gh issue close $p`.
-`false` - tickets remain. Leave the parent open.
-
-## 8. A finding, mid-flight
-
-You report. Someone else investigates.
+## 6 — A finding, mid-flight
 
 | Does someone have to build something? | Where it goes |
 |---|---|
-| Yes | a new sub-issue of the parent, with its blocking edges. File it by §6, then add it to the parent's Tickets list. |
+| Yes | a new sub-issue of the parent, with its blocking edges. File it by §5, then add it to the parent's list. |
 | No | a comment on the parent. |
 
-A decision, a constraint, a dead end, a thing you learned: comment. A behaviour someone must change: sub-issue.
+A decision, a constraint, a dead end: comment. A behaviour someone must change: sub-issue.
 
 Never edit a ticket someone is already building. Never close the parent early.
 
-## Templates
+## Bodies
 
-Keep both bodies short. Evidence only from an investigation that already happened: the snippet and the file path.
+Current behaviour, then expected behaviour. Plain words for a reader who was not in the room. A subtle behaviour gets a worked example with real values. Evidence only from an investigation that already happened: the snippet and the file path.
 
 <parent-template>
 
@@ -147,7 +122,7 @@ What should happen instead, from the user's perspective.
 
 ## What to build
 
-The end-to-end behaviour this ticket makes work, from the user's perspective. Not a layer-by-layer implementation list.
+The end-to-end behaviour this ticket makes work, from the user's perspective. Not a layer-by-layer list.
 
 ## Acceptance criteria
 
@@ -156,4 +131,4 @@ The end-to-end behaviour this ticket makes work, from the user's perspective. No
 
 </ticket-template>
 
-No file paths, no code snippets: they go stale fast. One exception - a prototype produced a snippet that carries a decision more precisely than prose can, such as a state machine, a reducer, a schema, or a type shape. Inline it, say it came from a prototype, and trim it to the decision. Not a working demo.
+No file paths, no code snippets in a ticket: they go stale. One exception: a prototype produced a shape that carries a decision better than prose, a state machine, a schema, a type. Inline it, trimmed to the decision, and say where it came from.

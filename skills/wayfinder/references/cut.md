@@ -69,4 +69,4 @@ What the destination excludes.
 
 </map-template>
 
-Then read `wayfind.md` and walk the slices in order.
+Then read `wayfind.md` and take the first slice to its tickets.

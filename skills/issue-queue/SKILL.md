@@ -22,7 +22,7 @@ Work the queue until it is empty, then idle on the watch. Stop when Vasu says st
 
 A mapped issue never enters an unscoped queue. The two lanes are disjoint, so an unscoped queue and a `--map` queue run side by side and never race. Two unscoped queues still race each other.
 
-A ticket descends from the map through sub-issues: map -> slice -> ticket. An issue with no parent belongs to no map. One script reads both lanes, printing `<number>\t<title>`.
+A ticket descends from the map through sub-issues: map -> slice -> ticket. An issue with no parent belongs to no map. An issue a ticket files mid-flight goes under that ticket's slice, so it stays in this queue: "#114 should be part of #57 only, since it deals with pages the issue created." One script reads both lanes, printing `<number>\t<title>`.
 
 ```bash
 QUEUE_LIST="${CLAUDE_SKILL_DIR}/scripts/queue-list.sh"
