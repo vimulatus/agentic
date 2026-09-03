@@ -13,16 +13,9 @@ Work the queue until it is empty, then idle on the watch. Stop when Vasu says st
 
 ## Workers
 
-`--workers <n>` is how many `dev` subagents run at once. No argument means `--workers 1`.
+`dev` is the worker. `--workers <n>` is how many run at once. No argument means 1. A value below 1, or one that is not a number, is an error: say so and use 1.
 
-| Argument | Behaviour |
-|---|---|
-| absent, or `--workers 1` | one issue at a time, top to bottom |
-| `--workers <n>`, n > 1 | up to n independent issues at once, one worktree each |
-
-A value below 1, or one that is not a number, is an error. Say so and use 1.
-
-Parallel does not change the order. It changes how many issues from the **frontier** run at the same time. See step 4.
+`orchestrate` owns the fleet — the ceiling, the watch, the levers when the machine runs hot. Load it before step 4.
 
 ## Scope
 
@@ -128,26 +121,13 @@ PR #40 must already exist. Until it does, #14 is not on the frontier.
 
 ## 4 — Run the frontier
 
-Keep `--workers` `dev` subagents busy. Spawn one per frontier issue. When an agent returns, land its PR (step 5), recompute the frontier, and spawn the next one.
+`orchestrate` runs it: the ceiling, the dispatch loop, the worktree, the watch. When a `dev` returns, land its PR (step 5), then recompute the frontier.
 
-```
-Worked: --workers 3,  queue  #12 -> #14 -> #15,  #20,  #22
+Two frontier issues that turn out to touch the same function: hold the second until the first lands. Step 2 should have merged them.
 
-  spawn   #12  #20  #22        the frontier, 3 agents
-  #20 returns  -> frontier is empty of new work, 2 agents run on
-  #12 returns  -> #14 unblocks -> spawn #14
-  #14 returns  -> spawn #15
+Each brief carries what `orchestrate` asks for, plus:
 
---workers 1: the frontier is one issue, and this is today's behaviour.
-```
-
-Each `dev` gets its own git worktree: pass `isolation: "worktree"` on the Agent call. Two agents in one working tree overwrite each other's files.
-
-Never run two issues that touch the same function at the same time, even when both sit on the frontier. Step 2 merges them into one issue. If you find the overlap only now, hold the second issue until the first lands.
-
-`dev` cannot see this conversation, so each brief carries:
-
-- the issue number — it reads the body itself with `gh issue view`
+- the issue number — `dev` reads the body itself with `gh issue view`
 - the branch to cut, the base branch its PR targets, and the step 3 command that cuts it
 - the instruction to open the PR with `gh pr create --base <base>`
 - for a stacked issue: what the PR underneath already changed

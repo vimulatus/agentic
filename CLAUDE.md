@@ -54,7 +54,8 @@ You report. Someone else investigates.
 
 ## Match ceremony to the task
 
-- Delegate for breadth and for adversarial review. Do ordinary work yourself, in one pass.
+- More than one independent task in a run? Load the `orchestrate` skill. It owns the workers.
+- Do ordinary work yourself, in one pass.
 
 ## Estimates
 
