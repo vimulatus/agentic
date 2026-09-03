@@ -51,50 +51,61 @@ Parallel does not change the order. It changes how many frontier tasks run at th
 
 ## The ceiling
 
-The **ceiling** is how many workers the machine takes. The number you were given is a cap, not a target.
+The **ceiling** is how many workers run at once. It moves. You do not guess it up front — you start small and let the machine tell you.
 
 ```
-ceiling = min(requested, ncpu / 3)      floor 1
+start at 2.  Climb on cool, halve on hot, never past the cap.
+
+  cap = min(given, ncpu / 2)      floor 1
 ```
 
-A worker is not one core. It forks a test runner that takes several. Past the ceiling the suites queue on the same cores, and every worker gets slower.
+A worker is not one core. It forks a test runner that takes several. Past the cap the suites queue on the same cores, and every worker gets slower.
+
+A number you were given is a cap on the climb, not a target. No number means the cap is the machine's alone.
 
 ```
-Worked: this machine, sysctl -n hw.ncpu -> 12
+Worked: this machine, sysctl -n hw.ncpu -> 12, so cap 6.
 
-  --workers 8  ->  ceiling 4.  Spawn 4, hold the rest.
-  --workers 2  ->  ceiling 2.  The given cap is lower. It wins.
+  start          2 workers
+  cool, cool     3, then 4
+  hot            2.  The load crossed 1.0 per core
+  cool           3
+
+  --workers 1 -> cap 1. The ceiling cannot climb. This is the old behaviour.
 ```
 
-Say the number you settled on, and why, in one line.
+Additive up, multiplicative down. You climb slowly enough to find the wall, and you leave it fast enough to matter.
 
 ## The watch
 
-Arm it with the frontier. Run it with the `Monitor` tool, `persistent: true`. It emits one event per crossing, not one per sample.
+Arm it with the frontier. Run it with the `Monitor` tool, `persistent: true`. It emits on a crossing, and every fourth sample while the machine is `hot` or `cool`. That repeat is the clock the climb runs on: one ceiling move every two minutes, not one per sample.
 
 ```bash
-ncpu=$(sysctl -n hw.ncpu); state=cool
+ncpu=$(sysctl -n hw.ncpu); state=cool; n=0
 while true; do
   l1=$(sysctl -n vm.loadavg | awk '{print $2}')
   free=$(memory_pressure -Q | awk '/free percentage/{print $NF+0}')
   now=$(awk -v l="$l1" -v n="$ncpu" -v f="$free" 'BEGIN{
     print (l/n>1.0 || f<15) ? "hot" : (l/n<0.7 && f>25) ? "cool" : "warm"}')
-  [ "$now" != "$state" ] && { echo "$now: load $l1 on $ncpu cores, memory free ${free}%"; state=$now; }
+  if [ "$now" != "$state" ] || { [ "$now" != warm ] && [ $((n % 4)) -eq 0 ]; }; then
+    echo "$now: load $l1 on $ncpu cores, memory free ${free}%"
+  fi
+  state=$now; n=$((n+1))
   sleep 30
 done
 ```
 
 `cool` and `hot` sit apart on purpose. One threshold flaps, and the fleet spends the run resizing itself.
 
-| Event | The fleet |
-|---|---|
-| `hot` | do not spawn. Pull the levers below |
-| `warm` | hold the fleet where it is |
-| `cool` | spawn back up to the ceiling |
+| Event | The ceiling | The fleet |
+|---|---|---|
+| `cool` | +1, up to the cap | spawn up to it |
+| `warm` | hold | hold |
+| `hot` | halve it, floor 1 | pull the levers below |
 
 ## When it runs hot
 
-The levers, cheapest first. Stop at the first one that cools the machine.
+The ceiling halves, so the workers already running are above it. Do not stop them yet. Pull the levers, cheapest first, and stop at the first one that cools the machine.
 
 | Lever | Costs |
 |---|---|
@@ -102,7 +113,7 @@ The levers, cheapest first. Stop at the first one that cools the machine.
 | serialize the gate | wall clock on one worker |
 | stop the youngest worker | that worker's whole run |
 
-There is no pause. `TaskStop` ends a worker and its work is gone, because a subagent does not resume. So the slot you never filled is worth more than the worker you would stop. When you must stop one, stop the **youngest**: it has the least to lose. Put its task back on the frontier and say you did.
+There is no pause. `TaskStop` ends a worker and its work is gone, because a subagent does not resume. So the slot you never filled is worth more than the worker you would stop. Stop a worker only when the machine is still `hot` after the gate is serialized, and then stop the **youngest**: it has the least to lose. Put its task back on the frontier and say you did.
 
 Two workers in the gate at once is the usual spike. Serialize the gate instead of stopping either one. Put this in the brief:
 
@@ -118,4 +129,4 @@ trap 'rmdir /tmp/gate.lock' EXIT
 
 Per worker, one line: the task, the artifact, its state.
 
-When the fleet drains, one table: task, artifact, state. Then the ceiling you ran at, and every time the watch moved it.
+When the fleet drains, one table: task, artifact, state. Then the ceiling: where it started, every move the watch made, and where it settled.

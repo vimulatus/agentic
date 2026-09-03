@@ -117,7 +117,7 @@ PR #40 must already exist. Until it does, #14 is not on the frontier.
 
 ## 4 — Run the frontier
 
-`orchestrate` runs it. `dev` is the worker and `--workers <n>` is the requested ceiling, 1 when absent. When a `dev` returns, land its PR (step 5), then recompute the frontier.
+`orchestrate` runs it, and `dev` is the worker. With no `--workers`, `orchestrate` sizes the fleet from the machine and moves it as the load moves. `--workers <n>` caps that climb. When a `dev` returns, land its PR (step 5), then recompute the frontier.
 
 Two frontier issues that turn out to touch the same function: hold the second until the first lands. Step 2 should have merged them.
 
@@ -143,7 +143,7 @@ Run `gh stack sync` again after a PR in the stack merges. It fast-forwards trunk
 
 Vasu merges the oldest PR first. So the oldest open PR is the only one that can merge next, and a green PR behind it waits either way.
 
-The **window** is the 5 oldest open PRs this queue filed. Run `babysit-pr` on those, and only those. This replaces the default: you do not babysit every PR you file.
+The **window** is the 5 oldest open PRs this queue filed. Run `pr` on those, and only those. This replaces the default: you do not babysit every PR you file.
 
 ```bash
 gh pr list --state open --author "@me" --json number,createdAt \
@@ -154,7 +154,7 @@ Oldest first, every PR you authored. Keep the ones this queue filed and take the
 
 Five is the cap because each window PR holds its own `Monitor` watch, and every watch wakes every 30 seconds. A sixth watch buys noise, not a merge.
 
-A `babysit-pr` watch exits on its own when the PR leaves `OPEN`. That event is what slides the window: take the next oldest PR then, and arm `babysit-pr` on it. Not before.
+A `pr` watch exits on its own when the PR leaves `OPEN`. That event is what slides the window: take the next oldest PR then, and arm `pr` on it. Not before.
 
 ```
 Worked: the queue has filed 9 PRs. #101 is the oldest.
@@ -162,7 +162,7 @@ Worked: the queue has filed 9 PRs. #101 is the oldest.
   watch  #101 #102 #103 #104 #105      the window
   hold   #106 #107 #108 #109           filed, green or red, unwatched
 
-  #101 merges -> its watch exits -> arm babysit-pr on #106
+  #101 merges -> its watch exits -> arm pr on #106
 ```
 
 A stack merges bottom up, so its PRs already sit in the window in merge order.

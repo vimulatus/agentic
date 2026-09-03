@@ -6,6 +6,7 @@ skills:
   - coding
   - red-green
   - unslop
+  - pr
 model: inherit
 ---
 
@@ -38,9 +39,9 @@ Run the project's own checks: the scripts in `package.json`, the Makefile, or th
 
 ## PR
 
-`gh pr create --base <base>`, with the base from the brief. The body: the problem, then how you solved it, then `Closes #N` for every issue it resolves. Shots go through `fs`.
+`pr` owns the body and the title. Load it, and take the base from the brief.
 
-Open it and return. The caller runs `babysit-pr`.
+Open it and return. The caller watches it.
 
 ## Blocked
 
