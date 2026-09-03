@@ -150,6 +150,36 @@ notation. Use when the prototype models a flow
 or a backend state machine.
 ```
 
+## Scripts
+
+Progressive disclosure moves out what only some runs read. A script moves out what every run *executes* and no run *reads*.
+
+| The shell | Where |
+|---|---|
+| Claude runs it verbatim | `scripts/<name>.sh`. One line in the skill calls it |
+| Claude edits it for the task | inline. It has to see the shape to change it |
+
+The call is absolute, because Claude's shell starts in the project, not in the skill.
+
+```
+${CLAUDE_PLUGIN_ROOT}/skills/<skill>/scripts/<name>.sh --flag <arg>
+```
+
+- One script with a flag beats two scripts that differ by four lines.
+- Keep the line above the call that says what the script returns and when to run it. Without it Claude cannot decide to run it, and the script is dead weight.
+- The usage comment lives in the script header. The trigger lives in the skill.
+- A shell function does not survive from one tool call to the next. A script does, so extracting one deletes the warning the function needed.
+
+```
+Worked: issue-queue held map_tickets() and orphan_issues(), 18 lines of GraphQL.
+
+  ->  scripts/queue-list.sh [--map <n>]     one script, one flag
+      SKILL.md  -26 lines, and the line "paste the function into the
+      Monitor command" went out with them
+```
+
+Run the script once before you write the line that calls it. An untested script fails in a session you are not watching.
+
 ## CLAUDE.md
 
 Always loaded, on every turn, in every session. The strictest budget you have.
