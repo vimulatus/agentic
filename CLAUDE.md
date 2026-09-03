@@ -25,17 +25,9 @@ How I want code written lives in the `coding` skill. Load it before you write or
 
 - Stop every process you started, before you report the work done. Leave the processes you did not start.
 
-## Git
+## Branches, commits and pull requests
 
-- Keep the history linear. Rebase onto the base branch. Never merge the base branch into your branch.
-- Land a branch with a rebase or a squash. A merge commit is not an option.
-- Write conventional commits: `type(scope): subject`. Types: feat, fix, docs, refactor, test, chore.
-- The subject is imperative, lowercase, and has no full stop. One logical change per commit.
-- Some repos are local only. Check for a remote before you fetch, push, or open a PR.
-
-## Pull requests
-
-How I want a PR opened, and how it gets to ready, lives in the `pr` skill. Load it before you open one.
+All of it lives in the `pr` skill, including how I want work sized. Load it before you cut a branch.
 
 ## Issues
 
@@ -49,14 +41,3 @@ You report. Someone else investigates.
 
 - More than one independent task in a run? Load the `orchestrate` skill. It owns the workers.
 - Do ordinary work yourself, in one pass.
-
-## Estimates
-
-I size work by what it touches, not by how long it takes. Give scope and risk. Never give a duration or an effort, in any form, anywhere.
-
-- Scope: the files, the call sites, the steps, and what blocks what.
-- Risk: what can break, and what is unknown.
-
-## Browser work
-
-- `agent-browser` is the browser. Run it with no arguments to read its docs.

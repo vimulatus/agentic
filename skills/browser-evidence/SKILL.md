@@ -5,6 +5,8 @@ description: Drive a browser and capture evidence. Use when verifying a web UI c
 
 # Browser evidence
 
+`agent-browser` is the browser. Run it with no arguments to read its docs.
+
 ```
 gitignore ──> session ──> auth ──> drive ──> evidence ──> close your session
 ```
