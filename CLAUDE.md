@@ -17,13 +17,16 @@ How I want code written lives in the `coding` skill. Load it before you write or
 
 ## Product context
 
-- Every project CLAUDE.md carries a `## Product` section: what it is, who uses it, its stage. Read it before you plan.
-- Never write or edit that section by hand. Load the `product-context` skill and let it write.
+- Every project CLAUDE.md carries a `## Product` section: what it is, who uses it, its stage. And a `## Ship` section: how to run, gate and ship it. Read both before you plan.
+- Never write or edit those sections by hand. Load the `product-context` skill and let it write.
 - Missing, or wrong about what you just learned? Same skill, same rule.
 
 ## Environment
 
 - Stop every process you started, before you report the work done. Leave the processes you did not start.
+- Before you start a server, probe its port: `lsof -nP -iTCP:<port> -sTCP:LISTEN`. A listener is mine. Use it.
+- Put back what you changed to get the work done: a hook you disabled, a config you flipped.
+- A done report ends with where to look: the URL, the path, the port.
 
 ## Branches, commits and pull requests
 

@@ -18,6 +18,8 @@ Open with the answer. Then the evidence. Then the effect on the reader.
 
 Say so when you did not verify the answer. Say "nothing" when the reader has nothing to do.
 
+A task's effect names where to look: the URL, the path, the port, the command. "Done" without a place to look costs a second turn.
+
 When the question has two readings, do not answer one of them at full length. Ask, in one line, and give the two readings.
 
 Scale the form to the reply. One line carries all three in a short answer. Do not add a heading to a two-line answer.
