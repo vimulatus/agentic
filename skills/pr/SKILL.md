@@ -72,7 +72,7 @@ Size:  "3 files, 1 call site. Risk: the session cookie name is
 Right after `gh pr create`. Run it with the `Monitor` tool, `persistent: true`.
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/skills/pr/scripts/watch-pr.sh <N> [owner/name]
+${CLAUDE_SKILL_DIR}/scripts/watch-pr.sh <N> [owner/name]
 ```
 
 One event per state you have not seen. It exits when the PR leaves `OPEN`.
@@ -118,8 +118,8 @@ plain comment   on the PR itself   ->  reply as a plain comment
 ```
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/skills/pr/scripts/thread.sh reply <threadId> "<reply>"
-${CLAUDE_PLUGIN_ROOT}/skills/pr/scripts/thread.sh resolve <threadId>
+${CLAUDE_SKILL_DIR}/scripts/thread.sh reply <threadId> "<reply>"
+${CLAUDE_SKILL_DIR}/scripts/thread.sh resolve <threadId>
 
 gh pr comment <N> --body "<reply>"    # a review body, or a plain comment
 ```
@@ -146,7 +146,7 @@ After a push that changes what a user sees — a component, a route, a style, a 
 
 ```bash
 # browser-evidence writes the new shot, then:
-${CLAUDE_PLUGIN_ROOT}/skills/pr/scripts/refresh-shot.sh <N> <task> .agent-evidence/<task>/after.png
+${CLAUDE_SKILL_DIR}/scripts/refresh-shot.sh <N> <task> .agent-evidence/<task>/after.png
 ```
 
 It uploads under the current sha and swaps the URL. The old URL keeps working, so a reviewer part way through the body keeps the picture.

@@ -24,7 +24,7 @@ Everything below is the house layer on top of it.
 Both directories stay out of git. Run this first, once per task:
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/skills/browser-evidence/scripts/gitignore-agent-dirs.sh
+${CLAUDE_SKILL_DIR}/scripts/gitignore-agent-dirs.sh
 ```
 
 ## One session per task

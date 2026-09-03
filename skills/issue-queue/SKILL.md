@@ -25,7 +25,7 @@ A mapped issue never enters an unscoped queue. The two lanes are disjoint, so an
 A ticket descends from the map through sub-issues: map -> slice -> ticket. An issue with no parent belongs to no map. One script reads both lanes, printing `<number>\t<title>`.
 
 ```bash
-QUEUE_LIST="${CLAUDE_PLUGIN_ROOT}/skills/issue-queue/scripts/queue-list.sh"
+QUEUE_LIST="${CLAUDE_SKILL_DIR}/scripts/queue-list.sh"
 
 "$QUEUE_LIST"              # the parentless issues
 "$QUEUE_LIST" --map <n>    # the open tickets under map #n
@@ -49,7 +49,7 @@ Worked: maps #1 and #30 are open, in three sessions.
 Arm the watch first. An issue filed after this line still reaches you.
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/skills/issue-queue/scripts/watch-queue.sh [--map <n>]
+${CLAUDE_SKILL_DIR}/scripts/watch-queue.sh [--map <n>]
 ```
 
 Run it with the `Monitor` tool, `persistent: true`. One event per issue number you have not seen. A reopened issue counts as new.

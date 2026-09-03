@@ -81,7 +81,7 @@ Additive up, multiplicative down. You climb slowly enough to find the wall, and 
 Arm it with the frontier. Run it with the `Monitor` tool, `persistent: true`. It emits on a crossing, and every fourth sample while the machine is `hot` or `cool`. That repeat is the clock the climb runs on: one ceiling move every two minutes, not one per sample.
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/skills/orchestrate/scripts/watch-load.sh
+${CLAUDE_SKILL_DIR}/scripts/watch-load.sh
 ```
 
 `cool` and `hot` sit apart on purpose. One threshold flaps, and the fleet spends the run resizing itself.
@@ -107,7 +107,7 @@ There is no pause. `TaskStop` ends a worker and its work is gone, because a suba
 Two workers in the gate at once is the usual spike. Serialize the gate instead of stopping either one. Put the line in the brief, and the worker runs its gate under the lock:
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/skills/orchestrate/scripts/gate-lock.sh <the gate command>
+${CLAUDE_SKILL_DIR}/scripts/gate-lock.sh <the gate command>
 ```
 
 One worker in the gate at a time. The others wait, and none of them loses work.

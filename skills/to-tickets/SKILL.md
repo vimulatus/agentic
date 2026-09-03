@@ -84,8 +84,8 @@ p=$(gh issue create --title "<title>" --body-file <parent.md>); p=${p##*/}
 c=$(gh issue create --title "<title>" --body-file <ticket.md>); c=${c##*/}
 
 # the edges
-${CLAUDE_PLUGIN_ROOT}/skills/to-tickets/scripts/link.sh sub   "$p" "$c"    # $c is a sub-issue of $p
-${CLAUDE_PLUGIN_ROOT}/skills/to-tickets/scripts/link.sh block "$c" "$b"    # $c is blocked by $b
+${CLAUDE_SKILL_DIR}/scripts/link.sh sub   "$p" "$c"    # $c is a sub-issue of $p
+${CLAUDE_SKILL_DIR}/scripts/link.sh block "$c" "$b"    # $c is blocked by $b
 ```
 
 Both endpoints take the issue's `id`, never its number. `-F` sends it as a number; `-f` would send a string and fail.
