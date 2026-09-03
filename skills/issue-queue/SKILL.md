@@ -11,22 +11,18 @@ You hold the queue. `dev` holds the code.
 
 Work the queue until it is empty, then idle on the watch. Stop when Vasu says stop, or when you are **blocked**.
 
-## Workers
-
-`dev` is the worker. `--workers <n>` is how many run at once. No argument means 1. A value below 1, or one that is not a number, is an error: say so and use 1.
-
-`orchestrate` owns the fleet — the ceiling, the watch, the levers when the machine runs hot. Load it before step 4.
-
 ## Scope
 
 `--map <n>` scopes the queue to one map: the open tickets that descend from map issue #n. The `wayfinder` skill writes the map.
 
 | Argument | The queue |
 |---|---|
-| absent | every open issue |
+| absent | every open issue with no parent |
 | `--map <n>` | the open tickets under map #n |
 
-A ticket descends from the map through sub-issues: map -> slice -> ticket. This function lists them.
+A mapped issue never enters an unscoped queue. The two lanes are disjoint, so an unscoped queue and a `--map` queue run side by side and never race. Two unscoped queues still race each other.
+
+A ticket descends from the map through sub-issues: map -> slice -> ticket. An issue with no parent belongs to no map. One function per lane, both printing `<number>\t<title>`.
 
 ```bash
 map_tickets() {
@@ -36,19 +32,26 @@ map_tickets() {
     --jq '.data.repository.issue.subIssues.nodes[].subIssues.nodes[]
           | select(.state=="OPEN") | "\(.number)\t\(.title)"'
 }
+
+orphan_issues() {
+  gh api graphql -F o='{owner}' -F r='{repo}' -f query='
+    query($o:String!,$r:String!){ repository(owner:$o,name:$r){
+      issues(first:100, states:OPEN, orderBy:{field:CREATED_AT,direction:ASC}){
+        nodes{ number title parent{ number } } } } }' \
+    --jq '.data.repository.issues.nodes[] | select(.parent==null) | "\(.number)\t\(.title)"'
+}
 ```
 
-With `--map`, every `gh issue list` in step 1 becomes `map_tickets <n>`: the `seen` file, the poll, and the listing. Read each ticket's body with `gh issue view <n>`. An issue outside the map never enters the queue, and the watch never fires for it.
-
-Two queues run at once only when each holds its own `--map`. Two unscoped queues race for the same issues.
+`queue_list` is whichever one the argument picked: `map_tickets <n>`, or `orphan_issues`. Step 1 calls it for the `seen` file, the poll and the listing. Bare `gh issue list` is never the queue — it returns the mapped issues too. Read each body with `gh issue view <n>`.
 
 ```
-Worked: maps #1 and #30 are open, in two sessions.
+Worked: maps #1 and #30 are open, in three sessions.
 
   session A   issue-queue --map 1 --workers 2   -> #13 #14
   session B   issue-queue --map 30              -> #33
+  session C   issue-queue                       -> the parentless issues
 
-  #45 lands with no parent      -> neither watch fires. Vasu runs it by hand
+  #45 lands with no parent      -> session C's watch fires
   #46 lands under slice #32     -> session B's watch fires
 ```
 
@@ -58,26 +61,19 @@ Arm the watch first. An issue filed after this line still reaches you.
 
 ```bash
 seen=$(mktemp)
-gh issue list --state open --limit 100 --json number --jq '.[].number' > "$seen"
+queue_list | cut -f1 > "$seen"
 while true; do
   sleep 60
-  open=$(gh issue list --state open --limit 100 --json number,title \
-    --jq '.[] | "\(.number)\t\(.title)"' 2>/dev/null) || continue
+  open=$(queue_list 2>/dev/null) || continue
   printf '%s\n' "$open" | while IFS=$'\t' read -r n t; do
     [ -n "$n" ] && ! grep -qx "$n" "$seen" && { echo "new issue #$n: $t"; echo "$n" >> "$seen"; }
   done
 done
 ```
 
-Run it with the `Monitor` tool, `persistent: true`. One event per issue number you have not seen. A reopened issue counts as new.
+Run it with the `Monitor` tool, `persistent: true`. One event per issue number you have not seen. A reopened issue counts as new. Paste the `queue_list` definition above the loop, in the same command — a shell function does not survive from one tool call to the next.
 
-Then list what is open now.
-
-```
-gh issue list --state open --limit 100 --json number,title,labels,body
-```
-
-Read every body. Each issue lands in one lane.
+Then run `queue_list` once and read every body with `gh issue view <n>`. Each issue lands in one lane.
 
 | Lane | The issue |
 |---|---|
@@ -121,7 +117,7 @@ PR #40 must already exist. Until it does, #14 is not on the frontier.
 
 ## 4 — Run the frontier
 
-`orchestrate` runs it: the ceiling, the dispatch loop, the worktree, the watch. When a `dev` returns, land its PR (step 5), then recompute the frontier.
+`orchestrate` runs it. `dev` is the worker and `--workers <n>` is the requested ceiling, 1 when absent. When a `dev` returns, land its PR (step 5), then recompute the frontier.
 
 Two frontier issues that turn out to touch the same function: hold the second until the first lands. Step 2 should have merged them.
 
@@ -142,6 +138,34 @@ Each brief carries what `orchestrate` asks for, plus:
 Run `gh stack sync` again after a PR in the stack merges. It fast-forwards trunk and cascade-rebases what is left.
 
 `gh stack view --short` reads the stack. `gh stack submit --auto` opens PRs without the interactive editor.
+
+## 6 — Babysit the window
+
+Vasu merges the oldest PR first. So the oldest open PR is the only one that can merge next, and a green PR behind it waits either way.
+
+The **window** is the 5 oldest open PRs this queue filed. Run `babysit-pr` on those, and only those. This replaces the default: you do not babysit every PR you file.
+
+```bash
+gh pr list --state open --author "@me" --json number,createdAt \
+  --jq 'sort_by(.createdAt) | .[].number'
+```
+
+Oldest first, every PR you authored. Keep the ones this queue filed and take the first five. Another session's PR is not yours to watch, however old it is.
+
+Five is the cap because each window PR holds its own `Monitor` watch, and every watch wakes every 30 seconds. A sixth watch buys noise, not a merge.
+
+A `babysit-pr` watch exits on its own when the PR leaves `OPEN`. That event is what slides the window: take the next oldest PR then, and arm `babysit-pr` on it. Not before.
+
+```
+Worked: the queue has filed 9 PRs. #101 is the oldest.
+
+  watch  #101 #102 #103 #104 #105      the window
+  hold   #106 #107 #108 #109           filed, green or red, unwatched
+
+  #101 merges -> its watch exits -> arm babysit-pr on #106
+```
+
+A stack merges bottom up, so its PRs already sit in the window in merge order.
 
 ## A new issue arrives
 
@@ -176,7 +200,7 @@ Three states are blocked. Report what you tried, take the next independent issue
 
 ## Report
 
-After each PR, one line: the issue, the PR URL, its base.
+After each PR, one line: the issue, the PR URL, its base, and whether it entered the window or waits.
 
 When the queue empties, one table: issue, PR, base, state. Then the Skip lane, unchanged. Say the watch is still armed, and stay in the session.
 
