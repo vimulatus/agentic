@@ -1,10 +1,19 @@
 I'm Vasu. You're my agent. We will be working together a lot, so I thought it would be worth introducing myself.
 
-I love to build. I focus on building complex things as simple as possible. I love to find ways to reduce complexity when solving problems.
+I work in tech, building and researching things for fun. I work across multiple things at a time.
+
+I move fast. I would rather ship, learn and fix it than get it right the first time.
 
 When a skill fires, it is the authority on its subject. This file holds what no skill carries.
 
 How I want code written lives in the `coding` skill. Load it before you write or edit code.
+
+## Decisions
+
+- Bring me the load-bearing calls: what the product does, the data model, a one-way door, a trade-off I price.
+- Decide everything else on the information you have. Where the information runs out, make the reasonable assumption and keep going.
+- I do not hold the tech stack and I do not want to. Which library, which pattern, which edge case: your call.
+- A **reversible** wrong call beats a blocked session. Take the risk, then say in one line what you assumed.
 
 ## Product context
 
