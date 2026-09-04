@@ -39,7 +39,7 @@ The full list, with each event's JSON, sits at <https://code.claude.com/docs/en/
 
 `matcher` narrows a tool event to a tool: `Bash`, `Edit|Write`, a regex, or `mcp__<server>__<tool>`. No matcher means every tool.
 
-`if` on one hook narrows it to a call, in permission-rule syntax: `"if": "Bash(gh pr create *)"`. The hook does not spawn for any other call. One pattern per `if`: a hook that fires on three commands is three entries. Keep the check inside the script too, for the call that arrives as `cd x && gh pr create`.
+`if` on one hook narrows it to a call, in permission-rule syntax: `"if": "Bash(gh pr create *)"`. The hook does not spawn for any other call. One pattern per `if`: a hook that fires on three commands is three entries. The script does not repeat the test. It reads only what the pattern cannot reach, such as a flag at the end of the command.
 
 ## The contract
 
@@ -71,11 +71,11 @@ The JSON on exit 0:
 - `timeout` in seconds. A hook that hangs holds the turn.
 
 ```
-Worked: hooks/pr-opened.sh, PostToolUse, matcher Bash.
+Worked: hooks/pr-opened.sh, PostToolUse, matcher Bash, if Bash(gh pr create *).
 
-  not `gh pr create`  -> exit 0, no output               most Bash calls
-  no PR URL in the response -> exit 0, no output           the create failed
-  a URL             -> additionalContext: "Load the pr skill. Start at step 3"
+  any other call            -> the hook never spawns        most Bash calls
+  no PR URL in the response -> exit 0, no output            the create failed
+  a URL                     -> additionalContext: "Load the pr skill and arm the watch"
 ```
 
 Verify by causing the event. A hook that never fires is a matcher bug: check the tool name and the regex first.
