@@ -58,7 +58,7 @@ The reader moves an input and watches the output follow. A diagram nobody can to
 
 ## Deliver
 
-Write the page to `handouts/<task>.html`, then publish it with the Artifact tool. Give Vasu the URL, and one line on what is inside.
+Write the page to `${TMPDIR:-/tmp}/vimulatus/handouts/<task>.html`, never into the repo, then publish it with the Artifact tool. Give Vasu the URL, and one line on what is inside.
 
 - `template.html` is body content. The Artifact tool wraps it. Never write `<html>`, `<head>` or `<body>`.
 - The page commits to dark. `:root` sets `color-scheme:dark`, and `body` paints its own background.

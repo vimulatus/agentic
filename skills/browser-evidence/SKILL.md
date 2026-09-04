@@ -8,7 +8,7 @@ description: Drive a browser and capture evidence. Use when verifying a web UI c
 `agent-browser` is the browser. Run it with no arguments to read its docs.
 
 ```
-gitignore ──> session ──> auth ──> drive ──> evidence ──> close your session
+server ──> session ──> auth ──> drive ──> evidence ──> host ──> close your session
 ```
 
 The command catalog is not in this file. It ships with the CLI and it is version-matched:
@@ -18,14 +18,6 @@ agent-browser skills get core     # load this first
 ```
 
 Everything below is the house layer on top of it.
-
-## Before the browser opens
-
-Both directories stay out of git. Run this first, once per task:
-
-```bash
-${CLAUDE_SKILL_DIR}/scripts/gitignore-agent-dirs.sh
-```
 
 ## The server
 
@@ -49,27 +41,28 @@ Vasu on a second Storybook: "Kill it and run ours. 6006 is yours only, I started
 
 ## Auth
 
-- State lives at `<root>/.agent-auth/<host>.json`.
+- State lives at `~/.agent-auth/<host>.json`. Outside the repo, so a worktree and a second project find it too.
 - **Restore first.** The file exists, so pass `--state` and skip the login.
-- No file: log in, then `state save <root>/.agent-auth/<host>.json`.
+- No file: log in, then `state save ~/.agent-auth/<host>.json`.
 - Passwords reach the CLI through the vault (`auth save` / `auth login`) or through `--password-stdin`. Shell history is a leak.
 - A gated page, no state file and no credentials: stop and report `auth required`.
-- These files hold live session cookies. They stay out of every commit.
 
 ## Evidence
 
-- Everything lands in `<root>/.agent-evidence/<task>/` — screenshots, recordings, console dumps.
+Nothing lands in the repo. Everything lands in `${TMPDIR:-/tmp}/vimulatus/<task>/`: screenshots, recordings, console dumps.
+
 - Name each file for the claim it supports: `login-shows-error.png`, not `screenshot-3.png`.
+- A shot that leaves the machine, for a PR body or a report, is hosted with `fs`. The URL is the evidence.
 
 ## Proof
 
 - A screenshot is not proof. Name the expected text or selector: `get text`, `is visible`, `wait --text`.
 - Capture `console` and `errors` on every functional check. A console error or a failed request is a **fail**.
-- Report the claim, the command that proved it, and the path to the file.
+- Report the claim, the command that proved it, and the URL or the path of the file.
 
 ## Done
 
-- [ ] `.agent-auth/` and `.agent-evidence/` are in `.gitignore`.
 - [ ] Every claim names the text or the selector that proved it.
 - [ ] Console and errors are captured, and they are clean.
-- [ ] Your session is closed. Every other session still runs.
+- [ ] Every shot a reader needs is hosted, and its URL loads.
+- [ ] Your session is closed. Every other session still runs. Your server, if you started one, is stopped.

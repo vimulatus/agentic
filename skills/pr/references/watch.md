@@ -91,7 +91,7 @@ After a push that changes what a user sees, retake the shot and swap the URL in 
 
 ```bash
 # browser-evidence writes the new shot, then:
-${CLAUDE_SKILL_DIR}/scripts/refresh-shot.sh <N> <task> .agent-evidence/<task>/after.png
+${CLAUDE_SKILL_DIR}/scripts/refresh-shot.sh <N> <task> "${TMPDIR:-/tmp}/vimulatus/<task>/after.png"
 ```
 
 It uploads under the current sha and swaps the URL. The old URL keeps working.

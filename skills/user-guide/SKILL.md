@@ -14,7 +14,7 @@ One guide, one task. Write for the person on the screen.
 |---|---|---|
 | a docs site: `docs/`, `mkdocs.yml`, `docusaurus.config.*`, `*.mdx` | `docs/guides/<task>.md` | the docs site |
 | a served dir: `public/`, `static/` | `public/guides/<task>.html`, self-contained | `/guides/<task>` |
-| neither | `guides/<task>.html`, self-contained | an Artifact URL |
+| neither | `${TMPDIR:-/tmp}/vimulatus/guides/<task>.html`, self-contained, never in the repo | an Artifact URL |
 
 Name the target and the route before you write. Assets sit beside the page, in `<task>/`.
 

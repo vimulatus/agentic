@@ -1,12 +1,12 @@
 ---
 name: fs
-description: Upload a file and get a public URL. Use when a screenshot or a recording has to leave the repo. Not for a file the file tools already reach.
+description: Upload a file and get a public URL. Use when a screenshot or a recording has to leave the machine. Not for a file the file tools already reach.
 ---
 
 # fs
 
 ```
-.agent-evidence/<task>/after.png
+${TMPDIR}/vimulatus/<task>/after.png
         |
         +-- fs put --> https://cdn.vmlts.com/gh-ph/evidence/<task>/after.png
 ```
@@ -22,7 +22,7 @@ Everything below is the house layer on top of it.
 ## Upload
 
 ```bash
-url=$(fs put .agent-evidence/login-fix/after.png --bucket evidence --key login-fix/after.png)
+url=$(fs put "${TMPDIR:-/tmp}/vimulatus/login-fix/after.png" --bucket evidence --key login-fix/after.png)
 ```
 
 - `--bucket evidence` on every command. Nothing sets `FILESTORE_BUCKET`, so a command without it dies.
