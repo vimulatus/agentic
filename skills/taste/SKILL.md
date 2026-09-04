@@ -1,6 +1,6 @@
 ---
 name: taste
-description: "Design a screen with taste: layout, type, colour, motion. Use when you build or restyle UI: a page, a component, a prototype. Not for the strings, which copy owns."
+description: "Design a screen with taste: layout, type, colour, motion, charts. Use when you build or restyle UI: a page, a dashboard, a prototype. Not for the strings, which copy owns."
 ---
 
 # Taste
@@ -64,7 +64,9 @@ Standards, not a checklist. Each one decides a fork.
 | Shape | One radius scale for the page. One shadow, tinted to the ground, or none |
 | Space | One spacing scale. Group by space before you group by line |
 | Theme | One theme per page. Where the project has light and dark, build both and look at both |
-| Density | The reader's job sets it: a cockpit is dense, a reading page is airy. Numbers sit in a table, in tabular figures |
+| Density | Minimal by default: what the job needs now on the screen, the rest one tap away. Where the job is dense, the table is dense and the page around it is not. Numbers sit in a table, in tabular figures |
+| Disclosure | Every explanation opens on tap and on keyboard, anchored to its trigger: a popover, an accordion, a sheet. Hover has no thumb |
+| Components | shadcn/ui is the house look. React installs it, the rest borrows the look, and the tokens come from the project's install |
 | States | Every screen has an empty, a loading and an error state. Build them with the happy one |
 | Content | Real content, or fake data that looks lived in: `47.2%`, not `50%`; a name, not `John Doe` |
 | Floor | Works at 375 and 1280 wide. Visible focus. Contrast passes AA. Reduced motion respected |
@@ -73,7 +75,9 @@ Spend the boldness in one place. The move from the plan is the one element that 
 
 Read `references/motion.md` when anything on the page moves. It holds the gate, the curves and the durations.
 
-Read `references/page.md` when the page is a landing page, a marketing page or a portfolio. It holds the hero and the section rules.
+Read `references/app.md` when the page is a dashboard, a list, a resource view, a form or settings. It holds the page shapes, the disclosure containers and the charts.
+
+Read `references/landing.md` when the page is a landing page, a marketing page or a portfolio. It holds the hero and the section rules.
 
 The strings are copy. Load `copy` for them.
 
@@ -101,5 +105,7 @@ What a model draws when nobody decides. Each one is right for some brief and a d
 | One word of a heading in italic, bold or a colour | emphasis the sentence did not earn |
 | Middle dots between meta strings, an arrow after link text | template chrome |
 | A big number, a small label, a gradient wash | the hero nobody decided |
+| Four stat cards in a row, each with an icon, a sparkline and a green arrow | the dashboard nobody decided |
+| Help that shows on hover | an explanation the phone never gets |
 | Fade-and-slide-up on every section, hover lift on every card | motion that answers no one |
 | `John Doe`, `Acme`, `99.99%`, "Elevate", "Seamless" | content nobody wrote |
