@@ -60,7 +60,7 @@ gh pr create --base <base> --title "<title>" --body-file <file>
 | Body, then | How you solved it |
 | `## Assumptions` | Every assumption you made where Vasu would have answered a question. One line each. No assumptions, no section |
 | `Closes #N` | Every issue the PR resolves, not only the one you opened it for |
-| Screenshots | A UI change carries them, before and after. `browser-evidence` takes them, `fs` hosts them |
+| Screenshots | A UI change carries them, before and after. `browser-evidence` takes them and hosts them |
 | Size | What it touches and what can break, never a clock |
 
 ```

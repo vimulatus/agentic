@@ -103,7 +103,7 @@ Ships     the invoice, updated. Cancel and re-enter is internal
 | Empty state | what goes here, and the one action that puts it there |
 | Error, toast | what happened, then what the reader does |
 | Tooltip, help popover | what this control does |
-| Guide, help page | the steps, in order. → the `user-guide` skill |
+| Guide, help page | the steps, in order, one action per step, the label as the app shows it |
 | Public package docs, README | what it does, then the first command that works |
 | Release note | what changed for the reader |
 

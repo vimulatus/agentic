@@ -1,6 +1,6 @@
 ---
 name: browser-evidence
-description: Drive a browser and capture evidence. Use when verifying a web UI change in the running app. Not for the agent-browser command reference.
+description: Drive a browser, capture evidence, and host the shots. Use when verifying a web UI change in the running app, or a screenshot goes into a PR. Not for the agent-browser command reference.
 ---
 
 # Browser evidence
@@ -51,8 +51,17 @@ Vasu on a second Storybook: "Kill it and run ours. 6006 is yours only, I started
 
 Nothing lands in the repo. Everything lands in `${TMPDIR:-/tmp}/vimulatus/<task>/`: screenshots, recordings, console dumps.
 
-- Name each file for the claim it supports: `login-shows-error.png`, not `screenshot-3.png`.
-- A shot that leaves the machine, for a PR body or a report, is hosted with `fs`. The URL is the evidence.
+Name each file for the claim it supports: `login-shows-error.png`, not `screenshot-3.png`.
+
+## Host
+
+A shot that leaves the machine, for a PR body or a report, gets a URL. The URL is the evidence.
+
+```bash
+url=$(${CLAUDE_SKILL_DIR}/scripts/host.sh <task> "${TMPDIR:-/tmp}/vimulatus/<task>/after.png")
+```
+
+Anyone who holds the URL reads the file, and a PR body is as public as its repo. Crop to the claim: a full screen carries the tabs, the clock, and whatever else was open. Never a token, a key, or a real customer's data.
 
 ## Proof
 
