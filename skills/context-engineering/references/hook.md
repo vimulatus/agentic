@@ -39,6 +39,8 @@ The full list, with each event's JSON, sits at <https://code.claude.com/docs/en/
 
 `matcher` narrows a tool event to a tool: `Bash`, `Edit|Write`, a regex, or `mcp__<server>__<tool>`. No matcher means every tool.
 
+`if` on one hook narrows it to a call, in permission-rule syntax: `"if": "Bash(gh pr create *)"`. The hook does not spawn for any other call. One pattern per `if`: a hook that fires on three commands is three entries. Keep the check inside the script too, for the call that arrives as `cd x && gh pr create`.
+
 ## The contract
 
 The hook reads one JSON object on stdin: `session_id`, `cwd`, `hook_event_name`, and for a tool event `tool_name`, `tool_input`, and on `PostToolUse` the `tool_response`.
