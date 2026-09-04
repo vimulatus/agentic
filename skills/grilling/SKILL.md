@@ -25,6 +25,16 @@ Vasu does not hold the tech stack, and does not want to. A question he would ans
 
 The filter cuts the volume, not the depth. Grill hard on what passes it: push back, take the other side, find the contradiction.
 
+## Words
+
+Use the words Vasu typed, and the names the code already has. A word Vasu has to ask about costs a round.
+
+```
+Asked     "Which seam shape do you want?"     -> "What do you mean by the seam shape? Which seam?"
+Asked     "Should bhumika be required?"       -> "By bhumika, do you mean heading?"
+Rewritten "Should the heading be required?"   -> answered by number
+```
+
 ## The round
 
 | Rule | Because |
