@@ -25,23 +25,6 @@ Vasu does not hold the tech stack, and does not want to. A question he would ans
 
 The filter cuts the volume, not the depth. Grill hard on what passes it: push back, take the other side, find the contradiction.
 
-## Scope
-
-The stage in `## Product` sets the ceiling. Before v1, a decision that only a later version needs is not on the frontier. Name it in one line under **Later** and move on.
-
-```
-Worked: an audit log for a CRM with no users yet.
-
-  on the frontier   who can see a customer         <- v1 ships without an answer? no
-  Later             clock seam for replayable logs <- v1 ships without it? yes. One line.
-```
-
-Vasu says YAGNI once. After that, every round that grows the machinery is a round he did not ask for.
-
-## Words
-
-Use the words Vasu typed, and the names the code already has. A word Vasu has to ask about ("the seam", "the panel", a Hindi field name for an English label) costs a round. Twelve sessions ran that round.
-
 ## The round
 
 | Rule | Because |
@@ -68,10 +51,6 @@ Use the words Vasu typed, and the names the code already has. A word Vasu has to
 ```
 
 The assumed list carries the widest blast radius only, five lines at most. A longer list is a round in disguise.
-
-Write the round as text in the reply. `AskUserQuestion` holds the choices, never the analysis: when Vasu cancels the prompt, everything inside it is gone, and 27 sessions ended with "What would you like to clarify?" and no analysis on screen.
-
-Vasu answers by number. One line per number, plain words, a worked example where the choice is subtle. A round he cannot read in a minute is a round he answers with "go with your recommendation".
 
 Each answered round pushes the frontier outward. Recompute it and ask the next round.
 
