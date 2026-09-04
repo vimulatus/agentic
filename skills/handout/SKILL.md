@@ -9,6 +9,8 @@ One HTML file. Plain CSS. Dark. No build step.
 
 Start from `template.html`. It carries the theme and the disclosure pattern. Colour carries state only.
 
+Load `taste` for the layout, the type and the advisor calls. The template carries the chrome; `taste` decides what goes inside it.
+
 ## Pick the mode
 
 | The user wants | Mode | The structure that carries it |
