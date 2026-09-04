@@ -50,8 +50,6 @@ When the advisor tool is present, call it twice per design task, and no more. Ea
 
 The advisor takes no arguments. It reads the transcript. Put the thing to judge into the transcript first: the plan as a message, the screenshot through `Read`. A call with nothing to look at returns nothing to use.
 
-A session that already runs on the advisor's model makes call 2 only.
-
 Take the advice. Where it names a change, make the change before you build on.
 
 ## 4 — Build
