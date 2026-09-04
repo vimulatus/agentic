@@ -28,7 +28,28 @@ End the response with a confidence score (0-100%). The score rates the answer, n
 
 ## Form
 
-A cheat sheet shows structure. Show control flow and architecture as an ASCII diagram. Show a set of options as a table. Show logic as pseudocode.
+A cheat sheet shows structure. Pick the smallest view that makes the point, and put it next to the line it supports.
+
+| The point | The view |
+|---|---|
+| logic, an algorithm, a state change | pseudocode |
+| who calls whom at runtime | a call tree, indented |
+| what a screen is made of | a component tree, with the state hooks and the module that owns each part |
+| who owns what in the repo | a shallow file tree, one comment per directory |
+| a message between parts, or a flow over time | a Mermaid sequence or flow diagram |
+| a set of options | a table, on the axis where they differ |
+| what changes, when the shape already exists | the same view as a `diff`: `+` and `-` on the tree, the pseudocode, or the file tree |
+| a UI, a layout, a state to compare | one HTML page, via `handout` or `prototype` |
+
+```diff
+ on(save)
+-  write content
++  if content is unchanged
++    return cached result
++  write new content
+```
+
+One view answers one point. Two views for one point is a wall in disguise.
 
 An abstract statement reads as understood. One turn later, the reader finds out it was not. So follow every abstract statement with a worked example: one real case, real values, and the result it produces.
 
