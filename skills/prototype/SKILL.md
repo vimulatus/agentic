@@ -46,7 +46,7 @@ A non-dev drives the state machine through the cases that are hard to reason abo
 
 ## UI
 
-Load `frontend-design` first. Vasu rejected three rounds of variants built without it: "I like none of them. Use the frontend design skill and try again."
+Load `taste` first. Vasu rejected three rounds of variants built without design guidance: "I like none of them. Use the frontend design skill and try again." `taste` carries that guidance, and its advisor calls.
 
 Several **radically different** takes on one route, fast to flip between.
 
