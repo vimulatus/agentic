@@ -23,4 +23,12 @@ Register plugin hooks in `hooks/hooks.json`; project and user hooks live in `.cl
 
 Use the supported event and output schema from the [hook contract](https://code.claude.com/docs/en/hooks). A shared handler filters the command itself, even when Claude's `if` field already narrows it; the other client may not apply that field.
 
+For `Stop`, Claude supports non-error feedback that continues the conversation:
+
+```json
+{"hookSpecificOutput":{"hookEventName":"Stop","additionalContext":"Run the remaining gate before finishing."}}
+```
+
+Exit 0 with that object. To block completion explicitly, use `{"decision":"block","reason":"Run the remaining gate before finishing."}` instead. Guard on the input's `stop_hook_active` so feedback does not loop. These are [Claude Stop semantics](https://code.claude.com/docs/en/hooks#stop-decision-control); the feedback envelope is not accepted by the checked Codex runtime.
+
 The plugin's Claude name is `vimulatus`. Use the discovered skill name when invoking it; hook prose can name the skill without a client namespace.

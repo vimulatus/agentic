@@ -26,4 +26,15 @@ Codex requires new or changed non-managed hook definitions to be reviewed and tr
 
 For shared plugin hook commands, `${CLAUDE_PLUGIN_ROOT}` is an existing compatibility variable; Codex also supplies `PLUGIN_ROOT`. This hook compatibility does not establish skill-body substitution support.
 
+### Stop output
+
+Checked against Codex `rust-v0.153.4`: [`StopCommandOutputWire`](https://github.com/openai/codex/blob/rust-v0.153.4/codex-rs/hooks/src/schema.rs) rejects `hookSpecificOutput`. Choose the intended effect, emit one of these objects and exit 0:
+
+| Intent | Output |
+|---|---|
+| Show a warning without resuming the agent | `{"systemMessage":"The remaining gate has not been run."}` |
+| Continue the agent to finish required work | `{"decision":"block","reason":"Run the remaining gate before finishing."}` |
+
+A block requires a nonempty `reason`; guard on `stop_hook_active` to avoid repeating it. [`events/stop.rs`](https://github.com/openai/codex/blob/rust-v0.153.4/codex-rs/hooks/src/events/stop.rs) records `systemMessage` as a warning and turns the blocking reason into continuation feedback. A warning is not model context. Exit 2 with a nonempty stderr reason also blocks for synchronous hooks; other nonzero statuses are handler failures. Recheck this contract when upgrading Codex.
+
 The plugin's Codex name is `default`. Use the discovered skill name when invoking it; hook prose can name the skill without a client namespace.
