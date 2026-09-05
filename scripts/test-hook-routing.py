@@ -1,4 +1,4 @@
-"""Check that hook instructions name skills discoverable by either client."""
+"""Check hook routing and client-specific output contracts."""
 
 import json
 import os
@@ -13,6 +13,51 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class HookRoutingTest(unittest.TestCase):
+    def test_codex_stop_reports_owned_listener_once(self):
+        task_dir = Path(tempfile.gettempdir()) / "vimulatus" / "hook-routing"
+        task_dir.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=task_dir) as directory:
+            fixture = Path(directory)
+            commands = {
+                "lsof": "if [ \"$1\" = -a ]; then exit 0; fi\nprintf 'p987654\ncnode\nn*:4567\np987655\ncother\nn*:4568\n'\n",
+                "ps": "case \"$*\" in *987654*) echo 'node CODEX_SESSION_ID=port-test';; *) echo 'other CODEX_SESSION_ID=foreign';; esac\n",
+            }
+            for name, body in commands.items():
+                command = fixture / name
+                command.write_text("#!/bin/sh\n" + body)
+                command.chmod(0o755)
+            env = dict(os.environ, PLUGIN_ROOT=str(ROOT), TMPDIR=directory,
+                       CLAUDE_PID="1", PATH=f"{fixture}:{os.environ['PATH']}")
+            payload = json.dumps({"session_id": "port-test", "hook_event_name": "Stop"})
+            result = subprocess.run(["bash", str(ROOT / "hooks/ports.sh")],
+                                    input=payload, text=True, capture_output=True, check=True, env=env)
+            output = json.loads(result.stdout)
+            self.assertEqual(output.get("decision"), "block")
+            self.assertEqual(set(output), {"decision", "reason"})
+            self.assertIn(":4567", output["reason"])
+            self.assertNotIn(":4568", output["reason"])
+            repeat = subprocess.run(["bash", str(ROOT / "hooks/ports.sh")],
+                                    input=payload, text=True, capture_output=True, check=True, env=env)
+            self.assertEqual(repeat.stdout, "")
+
+    def test_custom_codex_home_global_symlink_is_skipped(self):
+        task_dir = Path(tempfile.gettempdir()) / "vimulatus" / "hook-routing"
+        task_dir.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=task_dir) as directory:
+            fixture = Path(directory)
+            codex_dir = fixture / "codex"
+            project = fixture / "project"
+            codex_dir.mkdir()
+            project.mkdir()
+            global_rules = codex_dir / "AGENTS.md"
+            global_rules.write_text("Personal preferences, without project sections.\n")
+            (project / "AGENTS.md").symlink_to(global_rules)
+            env = dict(os.environ, PLUGIN_ROOT=str(ROOT), CODEX_HOME=str(codex_dir))
+            result = subprocess.run(["bash", str(ROOT / "hooks/product-section.sh")],
+                                    input=json.dumps({"cwd": str(project)}), text=True,
+                                    capture_output=True, check=True, env=env)
+            self.assertEqual(result.stdout, "")
+
     def test_skill_references_resolve(self):
         cases = (
             ("route.sh", {"prompt": "where are we"}, "status"),
