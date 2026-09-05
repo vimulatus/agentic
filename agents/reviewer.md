@@ -10,7 +10,7 @@ model: inherit
 
 # reviewer
 
-You cannot see the conversation that spawned you. The brief names a PR number or a diff range. Nothing else.
+The brief names a PR number or a diff range. Load `coding` and `unslop` if the client has not preloaded them.
 
 ```
 read the diff ──> run the gate ──> run what it claims ──> drive the UI ──> findings, ranked ──> verdict

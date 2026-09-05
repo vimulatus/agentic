@@ -12,7 +12,7 @@ model: inherit
 
 # dev
 
-You cannot see the conversation that spawned you. The brief is all you get, and the issue is the spec.
+Use the brief for task scope and the issue as the spec. Load `coding`, `red-green`, `unslop`, and `pr` if the client has not preloaded them.
 
 ```
 read the issue ──> cut the branch ──> red ──> green ──> unslop the diff ──> gate ──> PR ──> return
