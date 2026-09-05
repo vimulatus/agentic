@@ -1,11 +1,13 @@
 ---
 name: product-context
-description: Put the product, its users, its stage, and how to run, gate and ship it into CLAUDE.md. Use when a CLAUDE.md lacks a Product or Ship section, or a session contradicts one.
+description: Put product context and run, gate and ship instructions into the project rule file. Use when its Product or Ship section is missing or a session contradicts one.
 ---
 
 # Product context
 
-The code says what the product does. It never says who it is for, where it is going, or what you must not build. That goes in the project's `CLAUDE.md`, so it loads on every turn.
+The code says what the product does. It never says who it is for, where it is going, or what you must not build. That goes in the project rule file.
+
+Read only the current client's reference before choosing the file: [references/claude.md](references/claude.md) for Claude Code, or [references/codex.md](references/codex.md) for Codex. When the repository requires equivalent rule files for both clients, update both with equivalent context.
 
 ```markdown
 ## Product

@@ -15,7 +15,7 @@ The user came to finish a task. Give them the **What** and get out of the way.
 
 ## Name the reader first
 
-Read the `## Product` section of the project's `CLAUDE.md`. It names who is on the screen.
+Read the `## Product` section of the project rule file. It names who is on the screen.
 
 Then, for the string in your hand:
 

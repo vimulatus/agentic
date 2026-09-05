@@ -22,7 +22,7 @@ It should feel <two words from the subject's own world>.
 
 The subject's world is where the distinctive choices come from: its materials, its instruments, its printed matter. A ledger for accountants and a toy for eight-year-olds share no type, no palette and no motion.
 
-Read the `## Product` section of the project's `CLAUDE.md`. It names the reader.
+Read the `## Product` section of the project rule file. It names the reader.
 
 ## 2 — Write the plan
 
@@ -41,14 +41,14 @@ Then read the plan back against one test: would the same plan come out for any b
 
 The advisor is the stronger designer. That gap is why the call exists.
 
-When the advisor tool is present, call it twice per design task, and no more. Each call replays the whole transcript at the advisor's rates.
+When the advisor tool is present, call it twice per design task, and no more.
 
 | Call | After | It judges |
 |---|---|---|
 | 1 | the plan is in the conversation | the plan, against the brief |
 | 2 | the screenshot is in the conversation | the rendered page |
 
-The advisor takes no arguments. It reads the transcript. Put the thing to judge into the transcript first: the plan as a message, the screenshot through `Read`. A call with nothing to look at returns nothing to use.
+Use the advisor's tool schema to supply the brief and the thing to judge. If it reads the transcript, put the plan there as a message and display the screenshot with the available image tool before calling it.
 
 Take the advice. Where it names a change, make the change before you build on.
 
@@ -86,7 +86,7 @@ The strings are copy. Load `copy` for them.
 A page you have not seen is a page you have not designed.
 
 1. Screenshot it at 1280 and at 375. `browser-evidence` drives the browser.
-2. `Read` each PNG. Now it is in the transcript.
+2. View each PNG with the available image tool. Now it is in the transcript.
 3. Walk the tells below. Fix what you see.
 4. Advisor, call 2.
 5. Remove one thing. There is always one.

@@ -6,14 +6,14 @@ description: Take a merged change to users - deploy, cut a release, publish a pa
 # Ship
 
 ```
-## Ship in CLAUDE.md ──> the trunk, clean, fetched ──> trigger ──> watch the run ──> verify live ──> report
+## Ship in project rules ──> the trunk, clean, fetched ──> trigger ──> watch the run ──> verify live ──> report
         │
         └── no section: read the workflows and scripts, write it with product-context, then go on
 ```
 
 ## 1 — How this project ships
 
-Read `## Ship` in the project's `CLAUDE.md`. No section: read `.github/workflows/*.yml` for the trigger, `scripts/` and `package.json` for a deploy or publish command, then load `product-context` and write the section. Vasu asked "How do I deploy this?" in eight sessions of one project. Once written, nobody asks again.
+Read `## Ship` in the project rule file. No section: read `.github/workflows/*.yml` for the trigger, `scripts/` and `package.json` for a deploy or publish command, then load `product-context` and write the section. Vasu asked "How do I deploy this?" in eight sessions of one project. Once written, nobody asks again.
 
 | The trigger | The command |
 |---|---|

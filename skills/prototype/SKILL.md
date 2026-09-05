@@ -73,4 +73,4 @@ Several **radically different** takes on one route, fast to flip between.
 | Legible type and spacing | Animation, icon sets |
 | Works in one browser | Responsive, a11y audit, tests |
 
-Deliver it the way `handout` delivers: write the file, publish it with the Artifact tool, give the URL. On Vasu's own machine, `open` the file as well. Never a TUI, never a hosted planning tool: one HTML file he can open.
+Deliver it through `handout`'s applicable delivery reference and give the resulting URL or file link. On Vasu's own machine, open the file as well. Never a TUI, never a hosted planning tool: one HTML file he can open.
