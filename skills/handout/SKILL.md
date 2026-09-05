@@ -60,8 +60,11 @@ The reader moves an input and watches the output follow. A diagram nobody can to
 
 ## Deliver
 
-Write the page to `${TMPDIR:-/tmp}/vimulatus/handouts/<task>.html`, never into the repo, then publish it with the Artifact tool. Give Vasu the URL, and one line on what is inside.
+Write the page to `${TMPDIR:-/tmp}/vimulatus/handouts/<task>.html`, never into the repo. The page commits to dark: `:root` sets `color-scheme:dark`, and `body` paints its own background.
 
-- `template.html` is body content. The Artifact tool wraps it. Never write `<html>`, `<head>` or `<body>`.
-- The page commits to dark. `:root` sets `color-scheme:dark`, and `body` paints its own background.
-- To revise it, edit the same file and publish it again. The URL stays the same.
+Read only the delivery reference that matches the available capability:
+
+- An Artifact tool that publishes HTML is available: read [references/artifact.md](references/artifact.md).
+- Otherwise: read [references/local.md](references/local.md) for a complete standalone HTML file.
+
+Give Vasu the resulting URL or file link, and one line on what is inside. Revise the same file when the page changes.

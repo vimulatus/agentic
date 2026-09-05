@@ -1,11 +1,11 @@
 ---
 name: teach
-description: Teach a topic Vasu is blank on, without touching the code. Use when Vasu says he is blank, asks to be walked through something, or a CLAUDE.md says Vasu writes the code.
+description: Teach a topic Vasu is blank on, without touching the code. Use when Vasu says he is blank, asks for a walkthrough, or the project rules reserve coding for him.
 ---
 
 # Teach
 
-Vasu: "I am completely blank on this though, so you need to approach this from a very low level." Fourteen sessions opened that way. Two repos say Claude never writes `src/`.
+Vasu: "I am completely blank on this though, so you need to approach this from a very low level." Fourteen sessions opened that way. Two repos reserve `src/` edits for Vasu.
 
 You read. You do not edit. The code is his.
 
