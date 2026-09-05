@@ -7,7 +7,7 @@ cwd=$(jq -r '.cwd // "."' <<<"$payload" 2>/dev/null)
 root=$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null || echo "$cwd")
 if [ -n "${PLUGIN_ROOT:-}" ]; then
   name=AGENTS.md
-  global=$(realpath "$HOME/.codex/AGENTS.md" 2>/dev/null || true)
+  global=$(realpath "${CODEX_HOME:-$HOME/.codex}/AGENTS.md" 2>/dev/null || true)
 else
   name=CLAUDE.md
   global=$(realpath "$HOME/.claude/CLAUDE.md" 2>/dev/null || true)

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # The listeners this session started, and nobody else's.
-#   Stop        -> names them as additionalContext, so the done report carries them
+#   Stop        -> reminds the model about remaining listeners using its runtime's output contract
 #   SessionEnd  -> stops them
 # A listener is ours when one of two proofs holds. Anything else is Vasu's or another session's and is never touched.
 #   1. its environment carries this runtime's session id              (every Bash tool child inherits it)
@@ -71,8 +71,10 @@ case "$event" in
     mkdir -p "${cache%/*}" && printf '%s\n' "$now" > "$cache"
     [ -n "$mine" ] || exit 0
     list=$(printf '%s' "$mine" | awk '{printf "%s%s on :%s (pid %s)", (NR>1?", ":""), $3, $2, $1}')
-    jq -n --arg t "Still running from this session: $list. Stop what the task no longer needs, and name what you leave up in the report." \
-      '{hookSpecificOutput:{hookEventName:"Stop",additionalContext:$t}}' ;;
+    jq -n --arg runtime "${PLUGIN_ROOT:-}" \
+      --arg t "Still running from this session: $list. Stop what the task no longer needs, and name what you leave up in the report." \
+      'if $runtime != "" then {decision:"block",reason:$t}
+       else {hookSpecificOutput:{hookEventName:"Stop",additionalContext:$t}} end' ;;
   SessionEnd)
     printf '%s' "$mine" | awk '{print $1}' | sort -u | xargs kill 2>/dev/null
     rm -f "$cache" ;;
