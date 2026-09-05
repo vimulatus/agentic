@@ -14,9 +14,17 @@ gh api "repos/$repo/commits/$base" --jq '"base \(.sha)"' >> "$seen" 2>/dev/null
 
 while true; do
   snap=$(gh pr view "$pr" -R "$repo" --json state,mergeable,reviewDecision,statusCheckRollup --jq '
+    def bucket:
+      if .status != null and .status != "COMPLETED" then "pending"
+      else (.conclusion // .state) as $result
+        | if (["SUCCESS", "NEUTRAL", "SKIPPED"] | index($result)) != null then "ok"
+          elif (["FAILURE", "TIMED_OUT", "CANCELLED", "ERROR", "STARTUP_FAILURE", "ACTION_REQUIRED", "STALE"] | index($result)) != null then "bad"
+          else "pending" end
+      end;
+    [.statusCheckRollup[]? | . + {bucket: bucket}] as $checks |
     "pr \(.state) mergeable=\(.mergeable) review=\(.reviewDecision // "NONE")",
-    ([.statusCheckRollup[]? | .conclusion // .state] | "checks \(map(select(.=="SUCCESS" or .=="SKIPPED"))|length) ok \(map(select(.=="FAILURE" or .=="TIMED_OUT" or .=="CANCELLED" or .=="ERROR" or .=="STARTUP_FAILURE"))|length) bad \(map(select(.=="PENDING" or .=="IN_PROGRESS" or .=="QUEUED" or .==null))|length) pending"),
-    (.statusCheckRollup[]? | select((.conclusion // .state) as $c | $c=="FAILURE" or $c=="TIMED_OUT" or $c=="ERROR" or $c=="STARTUP_FAILURE")
+    ($checks | "checks \(map(select(.bucket=="ok"))|length) ok \(map(select(.bucket=="bad"))|length) bad \(map(select(.bucket=="pending"))|length) pending"),
+    ($checks[] | select(.bucket=="bad")
      | "bad \(.name // .context) \(.detailsUrl // .targetUrl // "")")' 2>/dev/null) || { sleep 30; continue; }
 
   basesha=$(gh api "repos/$repo/commits/$base" --jq '"base \(.sha)"' 2>/dev/null)
