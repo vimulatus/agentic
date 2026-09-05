@@ -1,8 +1,7 @@
 ---
 name: issue-queue
-description: Work the open GitHub issues to PRs with the dev subagent, and watch for new ones.
+description: Work the open GitHub issues to PRs with the dev subagent, and watch for new ones. Use only when Vasu explicitly asks to run the issue queue.
 argument-hint: "[--workers <n>] [--map <n>]"
-disable-model-invocation: true
 ---
 
 # Issue queue

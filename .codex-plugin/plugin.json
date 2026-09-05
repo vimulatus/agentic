@@ -1,0 +1,33 @@
+{
+  "name": "vimulatus",
+  "version": "4.1.0",
+  "description": "Vasu's personal skills and agent workflows",
+  "author": {
+    "name": "Vimulatus",
+    "url": "https://github.com/vimulatus"
+  },
+  "homepage": "https://github.com/vimulatus/agentic",
+  "repository": "https://github.com/vimulatus/agentic",
+  "keywords": [
+    "developer-tools",
+    "skills",
+    "workflows"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Vimulatus",
+    "shortDescription": "Vasu's personal skills and agent workflows",
+    "longDescription": "A personal collection of coding, research, planning, review, and shipping workflows for Claude Code and Codex.",
+    "developerName": "Vimulatus",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Skills",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Tell me where this project stands.",
+      "Review this change before I ship it.",
+      "Help me turn this idea into releasable work."
+    ]
+  }
+}

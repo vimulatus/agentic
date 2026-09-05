@@ -1,0 +1,5 @@
+interface:
+  display_name: Issue queue
+  short_description: Work GitHub issues through ready pull requests
+policy:
+  allow_implicit_invocation: false

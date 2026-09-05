@@ -1,0 +1,5 @@
+interface:
+  display_name: ELI5
+  short_description: Explain a topic from first principles
+policy:
+  allow_implicit_invocation: false

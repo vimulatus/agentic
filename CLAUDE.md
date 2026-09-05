@@ -6,6 +6,22 @@ I move fast. I would rather ship, learn and fix it than get it right the first t
 
 When a skill fires, it is the authority on its subject. This file holds what no skill carries.
 
+## Product
+
+Personal skills, workflows and agents that Vasu uses across projects in Claude Code and Codex.
+
+**Stage:** Active personal tooling
+
+- **Users** — Vasu, working across several software and research projects
+- **Works when** — both clients install the same release and load the current skills in a new session
+- **Non-goals** — a general-purpose public plugin or a shared team policy layer
+
+## Ship
+
+- **Run** — no service; install the plugin from the `new` marketplace channel
+- **Gate** — `python3 /Users/vasumittal/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py . && claude plugin validate .claude-plugin/plugin.json`
+- **Ship** — commit the change, then run `scripts/release.sh <major|minor|patch>` from `new`; it commits both manifest versions, tags and pushes
+
 How I want code written lives in the `coding` skill. Load it before you write or edit code.
 
 ## Decisions
