@@ -15,9 +15,13 @@ Delegate for breadth and for adversarial review. Do ordinary work yourself, in o
 | a read that would flood your context | a change you are already part way through |
 | a second opinion on your own diff | anything the worker would have to ask you about |
 
+Before spawning workers or starting watches, read the execution reference for the current client: [Claude Code](references/claude.md) or [Codex](references/codex.md). Read only that reference. It owns context inheritance, isolation, process handles, and interruption.
+
+Resolve `<skill-dir>` below to the absolute directory containing this orchestrate `SKILL.md`; substitute the path before running commands.
+
 ## The brief
 
-A worker cannot see this conversation. The brief is all it gets. Every brief carries:
+Make the brief self-contained regardless of how much conversation the runtime shares. Every brief carries:
 
 - the one task, and where the worker reads the full spec itself
 - the branch to cut, and the base it targets
@@ -36,16 +40,16 @@ When Vasu asks what a worker is doing, answer per worker: the task, how long it 
 
 ## Isolation
 
-Pass `isolation: "worktree"` on every `Agent` call that writes code. Two workers in one working tree overwrite each other's files.
+Give each worker that writes code its own worktree using the current client’s execution reference. For instruction-only edits in a shared tree, disjoint file ownership is sufficient.
 
 Never run two workers on the same function at once. Merge the two tasks into one, or hold the second.
 
 A worktree is a full checkout. Read the free disk with `df -g .` before you spawn the fleet.
 
-A worktree dies with its task. When a worker's PR is open, or its branch is merged, remove the worktree and, once merged, its branch. Three projects carry a dozen dead `agent-*` worktrees each, and a `dev` spawned in one reads a stale `CLAUDE.md`.
+A worktree dies with its task. When a worker's PR is open, or its branch is merged, remove the worktree and, once merged, its branch. Three projects carry a dozen dead `agent-*` worktrees each, and a `dev` spawned in one reads stale project instructions.
 
 ```bash
-${CLAUDE_SKILL_DIR}/scripts/prune-worktrees.sh [-n]    # removes worktrees whose branch is merged; -n lists
+"<skill-dir>/scripts/prune-worktrees.sh" [-n]    # removes worktrees whose branch is merged; -n lists
 ```
 
 ## The frontier
@@ -68,17 +72,18 @@ Parallel does not change the order. It changes how many frontier tasks run at th
 The **ceiling** is how many workers run at once. It moves. You do not guess it up front — you start small and let the machine tell you.
 
 ```
-start at 2.  Climb on cool, halve on hot, never past the cap.
+Start at up to 2. Climb on cool, halve on hot, never past the cap.
 
-  cap = min(given, ncpu / 2)      floor 1
+  cap = min(given, max(1, floor(ncpu / 2)), available worker slots)
+  start = min(2, cap)
 ```
 
 A worker is not one core. It forks a test runner that takes several. Past the cap the suites queue on the same cores, and every worker gets slower.
 
-A number you were given is a cap on the climb, not a target. No number means the cap is the machine's alone.
+A number you were given is a cap on the climb, not a target. Without one, use machine capacity and the runtime’s available worker slots. Count this fleet’s running workers plus currently free slots as its available worker slots; workers in other tasks reduce that capacity. With no capacity, do independent work locally or wait for a slot.
 
 ```
-Worked: this machine, sysctl -n hw.ncpu -> 12, so cap 6.
+Worked: sysctl -n hw.ncpu -> 12 and at least 6 worker slots, so cap 6.
 
   start          2 workers
   cool, cool     3, then 4
@@ -92,10 +97,10 @@ Additive up, multiplicative down. You climb slowly enough to find the wall, and 
 
 ## The watch
 
-Arm it with the frontier. Run it with the `Monitor` tool, `persistent: true`. It emits on a crossing, and every fourth sample while the machine is `hot` or `cool`. That repeat is the clock the climb runs on: one ceiling move every two minutes, not one per sample.
+Arm it with the frontier using the current client’s watch mechanism. It emits on a crossing, and every fourth sample while the machine is `hot` or `cool`. That repeat is the clock the climb runs on: one ceiling move every two minutes, not one per sample.
 
 ```bash
-${CLAUDE_SKILL_DIR}/scripts/watch-load.sh
+"<skill-dir>/scripts/watch-load.sh"
 ```
 
 `cool` and `hot` sit apart on purpose. One threshold flaps, and the fleet spends the run resizing itself.
@@ -114,17 +119,19 @@ The ceiling halves, so the workers already running are above it. Do not stop the
 |---|---|
 | hold the empty slot | nothing. The next spawn waits |
 | serialize the gate | wall clock on one worker |
-| stop the youngest worker | that worker's whole run |
+| interrupt the youngest worker | inspection and recovery of unfinished work |
 
-There is no pause. `TaskStop` ends a worker and its work is gone, because a subagent does not resume. So the slot you never filled is worth more than the worker you would stop. Stop a worker only when the machine is still `hot` after the gate is serialized, and then stop the **youngest**: it has the least to lose. Put its task back on the frontier and say you did.
+Interrupt a worker only when the machine is still `hot` after the gate is serialized, and choose the **youngest**. Inspect its files and process state using the current client’s interruption mechanism, then put its task back on the frontier and say you did. Resume or restart it according to that client’s capabilities.
 
 Two workers in the gate at once is the usual spike. Serialize the gate instead of stopping either one. Put the line in the brief, and the worker runs its gate under the lock:
 
 ```bash
-${CLAUDE_SKILL_DIR}/scripts/gate-lock.sh <the gate command>
+"<skill-dir>/scripts/gate-lock.sh" <the gate command>
 ```
 
 One worker in the gate at a time. The others wait, and none of them loses work.
+
+Stop the load watch and every process this run started when the fleet drains or the run ends.
 
 ## Report
 

@@ -16,4 +16,4 @@ Read the source at the version in use. The `coding` skill carries the clone comm
 
 ## Report
 
-Spawn `researcher` with the Agent tool. The brief is the question and where the answer will be used. It returns the path of the report and a three-line answer. Read the file before you build on it.
+Read the current client’s execution reference: [Claude Code](../orchestrate/references/claude.md) or [Codex](../orchestrate/references/codex.md), and use its researcher role. Read only that client reference. Delegate when research can run alongside useful local work; otherwise perform the role’s task locally. The brief is the question and where the answer will be used. It returns the path of the report and a three-line answer. Read the file before you build on it.

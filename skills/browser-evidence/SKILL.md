@@ -5,6 +5,8 @@ description: Drive a browser, capture evidence, and host the shots. Use when ver
 
 # Browser evidence
 
+Resolve `<skill-dir>` from this skill's loaded `SKILL.md` path. Substitute that absolute directory in script commands, even after changing working directories.
+
 `agent-browser` is the browser. Run it with no arguments to read its docs.
 
 ```
@@ -58,7 +60,7 @@ Name each file for the claim it supports: `login-shows-error.png`, not `screensh
 A shot that leaves the machine, for a PR body or a report, gets a URL. The URL is the evidence.
 
 ```bash
-url=$(${CLAUDE_SKILL_DIR}/scripts/host.sh <task> "${TMPDIR:-/tmp}/vimulatus/<task>/after.png")
+url=$("<skill-dir>/scripts/host.sh" <task> "${TMPDIR:-/tmp}/vimulatus/<task>/after.png")
 ```
 
 Anyone who holds the URL reads the file, and a PR body is as public as its repo. Crop to the claim: a full screen carries the tabs, the clock, and whatever else was open. Never a token, a key, or a real customer's data.
