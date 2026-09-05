@@ -16,4 +16,4 @@ codex plugin marketplace add vimulatus/agentic --ref new
 codex plugin add default@vimulatus-personal
 ```
 
-Start a new session after installing or upgrading so the client loads the current skills.
+Start a new session after installing or upgrading so the client loads the current skills. In Codex CLI, open `/hooks` and trust the plugin hooks after reviewing them; Codex skips new or changed hook definitions until you do.

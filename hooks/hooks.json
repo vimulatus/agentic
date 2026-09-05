@@ -34,21 +34,6 @@
           },
           {
             "type": "command",
-            "if": "Bash(git switch -c *)",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/fetch-before-cut.sh\"",
-            "timeout": 30,
-            "statusMessage": "Fetching origin before the cut"
-          },
-          {
-            "type": "command",
-            "if": "Bash(git checkout -b *)",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/fetch-before-cut.sh\"",
-            "timeout": 30,
-            "statusMessage": "Fetching origin before the cut"
-          },
-          {
-            "type": "command",
-            "if": "Bash(git worktree add *)",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/fetch-before-cut.sh\"",
             "timeout": 30,
             "statusMessage": "Fetching origin before the cut"
@@ -62,14 +47,6 @@
         "hooks": [
           {
             "type": "command",
-            "if": "Bash(gh pr create *)",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/pr-opened.sh\"",
-            "timeout": 10,
-            "statusMessage": "Checking for a new PR"
-          },
-          {
-            "type": "command",
-            "if": "Bash(gh stack submit *)",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/pr-opened.sh\"",
             "timeout": 10,
             "statusMessage": "Checking for a new PR"
@@ -95,7 +72,7 @@
           {
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/ports.sh\"",
-            "timeout": 10
+            "timeout": 3
           }
         ]
       }

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Block a git command that skips the hooks. PreToolUse, gated by `if` on git *.
+# Block a git command that skips the hooks. PreToolUse.
+# Claude's `if` avoids spawning this for other Bash calls; the script also filters for Codex.
 # The flag sits at the end of the command, where a prefix pattern cannot reach, so the script reads it.
 # Exit 2 is the block; stderr is the reason.
 set -u
