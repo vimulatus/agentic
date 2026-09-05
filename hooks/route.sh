@@ -10,7 +10,7 @@ case "$prompt" in /*|!*) exit 0 ;; esac
 
 route() {   # route <regex> <skill> <what it reads as>
   grep -qE "$1" <<<"$prompt" || return 1
-  jq -n --arg t "This reads as $3. Load \`vimulatus:$2\` before you act." \
+  jq -n --arg t "This reads as $3. Load \`$2\` before you act." \
     '{hookSpecificOutput:{hookEventName:"UserPromptSubmit",additionalContext:$t}}'
   exit 0
 }

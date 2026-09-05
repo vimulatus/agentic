@@ -21,6 +21,6 @@ missing=""
 [ -n "$missing" ] || grep -q '^## Ship' "$f" || missing="## Ship section in $name"
 [ -n "$missing" ] || exit 0
 
-jq -n --arg t "This project has no $missing. Load \`vimulatus:product-context\` and write it before you plan or build." \
+jq -n --arg t "This project has no $missing. Load \`product-context\` and write it before you plan or build." \
   '{hookSpecificOutput:{hookEventName:"SessionStart",additionalContext:$t}}'
 exit 0
