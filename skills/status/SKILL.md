@@ -5,10 +5,12 @@ description: Say where a project stands - what landed, what is open, the next ti
 
 # Status
 
+Resolve `<skill-dir>` from this skill's loaded `SKILL.md` path. Substitute that absolute directory in script commands, even after changing working directories.
+
 Vasu holds three or four projects. He comes back to one after days, from another machine, and asks "what was this about" or "what is left". Eleven sessions opened that way.
 
 ```bash
-${CLAUDE_SKILL_DIR}/scripts/status.sh [days]
+"<skill-dir>/scripts/status.sh" [days]
 ```
 
 It prints the trunk, what landed, the open PRs by Vasu, the open issues, the map issue, and the worktrees. Read the map's body for the decisions and the slice order, and the newest open PR for where the last session stopped.

@@ -5,6 +5,8 @@ description: File one issue, or a parent with a sub-issue per ticket and blockin
 
 # To tickets
 
+Resolve `<skill-dir>` from this skill's loaded `SKILL.md` path. Substitute that absolute directory in script commands, even after changing working directories.
+
 You file. Someone else builds.
 
 ```
@@ -74,8 +76,8 @@ The parent first, so each ticket can name it. Then the tickets, blockers first.
 p=$(gh issue create --title "<title>" --body-file <parent.md>); p=${p##*/}
 c=$(gh issue create --title "<title>" --body-file <ticket.md>); c=${c##*/}
 
-${CLAUDE_SKILL_DIR}/scripts/link.sh sub   "$p" "$c"    # $c is a sub-issue of $p
-${CLAUDE_SKILL_DIR}/scripts/link.sh block "$c" "$b"    # $c is blocked by $b
+"<skill-dir>/scripts/link.sh" sub   "$p" "$c"    # $c is a sub-issue of $p
+"<skill-dir>/scripts/link.sh" block "$c" "$b"    # $c is blocked by $b
 ```
 
 When every ticket is filed, list them in the parent with `gh issue edit $p --body-file <parent.md>`.

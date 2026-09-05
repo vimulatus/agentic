@@ -73,7 +73,7 @@ Size:  "3 files, 1 call site. Risk: the session cookie name is
 
 The PR is not done when it is open. It is done when it is ready: green, approved, no open thread, on top of the base.
 
-Read `references/watch.md` and arm the watch. A worker that was told "open it and return" skips this: the caller watches.
+Read [references/watch.md](references/watch.md) and the current client’s execution reference ([Claude Code](../orchestrate/references/claude.md) or [Codex](../orchestrate/references/codex.md)), then arm the watch. A worker that was told "open it and return" skips this: the caller watches.
 
 ## Blocked
 

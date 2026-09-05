@@ -6,7 +6,11 @@ argument-hint: "[--workers <n>] [--map <n>]"
 
 # Issue queue
 
-You hold the queue. `dev` holds the code.
+You hold the queue. The development worker holds the code.
+
+Before starting watches or workers, read the current client’s execution reference: [Claude Code](../orchestrate/references/claude.md) or [Codex](../orchestrate/references/codex.md). Read only that reference; use its development role and lifecycle.
+
+Resolve `<skill-dir>` below to the absolute directory containing this issue-queue `SKILL.md`; substitute the path before running commands.
 
 Work the queue until it is empty, then idle on the watch. Stop when Vasu says stop, or when you are **blocked**.
 
@@ -24,10 +28,8 @@ A mapped issue never enters an unscoped queue. The two lanes are disjoint, so an
 A ticket descends from the map through sub-issues: map -> slice -> ticket. An issue with no parent belongs to no map. An issue a ticket files mid-flight goes under that ticket's slice, so it stays in this queue: "#114 should be part of #57 only, since it deals with pages the issue created." One script reads both lanes, printing `<number>\t<title>`.
 
 ```bash
-QUEUE_LIST="${CLAUDE_SKILL_DIR}/scripts/queue-list.sh"
-
-"$QUEUE_LIST"              # the parentless issues
-"$QUEUE_LIST" --map <n>    # the open tickets under map #n
+"<skill-dir>/scripts/queue-list.sh"              # the parentless issues
+"<skill-dir>/scripts/queue-list.sh" --map <n>    # the open tickets under map #n
 ```
 
 Pass the same flag everywhere. Bare `gh issue list` is never the queue — it returns the mapped issues too. Read each body with `gh issue view <n>`.
@@ -48,10 +50,10 @@ Worked: maps #1 and #30 are open, in three sessions.
 Arm the watch first. An issue filed after this line still reaches you.
 
 ```bash
-${CLAUDE_SKILL_DIR}/scripts/watch-queue.sh [--map <n>]
+"<skill-dir>/scripts/watch-queue.sh" [--map <n>]
 ```
 
-Run it with the `Monitor` tool, `persistent: true`. One event per issue number you have not seen. A reopened issue counts as new.
+Retain its process handle and consume events using the current client’s watch mechanism. One event per issue number you have not seen. A reopened issue counts as new.
 
 Then run `queue-list.sh` once and read every body with `gh issue view <n>`. Each issue lands in one lane.
 
@@ -131,7 +133,7 @@ gh pr list --state open --author "@me" --json number,createdAt --jq 'sort_by(.cr
 
 Oldest first, every PR you authored. Keep the ones this queue filed and take the first five. Another session's PR is not yours to watch, however old it is.
 
-Five is the cap because each window PR holds its own `Monitor` watch, and every watch wakes every 30 seconds. A sixth watch buys noise, not a merge.
+Five is the cap because each window PR holds its own watch, and every watch wakes every 30 seconds. A sixth watch buys noise, not a merge.
 
 A `pr` watch exits on its own when the PR leaves `OPEN`. That event is what slides the window: take the next oldest PR then, and arm `pr` on it. Not before.
 
@@ -154,10 +156,10 @@ The watch fires mid-run. Read the body with `gh issue view <n>`, put it in a lan
 |---|---|
 | Skip lane | report the one line. Carry on |
 | independent of the run in flight | slot it into the queue by the step 2 rules |
-| a run in flight needs its code | `TaskStop` that one run, take the new issue first, then re-run the one you stopped |
-| supersedes a run in flight | `TaskStop` that one run, delete its branch, re-triage both |
+| a run in flight needs its code | interrupt that worker, take the new issue first, then resume or restart its task on the updated base |
+| supersedes a run in flight | interrupt that worker, inspect and retain any reusable changes, re-triage both |
 
-`TaskStop` the one run the new issue collides with. The other agents keep working.
+Interrupt only the worker the new issue collides with, using the current client’s lifecycle. The other agents keep working.
 
 Never interrupt a `dev` run for an issue that only shares a file. The rebase costs less than the restart.
 
@@ -165,7 +167,7 @@ Never interrupt a `dev` run for an issue that only shares a file. The rebase cos
 Worked: #52 lands while dev works #47 on feat/login-route.
 
   #52 asks for the Session model that #47 imports -> stop #47, run #52,
-      then cut feat/login-route again on #52's PR branch.
+      then resume or restart #47 on #52's PR branch.
   #52 asks for a new settings page      -> queue it. #47 finishes untouched.
 ```
 
@@ -185,4 +187,4 @@ When the queue empties, one table: issue, PR, base, state. Then the Skip lane, u
 
 When a `--map` queue empties, the current slice is done. Say so: the next slice waits on `wayfinder`, not on you.
 
-When Vasu says stop, `TaskStop` the watch and report the same table.
+When Vasu says stop or the run ends, stop its queue, PR, and load watches, interrupt its workers, and stop the processes they started. Report the same table with unfinished tasks.

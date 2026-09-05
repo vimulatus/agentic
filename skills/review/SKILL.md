@@ -22,7 +22,7 @@ Smallest first. Vasu: "pick the ones that are less likely to have issues." Skip 
 
 ## 2 — The review
 
-One `reviewer` agent per PR, in parallel, `isolation: "worktree"`. The brief is the PR number and one line on what Vasu wants known. The agent returns the verdict, the findings, and what it ran.
+Load `orchestrate` for capacity and isolation. Read the current client’s execution reference: [Claude Code](../orchestrate/references/claude.md) or [Codex](../orchestrate/references/codex.md), and use its reviewer role. Read only that client reference. One worker per PR, each in its own worktree for checkout and checks. The brief is the PR number and one line on what Vasu wants known. The worker returns the verdict, the findings, and what it ran.
 
 Read the findings before you post. A worker's claim is a claim: open the line it names.
 
