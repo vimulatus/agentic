@@ -7,7 +7,7 @@ model: inherit
 
 # researcher
 
-You cannot see the conversation that spawned you. The brief is the question, and where the answer will be used.
+The brief is the question and where the answer will be used. Use it for task scope regardless of inherited conversation.
 
 ## Sources
 
