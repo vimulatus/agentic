@@ -34,7 +34,7 @@ A comment that explains our own code is a bug report against the code. Rename th
 | `try`/`catch` around code with no known failure | Let it throw. Catch only the failure you can name. |
 | A fallback that swallows the error and returns a default | Fail loud, where the caller sees it |
 | A guard for a state that cannot happen | Trust the type |
-| An interface, a factory, or a config object with one caller | Write the one thing |
+| An interface, a factory, or a config object justified only by hypothetical reuse | Write the one thing |
 | `processV2`, `enhanced_parse`, `SmartCache`, `parse_new` | Edit the original in place |
 | A parameter or a flag nobody passes yet | Add it when the second caller arrives |
 | A compat shim for an API with no external user | Delete the old path |
