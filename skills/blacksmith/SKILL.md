@@ -32,7 +32,9 @@ Every `runs-on` in every workflow file, including the deploy ones a branch never
 
 ## 3 — Cache what repeats
 
-Three tiers. Read them in order and stop at the one that pays.
+For Docker builds, read [references/docker-builds.md](references/docker-builds.md). Automatic `docker pull` caching does not cache build layers.
+
+For other repeated work, read these three tiers in order and stop at the one that pays.
 
 **Free, no diff.** Blacksmith redirects `actions/cache`, `actions/setup-{go,node,python,java}` and `ruby/setup-ruby` to a colocated store, and keeps `docker pull` images on a shared disk. Say "nothing to do" and move on. Adding an action here is work that buys nothing.
 
