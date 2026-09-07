@@ -16,8 +16,6 @@ Name it in the plan: the one question the screen answers, or the one action it t
 | Form | One column, the label above the field, one action at the end. The error sits under its field | the advanced fields, in a closed section with a summary |
 | Settings | Sections in the order the reader changes them. Each section saves itself, or one save for the page. Never both | the danger zone, at the end, behind its own confirmation |
 
-The reader's state survives: the filters in the URL, the scroll restored, the draft kept.
-
 ## Disclosure
 
 `copy` holds the model: the What on the screen, the Why one tap away, the How never. This table picks the container.
@@ -29,7 +27,7 @@ The reader's state survives: the filters in the URL, the scroll restored, the dr
 | to create or edit without leaving the list | a sheet from the side, or a dialog for a form under five fields | the row's action |
 | to confirm a loss | a dialog that names what goes away, in numbers | the destructive action |
 
-Every explanation opens on tap and on keyboard. Hover has no thumb, so a hover reveals nothing the reader needs.
+Optional explanations open on tap and on keyboard. Hover has no thumb, so a hover reveals nothing the reader needs.
 
 ## Components
 
@@ -50,11 +48,3 @@ One chart answers one question. The title states the finding, not the metric: "S
 - Bars start at zero. A line labels its last point, in place of a legend.
 - One series in ink, the comparison in the accent, the rest muted. Flat fills: no gradient, no glow, no 3D.
 - The data table sits under disclosure, for the reader who wants the numbers.
-
-## The floor
-
-- Feedback inside 100 ms: the press, then the new state. A toast only when the reader cannot see the result where they acted.
-- The loading state has the shape of the content. The error sits where the content was, with the retry.
-- Tab order follows reading order. Escape closes, Enter submits.
-- At 375 wide, targets are 44 px and the primary action sits under the thumb.
-- A destructive action names its noun and offers undo where the data allows it.

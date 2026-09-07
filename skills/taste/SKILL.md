@@ -1,6 +1,6 @@
 ---
 name: taste
-description: "Design a screen with taste: layout, type, colour, motion, charts. Use when you build or restyle UI: a page, a dashboard, a prototype. Not for the strings, which copy owns."
+description: "Design how UI looks and behaves. Use when building, changing or reviewing screens and interactions, including small UI fixes. Copy owns the strings."
 ---
 
 # Taste
@@ -8,8 +8,10 @@ description: "Design a screen with taste: layout, type, colour, motion, charts. 
 The default is what a model draws when nobody decides. Taste is the set of decisions. Make every one before the first pixel, and look at the result before you report it.
 
 ```
-read the brief -> write the plan -> advisor -> build -> screenshot -> advisor -> cut one thing -> done
+read the brief -> write the plan -> advisor -> build -> use it -> screenshot -> advisor -> cut one thing -> done
 ```
+
+For an existing UI, keep the established design and plan only the changed decisions. A behavior fix needs an interaction plan and verification; a visual redesign needs the full design loop. A review reports findings in the requested scope.
 
 ## 1 — Read the brief
 
@@ -33,6 +35,7 @@ Palette   4 to 6 named hex values: ground, ink, muted ink, one accent, one line 
 Type      one family, or two that are clearly distinct. Roles: display, body, data
 Layout    an ASCII wireframe of the route, and the alignment: left, centred, justified
 The move  the one memorable thing on the page. Everything else stays quiet
+Behavior  the changed action: pending, success, failure and recovery; what input and focus survive
 ```
 
 Then read the plan back against one test: would the same plan come out for any brief in this category? Where it would, that part is a default, not a choice. Revise it and say what changed.
@@ -65,9 +68,9 @@ Standards, not a checklist. Each one decides a fork.
 | Space | One spacing scale. Group by space before you group by line |
 | Theme | One theme per page. Where the project has light and dark, build both and look at both |
 | Density | Minimal by default: what the job needs now on the screen, the rest one tap away. Where the job is dense, the table is dense and the page around it is not. Numbers sit in a table, in tabular figures |
-| Disclosure | Every explanation opens on tap and on keyboard, anchored to its trigger: a popover, an accordion, a sheet. Hover has no thumb |
+| Disclosure | Optional explanations open on tap and on keyboard, anchored to their trigger: a popover, an accordion, a sheet. Prerequisites and consequences stay visible before commitment. Hover has no thumb |
 | Components | shadcn/ui is the house look. React installs it, the rest borrows the look, and the tokens come from the project's install |
-| States | Every screen has an empty, a loading and an error state. Build them with the happy one |
+| States | Build the affected empty, loading and error states alongside success. Name the recovery before implementing the action |
 | Content | Real content, or fake data that looks lived in: `47.2%`, not `50%`; a name, not `John Doe` |
 | Floor | Works at 375 and 1280 wide. Visible focus. Contrast passes AA. Reduced motion respected |
 
@@ -75,21 +78,26 @@ Spend the boldness in one place. The move from the plan is the one element that 
 
 Read `references/motion.md` when anything on the page moves. It holds the gate, the curves and the durations.
 
+Read [references/ux.md](references/ux.md) before building or reviewing controls, forms, navigation or asynchronous updates, including on landing pages. Apply the rows the changed interaction reaches, then exercise them before reporting done.
+
 Read `references/app.md` when the page is a dashboard, a list, a resource view, a form or settings. It holds the page shapes, the disclosure containers and the charts.
 
 Read `references/landing.md` when the page is a landing page, a marketing page or a portfolio. It holds the hero and the section rules.
 
 The strings are copy. Load `copy` for them.
 
-## 5 — Look at it
+## 5 — Use it, then look at it
 
-A page you have not seen is a page you have not designed.
+A page you have not seen is a page you have not designed. A screenshot cannot prove an interaction works.
 
-1. Screenshot it at 1280 and at 375. `browser-evidence` drives the browser.
-2. View each PNG with the available image tool. Now it is in the transcript.
-3. Walk the tells below. Fix what you see.
-4. Advisor, call 2.
-5. Remove one thing. There is always one.
+1. Exercise the changed flow, including keyboard use and a relevant failure and recovery. Follow the verification table in `references/ux.md` when it applies. `browser-evidence` drives the browser.
+2. Screenshot it at 1280 and at 375.
+3. View each PNG with the available image tool. Now it is in the transcript.
+4. Walk the tells below. Fix what you see.
+5. Advisor, call 2, for a visual design task.
+6. Remove decoration that does not serve the brief. Keep labels, feedback and recovery controls.
+
+Report what you exercised and what remains unverified. A static prototype can demonstrate states; live persistence and failure recovery need a working implementation.
 
 ## The tells
 
