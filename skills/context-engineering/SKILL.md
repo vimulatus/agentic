@@ -76,6 +76,19 @@ The last row carries the most weight. Give the standard and let the agent judge.
 
 Where you hold no opinion, write nothing. A rule invented to fill a gap is a rule the agent has to fight.
 
+## Prompt smells
+
+When creating or editing agent documents, look for these smells in the draft and the existing instructions it will join. Older prompts often carry scaffolding that duplicates native reasoning and spends tokens without changing the outcome.
+
+| Smell | Action |
+|---|---|
+| Verification rituals: "double-check your work", "verify twice before responding" | Remove generic reassurance and repeated checks. Keep checks tied to an observable result, such as a test command or acceptance criterion |
+| Mandatory procedures and scratchpads: "think step by step", fixed reasoning templates | Remove prescribed thinking steps and scratchpad scaffolds. State the outcome and constraints; keep an ordered procedure only when a real dependency or operational risk requires that order |
+| Stale examples and few-shot scaffolding | Default to no examples. Remove examples that merely rehearse behavior the model already knows; retain only current examples that resolve a specific ambiguity or define a required format |
+| Contradictory rules within or across applicable documents | Identify the conflicting lines and their sources. Apply explicit instruction precedence and decisions Vasu has already made; bring unresolved choices to Vasu using the grilling skill |
+
+For unresolved contradictions, show the competing instructions, explain how each changes behavior, and recommend a choice. Grill Vasu until the choice is settled; leave the disputed rule unchanged while continuing independent edits. Record the answer in its owning document and reconcile conflicting copies within scope.
+
 ## State the opinion
 
 State it. Stop. The agent does not need the paragraph around it.
@@ -106,7 +119,7 @@ Hunt for the passage that collapses into one word.
 
 ## Form
 
-One heading per branch. A table or a code block per rule set. Prose only where both of those fail, and four lines at most.
+Choose prose, tables or code blocks for readability. Use headings to separate branches that readers need to find independently.
 
 - Prompt the positive. A prohibition puts the banned behavior into context and makes it more available, not less. Write "match the surrounding style", not "do not invent a new style".
 - Keep a concept whole. Its definition, its rules and its caveats sit under one heading. A reader who lands on one part gets the neighbors free.
@@ -255,6 +268,6 @@ A document is not done when it reads well. It is done when it fires.
 | a subagent | spawn it with the brief and nothing else. It returns the artifact, not a question |
 | a script | run it once by hand, from a directory that is not the skill's |
 
-Then let it run once, end to end. Any line that did not change the result was not needed.
+Use the relevant check to observe the intended behavior. Repeat only when a change, failure or unresolved uncertainty calls for it.
 
 If the skill did not fire, fix the description. The body is not the problem.
