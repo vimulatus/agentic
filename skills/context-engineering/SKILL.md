@@ -11,17 +11,17 @@ Tool names, configuration fields, instruction-file locations and lifecycle assum
 
 A document holds the opinions the agent cannot derive: your commands, your house choices, your taste. The agent supplies the rest.
 
-Write less than feels safe.
+Keep instructions concise without losing audience, constraints or reasons that improve decisions.
 
 ## Three verbs
 
-Everything you write for the agent is **loaded**, **fires**, or **runs**. The verb sets the cost and the guarantee.
+Distinguish instructions made available to the agent, skills selected for a task, and executable automation. Their costs and guarantees depend on the client.
 
 | Verb | When | Costs | Guarantee |
 |---|---|---|---|
-| **loaded** | every turn, every session | context on every request | The agent reads it. It may still not act |
-| **fires** | when the agent picks it, or you type it | a description while it waits, the body when it fires | The agent reads it then. It may still not act |
-| **runs** | when the harness reaches the event | nothing, unless it returns text | it happens. The agent did not choose |
+| **loaded** | when the client includes applicable instructions | instruction context | available to the agent; compliance is not enforced |
+| **fires** | when a skill is selected or explicitly invoked | discovery metadata, then the body | supplies guidance for the task |
+| **runs** | when a supported hook event occurs, or a script is called | execution and any returned context | executes code, subject to registration, trust and permissions |
 
 A loaded line is a request. A fired line is a request that waits. A registered, enabled and trusted hook runs at its supported event; verify those conditions in each client.
 
@@ -38,19 +38,9 @@ One home per line. Pick it by the trigger, before you write.
 | a procedure with judgment in it | a **skill** | fires |
 | detail only some runs of a skill reach | a **reference** the skill points at | fires on the pointer |
 | a read that would flood the context, or a worker with fixed instructions | a **subagent** | fires |
-| a connection to an outside system | an MCP server | loaded, names only |
+| a connection to an outside system | an MCP server | tool discovery and calls, as supported by the client |
 
-"Every time X, do Y" is a hook. In prose it is a request the agent usually honours. As a hook it happens.
-
-"Never do X" in prose puts X into context and hopes. A `PreToolUse` hook that exits 2 blocks it.
-
-```
-Worked: after `gh pr create`, the pr skill must take over. Every time, no judgment.
-
-  a project instruction  "after you open a PR, load pr"   -> loaded. Honoured on most turns
-  hooks/pr-opened.sh on PostToolUse, matcher Bash    -> runs. Reads the URL and returns
-                                                        "Load the pr skill. Start at step 3"
-```
+Use a hook for a deterministic action or restriction only when the client supports the event and enforcement needed. Returning instructions from a hook does not guarantee the agent follows them.
 
 A line that wants two homes is two lines.
 
@@ -58,21 +48,7 @@ Read [references/hook.md](references/hook.md) when writing a hook handler, and [
 
 ## Write only what the agent cannot derive
 
-Before each line, ask:
-
-> Does this change what the agent does, compared to no line at all?
-
-Name the changed behavior. If you cannot name it, do not write the line.
-
-| Write this | Not this |
-|---|---|
-| The command and its flags: `agent-browser record start <out.webm> <url>` | A step list for recording a screen |
-| The house choice: "one HTML file, plain CSS, no build step" | "Prototypes should stay simple" |
-| The gotcha no config confesses: "the staging DB resets at 03:00 UTC" | Anything `package.json` or `--help` already says |
-| The taste call: "3 to 5 variants, different structure, not different colors" | "Make good variants" |
-| The standard: "match the comment density of the surrounding code" | "No comments. Never write multi-paragraph docstrings" |
-
-The last row carries the most weight. Give the standard and let the agent judge. A list of forbidden cases fights that judgment, and it loses to the first case you did not list.
+Keep lines that change a decision: commands and flags that are not readily discoverable, house choices, hidden gotchas, and standards that guide judgment. Omit generic advice and facts already available from the relevant configuration or tool help.
 
 Where you hold no opinion, write nothing. A rule invented to fill a gap is a rule the agent has to fight.
 
@@ -86,91 +62,60 @@ When creating or editing agent documents, look for these smells in the draft and
 | Mandatory procedures and scratchpads: "think step by step", fixed reasoning templates | Remove prescribed thinking steps and scratchpad scaffolds. State the outcome and constraints; keep an ordered procedure only when a real dependency or operational risk requires that order |
 | Stale examples and few-shot scaffolding | Default to no examples. Remove examples that merely rehearse behavior the model already knows; retain only current examples that resolve a specific ambiguity or define a required format |
 | Contradictory rules within or across applicable documents | Identify the conflicting lines and their sources. Apply explicit instruction precedence and decisions Vasu has already made; bring unresolved choices to Vasu using the grilling skill |
+| Pressure language or hedged requirements | State requirements plainly; reserve emphasis for demonstrated routing failures |
+| Output micromanagement: word ceilings, update cadences, formatting bans | Describe the reader's needs; preserve actual interface limits |
+| Incident patches and migration narratives | Trace their purpose; express current rules and retire obsolete workarounds |
+| Grader language | State the requirement being evaluated |
+| Prompt scaffolds replacing supported API features | Check current capabilities; prefer schemas and configuration where appropriate |
+
+Base removals on the target model and runtime, using history or current documentation. Old-looking wording alone warrants a flag, not deletion. Preserve protections against demonstrated failures. A clean audit can produce no changes.
 
 For unresolved contradictions, show the competing instructions, explain how each changes behavior, and recommend a choice. Grill Vasu until the choice is settled; leave the disputed rule unchanged while continuing independent edits. Record the answer in its owning document and reconcile conflicting copies within scope.
 
-## State the opinion
+## Language
 
-State it. Stop. The agent does not need the paragraph around it.
+State the opinion directly. Include its reason when that reason helps choose between alternatives.
 
-```
-Rambling:  Because prototypes get thrown away, and because build tooling
-           adds setup cost that rarely pays off this early, it is usually...
-Opinion:   - One HTML file. Plain CSS. No build step.
-```
-
-Give the reason only when the reason decides a fork. Otherwise the bullet is the whole instruction.
-
-## Leading words
-
-A **leading word** is one word that carries a whole behavior, because the model already holds its meaning. Repeat the word. Never re-explain it.
-
-| Spelled out | Leading word |
-|---|---|
-| "fast, deterministic, low-overhead" | a **tight** loop |
-| "a failing test you trust to catch this exact bug" | the loop goes **red** |
-| "how far a mistake here can spread" | **blast radius** |
-
-- Reach for a word the model already knows. A coined word carries nothing, so you pay in definition what a pretrained word gives free.
-- Grade the word against the default. "Be thorough" loses to a model that is already thorough-ish. **Relentless** wins.
-- Use the same word in your prompts, your documents, and your code. Shared vocabulary is what makes a skill fire.
-
-Hunt for the passage that collapses into one word.
+Use familiar, consistent vocabulary for concepts shared across prompts, documents and code. Define terms when their meaning is ambiguous; prefer concrete requirements over intensity words or slogans.
 
 ## Form
 
 Choose prose, tables or code blocks for readability. Use headings to separate branches that readers need to find independently.
 
-- Prompt the positive. A prohibition puts the banned behavior into context and makes it more available, not less. Write "match the surrounding style", not "do not invent a new style".
+- Prefer the desired behavior when it makes the instruction clearer. Keep explicit prohibitions when they define a real boundary.
 - Keep a concept whole. Its definition, its rules and its caveats sit under one heading. A reader who lands on one part gets the neighbors free.
-- State what done looks like when it is checkable. "Every changed model has a migration" drives more work than "update the migrations".
+- Define completion through observable results or acceptance criteria.
 - Write standing instructions that remain useful throughout the task, including after context compaction.
 
 ## Layers
 
-A skill is four layers. Each one costs only when reached.
+Keep common guidance in the body, conditional detail in references, and executable automation in scripts.
 
 ```
 <skill>/
-├── SKILL.md                fires with the skill    what every run needs
-├── references/<topic>.md   fires on a pointer      what only some runs need
-└── scripts/<name>.sh       never read. Runs        what no run needs to see
+├── SKILL.md                guidance shared across uses
+├── references/<topic>.md   detail loaded when relevant
+└── scripts/<name>.sh       automation called when needed
 ```
 
-The description is the layer above all three. It is loaded on every turn.
+The description supports discovery before the body is loaded; its availability depends on the client and invocation policy.
 
 Branching is the test. Inline what every branch needs. Move out what only some branches reach.
 
 | The file | Do |
 |---|---|
-| Every run reads all of it | Keep one file. When it runs long, cut lines |
+| Every run needs all of it | Keep one file; remove redundancy without losing useful context |
 | Only some runs reach a section | `references/<topic>.md`. Point at it |
-| A later step tempts the agent to call the job done early | Move the later step out. Out of view, it stops competing |
-| Every run executes it, and no run reads it | `scripts/<name>.sh`. One line calls it |
+| Completion depends on a later action | Keep that completion condition visible; move only its conditional mechanics |
+| Stable logic can be executed without task-specific rewriting | `scripts/<name>.sh`; document its trigger and interface |
 
-```
-Worked: the prototype skill branches Logic and UI.
-        Both branches publish      -> the publish command stays in-file.
-        Only Logic draws a machine -> references/logic.md.
-```
+Give each reference pointer a clear trigger and purpose so required detail is discoverable. Prefer direct links from the entrypoint; avoid chains that obscure what a task needs.
 
-A pointer to a reference is a description too. A must-have file behind a weak pointer is a variance bug: some runs open it, some do not.
-
-```
-See the reference file for more details.        <- the agent decides. It decides no.
-
-Read references/logic.md for the state-machine  <- a trigger.
-notation. Use when the prototype models a flow
-or a backend state machine.
-```
-
-One level deep. A reference that points at a second reference gets a `head -100`, not a read.
-
-Keep `SKILL.md` under 500 lines. A skill that nears it holds a branch it has not moved out.
+Split by relevance rather than a fixed line ceiling. A long section needed only for one branch is a candidate for a reference.
 
 ## Scripts
 
-A script moves out what every run *executes* and no run *reads*. Shell that the agent runs verbatim is a script. Shell that the agent edits for the task stays inline, because it has to see the shape to change it.
+Extract stable commands or repeated logic into scripts. Keep task-specific command shapes visible when the agent needs to adapt them; inspect script implementations when changing or diagnosing them.
 
 Resolve the skill's directory from the loaded `SKILL.md` path, then use an absolute script path. A reference uses its owning skill's directory, not the reference directory. State that directory beside examples so a reader can substitute it; shell working directories can change.
 
@@ -178,26 +123,16 @@ Resolve the skill's directory from the loaded `SKILL.md` path, then use an absol
 "<skill-dir>/scripts/<name>.sh" --flag <arg>
 ```
 
-Say **run** or **see**. "Run `queue-list.sh` for the open issues" executes it. "See `queue-list.sh` for the query" reads it, and a 40-line script becomes 40 loaded lines.
+Distinguish running a script from reading its implementation. Describe what the call returns and when to use it.
 
-- One script with a flag beats two scripts that differ by four lines.
-- Keep the line above the call that says what the script returns and when to run it. The usage comment lives in the script header. The trigger lives in the skill.
-- A shell function dies with the tool call. A script survives, so extracting one deletes the warning the function needed.
+- Share closely related script logic when a flag keeps the interface clear.
+- Keep script usage details in its header and the task trigger in the skill.
+- Use a script when commands must survive across separate shell sessions; do not assume session-local functions persist.
 - Tool grants and variable substitutions are client configuration; use the target client's reference.
-
-```
-Worked: issue-queue held map_tickets() and orphan_issues(), 18 lines of GraphQL.
-
-  ->  scripts/queue-list.sh [--map <n>]     one script, one flag
-      SKILL.md  -26 lines, and the line "paste the function into the
-      watch command" went out with them
-```
-
-Run the script once before you write the line that calls it. An untested script fails in a session you are not watching.
 
 ## Invocation
 
-A skill fires one of two ways. Pick one before you write the description.
+Preserve the existing invocation policy. New skills use automatic discovery unless Vasu requests an explicit-only entrypoint; configure the chosen policy for each client.
 
 | | Model-invoked | User-invoked |
 |---|---|---|
@@ -206,43 +141,17 @@ A skill fires one of two ways. Pick one before you write the description.
 | Context cost | discovery metadata is available before the body | depends on the client; keep metadata short |
 | Reach | another skill can invoke it | you are the only caller |
 
-- Model-invoke a skill when the agent has to reach it on its own, or another skill has to. Use explicit invocation for the remaining entrypoints; configure it for each client.
 - When entrypoints share a procedure, point both at one plain reference. Do not rely on discovery of an explicitly invoked skill to load that procedure.
-- Split a model-invoked skill out of a larger one when it owns a distinct leading word, a word you already type. That word buys the always-loaded description.
-- A task skill can supply a worker's brief. A guideline skill has no task to run. Use the client's supported delegation mechanism.
+- Split a skill when it serves a distinct task with a recognizable trigger, not just a different name for the same workflow.
+- Give workers a concrete task and the relevant skill guidance. Use the client's supported delegation mechanism.
 
 Read the target client's reference when the skill needs arguments, tool grants, a worker, or a path scope. Shared bodies never assume those features transfer between clients.
 
 ## Descriptions
 
-A trigger, not a summary. It sits in context on every turn.
+Tool descriptions are contracts: include parameter meaning, limits, failures and omitted results. Keep conversational steering in the workflow. Skill descriptions route; tool descriptions explain execution.
 
-```
-<what it does>. Use when <trigger>. [Not for <near miss>.]
-```
-
-Three sentences. 30 words. Under budget beats complete. Write the `Not for` clause only for a near miss you can name, one that has already pulled the wrong skill.
-
-```
-50 words:  Drive the agent-browser CLI the house way - one isolated session
-           per task, auth state in .agent-auth/, evidence under
-           .agent-evidence/<task>/. Use when verifying a web UI change,
-           capturing before and after screenshots, or investigating...
-23 words:  Drive a browser and capture evidence. Use when verifying a web UI
-           change in the running app. Not for the agent-browser command
-           reference.
-```
-
-Four cuts get you there:
-
-| Cut | Because |
-|---|---|
-| The paths, the flags, the file names | Sentence one says what it does, not how it works |
-| Every trigger that fires on the same case | Three is plenty. Five means you listed synonyms |
-| The sentence that sells the skill | `The check comes before the code, never after` is body text |
-| The vocabulary that lives only inside the skill | Write the words you would type |
-
-A workflow summary in the description is the worst cut to miss. The agent follows the summary and never opens the body.
+A skill description should identify the capability and the requests that need it. Use words Vasu would type, distinguish nearby skills when misrouting is plausible, and put execution details in the body. Keep it concise without a fixed word or sentence count; preserve the information needed to select the right skill.
 
 ## Project instructions
 
@@ -259,15 +168,18 @@ Keep project instructions short. A procedure in them is a skill that has not bee
 
 ## Verify
 
-A document is not done when it reads well. It is done when it fires.
+Validate the behavior affected by the change. State what was observed and what remains untested.
 
 | You wrote | Check |
 |---|---|
-| a skill | a fresh session. Type the request as you would really type it. Do not name the skill. It fires |
+| an automatically discovered skill | a fresh session with an ordinary request that should select it; observe both selection and execution |
+| an explicitly invoked skill | invoke it as the user would and observe the result |
 | a hook | cause the event. Read what came back |
-| a subagent | spawn it with the brief and nothing else. It returns the artifact, not a question |
+| a subagent | provide the brief and required inputs; observe whether it completes the task or identifies a real missing dependency |
 | a script | run it once by hand, from a directory that is not the skill's |
 
 Use the relevant check to observe the intended behavior. Repeat only when a change, failure or unresolved uncertainty calls for it.
 
-If the skill did not fire, fix the description. The body is not the problem.
+For prompt cleanup that changes behavior, compare representative requests before and after when practical. Measure tokens and latency when making efficiency claims, alongside quality. Trace removed mechanisms through callers and tests within scope.
+
+If a skill is not selected, check discovery, invocation policy and description before rewriting its body. If it is selected but behaves incorrectly, inspect the guidance and required resources.
