@@ -28,6 +28,7 @@ How I want code written lives in the `coding` skill. Load it before you write or
 - Put back what you changed to get the work done: a hook you disabled, a config you flipped.
 - A done report ends with where to look: the URL, the path, the port.
 - A file that is not the deliverable never lands in the repo: a page, a screenshot, a scratch script. It goes under `${TMPDIR:-/tmp}/vimulatus/<task>/`, and `browser-evidence` hosts what has to leave the machine.
+- AWS profiles: `mmi` is the work environment, where `mmierp` is deployed. `personal` is my own. Name one with `--profile` on every AWS call.
 
 ## Branches, commits and pull requests
 
