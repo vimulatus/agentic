@@ -40,6 +40,42 @@ class HookRoutingTest(unittest.TestCase):
                                     input=payload, text=True, capture_output=True, check=True, env=env)
             self.assertEqual(repeat.stdout, "")
 
+    def test_stop_skips_an_mcp_server_and_keeps_a_tool_shell_listener(self):
+        task_dir = Path(tempfile.gettempdir()) / "vimulatus" / "hook-routing"
+        task_dir.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=task_dir) as directory:
+            fixture = Path(directory)
+            # Both listeners reach runtime 500: 900 behind bun, 910 behind zsh.
+            parents = {"900": "901", "901": "500", "910": "911", "911": "500"}
+            comms = {"900": "node", "901": "/usr/bin/bun", "910": "node", "911": "/bin/zsh"}
+
+            def branches(table):
+                return " ".join(f"{pid}) echo {value};;" for pid, value in table.items())
+            commands = {
+                "lsof": "if [ \"$1\" = -a ]; then exit 0; fi\n"
+                        "printf 'p900\ncmcp-server\nn*:4747\np910\ncdevserver\nn*:4567\n'\n",
+                "ps": "\n".join([
+                    'for a in "$@"; do pid="$a"; done',
+                    'case "$*" in',
+                    '  *-E*) echo CLAUDE_CODE_SESSION_ID=port-test;;',
+                    f'  *ppid*) case "$pid" in {branches(parents)} *) exit 1;; esac;;',
+                    f'  *comm*) case "$pid" in {branches(comms)} *) exit 1;; esac;;',
+                    'esac',
+                ]) + "\n",
+            }
+            for name, body in commands.items():
+                command = fixture / name
+                command.write_text("#!/bin/sh\n" + body)
+                command.chmod(0o755)
+            env = dict(os.environ, PLUGIN_ROOT=str(ROOT), TMPDIR=directory,
+                       CLAUDE_PID="500", PATH=f"{fixture}:{os.environ['PATH']}")
+            payload = json.dumps({"session_id": "port-test", "hook_event_name": "Stop"})
+            result = subprocess.run(["bash", str(ROOT / "hooks/ports.sh")],
+                                    input=payload, text=True, capture_output=True, check=True, env=env)
+            reason = json.loads(result.stdout)["reason"]
+            self.assertIn(":4567", reason)
+            self.assertNotIn(":4747", reason)
+
     def test_custom_codex_home_global_symlink_is_skipped(self):
         task_dir = Path(tempfile.gettempdir()) / "vimulatus" / "hook-routing"
         task_dir.mkdir(parents=True, exist_ok=True)
