@@ -24,7 +24,7 @@ Categories organize the source; skill names and invocation remain the same.
 
 | Category | Skills |
 |---|---|
-| [Engineering](skills/engineering) | architecture, blacksmith, browser-evidence, coding, context-engineering, orchestrate, pr, red-green, review, ship, unslop |
+| [Engineering](skills/engineering) | architecture, blacksmith, browser-evidence, bug-hunt, coding, context-engineering, orchestrate, pr, red-green, review, ship, unslop |
 | [Productivity](skills/productivity) | copy, grilling, handout, issue-queue, product-context, prototype, research, slc, status, taste, to-tickets, wayfinder |
 | [Misc](skills/misc) | eli5, teach |
 
