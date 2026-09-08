@@ -58,7 +58,7 @@ exit 1
                                                "detailsUrl": "https://example.com/check", **check}],
                     }))
                     result = subprocess.run(
-                        ["sh", str(ROOT / "skills/pr/scripts/watch-pr.sh"), "1", "example/repo"],
+                        ["sh", str(ROOT / "skills/engineering/pr/scripts/watch-pr.sh"), "1", "example/repo"],
                         text=True, capture_output=True, check=True, env=env, timeout=5,
                     )
                     counts = [int(bucket == name) for name in ("ok", "bad", "pending")]

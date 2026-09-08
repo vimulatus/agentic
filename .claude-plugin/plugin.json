@@ -2,6 +2,11 @@
   "name": "vimulatus",
   "description": "My personal skills, workflows and agents",
   "version": "4.7.0",
+  "skills": [
+    "./skills/engineering",
+    "./skills/productivity",
+    "./skills/misc"
+  ],
   "author": {
     "name": "Vimulatus"
   }

@@ -90,7 +90,8 @@ class HookRoutingTest(unittest.TestCase):
                             expected in names or f"{namespace}:{expected}" in names,
                             f"{client} cannot resolve {names} to {expected}",
                         )
-                        self.assertTrue((ROOT / "skills" / expected / "SKILL.md").is_file())
+                        matches = list((ROOT / "skills").glob(f"*/{expected}/SKILL.md"))
+                        self.assertEqual(len(matches), 1)
 
 
 if __name__ == "__main__":
