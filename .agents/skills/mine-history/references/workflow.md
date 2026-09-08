@@ -57,7 +57,7 @@ Load `orchestrate` to assign each shard to a worker using the current client's w
 > Read the windows in step 6 before counting each session. Return one block per ritual and nothing else.
 >
 > ```
-> Ritual    <name it in four words>
+> Ritual    <short name>
 > Sequence  <the commands, in order>
 > Sessions  <count, with full session files and line coordinates>
 > Fixed     <what never changes>
@@ -114,18 +114,18 @@ Start eight physical lines before and after the recorded line, using the client 
 | A stated rule that lost anyway | rewrite that line. Do not add a second one |
 | How the answer should read | the client reader’s answer-style home |
 | A step the agent skipped, in work a skill already owns | a step in that skill |
-| A command with flags Vasu retypes | one line in the applicable rule file |
+| A command with flags Vasu retypes | a script called by the owning skill; use `context-engineering` for placement |
 | A ritual the agent rebuilds, where the steps are stable but the judgment is not | a new skill |
-| A ritual where nothing varies but the arguments | a script or a CLI, and one line in the applicable rule file that names it |
+| A ritual where nothing varies but the arguments | a script or CLI called from the owning workflow |
 | A ritual that must fire without being asked | a supported hook in the current client; use `context-engineering` to check the event and configuration |
 
-"Every time X happens, do Y" is a hook. A skill fires when the model chooses it. A hook fires because the harness runs it.
+Use `context-engineering` to choose the final home. Recurrence alone does not make a hook: the action must be deterministic and the client must support the required event and enforcement.
 
 One home each. A finding that wants two homes is two findings, or it is one you have not named yet.
 
 ## 8. Report
 
-Per survivor, five lines. Ranked by session count.
+Rank survivors by session count and report the evidence, cause, proposed home and benefit.
 
 ```
 Candidate  <the name, or the rule as one line>

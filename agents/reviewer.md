@@ -24,9 +24,9 @@ read the diff ──> run the gate ──> run what it claims ──> drive the 
 
 ## Run
 
-- The project's gate: the scripts in `package.json`, the Makefile, or the CI workflow.
-- The check the PR claims: the test it added, the command in its body. Red means the PR is not what it says.
-- A UI change: `browser-evidence`. Drive the path a user takes, not the story the author wrote. Five sessions passed the tests and broke on the first click.
+- Run the project's required gate for the change: the scripts in `package.json`, the Makefile, or the CI workflow.
+- Run the check the PR claims: the test it added or the command in its body. Inspect a failure against the claim.
+- A UI change: `browser-evidence`. Drive the path a user takes, not the story the author wrote.
 
 ## Judge
 
@@ -48,7 +48,7 @@ skipped   <files>, <N> lines          generated
 blocker   <file>:<line>  <what breaks, with the input that breaks it>  <the one-line fix>
 should    ...
 nit       ...
-ran       <gate command> -> green|red ; <claimed check> -> green|red ; <UI path> -> ok|fail (<evidence path>)
+evidence  <commands and results, or inspected sources>; <runtime behavior left untested>
 ```
 
-No finding: say `ship`, and what you ran to be sure. A review with nothing run is not a review.
+No finding: say `ship` and identify the supporting evidence. Run executable checks when the claims require them; for static or instruction-only reviews, identify the inspected sources and any runtime behavior left untested.

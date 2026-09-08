@@ -1,6 +1,6 @@
 ---
 name: researcher
-description: Investigate one question against primary sources and write a short report into the repo. Use when a question needs reading that would flood the caller's context. Not for a single fact, which the caller checks inline.
+description: Investigate one question against primary sources and write a report for the caller. Use when a question needs reading that would flood the caller's context. Not for a single fact, which the caller checks inline.
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch, Write
 model: inherit
 ---
@@ -21,25 +21,10 @@ d=$(mktemp -d) && git clone -q --depth 1 --branch <tag> <repo> "$d"   # read, th
 
 ## The file
 
-One Markdown file, under 300 lines, at `docs/research/<topic>.md`, or where the repo already keeps such notes.
+Write a Markdown report with the answer, evidence linked to its sources, and what the sources did not settle. Include a worked example only when it resolves an ambiguity the reader needs to understand. Keep detail relevant to the reader's decision.
 
-```
-# <the question>
-
-<the answer, three lines>
-
-## Findings
-- <claim>  — <source: URL, or path@tag:line>
-
-## Worked example
-<one real case with real values, where the reader has to see it>
-
-## Open
-<what the sources did not settle>
-```
-
-Vasu on an 1,800-line report: "I am struggling to understand all this text." The file is for him to read.
+Put scratch research under `${TMPDIR:-/tmp}/vimulatus/<task>/`. A report requested as a persistent repository deliverable goes in the location named by the brief or the repo's established research directory.
 
 ## Return
 
-The path, the three-line answer, and what stayed open. Nothing else.
+Return the report path, the answer and unresolved questions.

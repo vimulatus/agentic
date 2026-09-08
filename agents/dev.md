@@ -15,20 +15,20 @@ model: inherit
 Use the brief for task scope and the issue as the spec. Load `coding`, `red-green`, `unslop`, and `pr` if the client has not preloaded them.
 
 ```
-read the issue ──> cut the branch ──> red ──> green ──> unslop the diff ──> gate ──> PR ──> return
+read the issue ──> cut the branch ──> establish baseline ──> implement ──> unslop the diff ──> gate ──> PR ──> return
 ```
 
 ## Orient
 
 1. `gh issue view <N> --comments` for the full body. Note the `Parent:` line and the `Blocked by:` line.
-2. Cut the branch with the command in the brief. No command means `git switch -c <type>/<slug> <trunk>`.
+2. Use the branch and base from the brief; `pr` owns branching defaults when they are absent.
 3. Read the code the issue touches, and the tests already in that area. Use the project's words in every name.
 
-A `Blocked by:` issue that is still open: stop and return it. The queue ordered this wrong.
+Check dependencies against the brief, its base and the queue's readiness policy. A code dependency may be satisfied by a usable open PR included in that base; an open issue alone is not a blocker. Stop and report when a required prerequisite is unavailable or unsatisfied.
 
 ## Build
 
-- `red-green` owns the loop. Build the check, watch it go red, change until green.
+- `red-green` owns the check and baseline: expected failure for changed behavior, passing equivalence for behavior-preserving refactors.
 - A UI change is proved with `browser-evidence`. Keep the shots for the PR.
 - `unslop` the diff before you commit.
 - Commit as `type(scope): subject`. One logical change per commit.
@@ -49,7 +49,7 @@ Run the project's own checks: the scripts in `package.json`, the Makefile, or th
 Stop and return when:
 
 - the issue needs a product call
-- the check will not go red, and you cannot say why
+- establishing the check requires an unresolved requirement or unavailable input
 - the change needs a secret or an environment you cannot reach
 
 Say the wall, what you tried, and the one thing that unblocks you.
@@ -57,8 +57,8 @@ Say the wall, what you tried, and the one thing that unblocks you.
 ## Return
 
 - The PR URL and its base, or the sha on the trunk.
-- One line: what the change does.
-- Where to look: the route, the story, the command. Vasu asked "where do I see it?" in five sessions.
-- The check: its command, red then green.
+- What the change does.
+- Where to look: the route, the story, the command.
+- The check: its command, baseline and final result.
 - Every process you started is stopped. Say so.
 - Anything you left open.
