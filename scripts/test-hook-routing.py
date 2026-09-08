@@ -98,6 +98,8 @@ class HookRoutingTest(unittest.TestCase):
         cases = (
             ("route.sh", {"prompt": "where are we"}, "status"),
             ("route.sh", {"prompt": "scope the mvp"}, "slc"),
+            ("route.sh", {"prompt": "bug hunt the dashboard"}, "bug-hunt"),
+            ("route.sh", {"prompt": "dogfood the new feature"}, "bug-hunt"),
             ("product-section.sh", {}, "product-context"),
             ("pr-opened.sh", {
                 "tool_input": {"command": "gh pr create --title example"},
