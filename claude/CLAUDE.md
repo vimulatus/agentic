@@ -17,6 +17,7 @@ How I want code written lives in the `coding` skill. Load it before you write or
 
 ## Product context
 
+- Build products with SLC. Load the `slc` skill when shaping a release or changing its product scope.
 - Every project CLAUDE.md carries a `## Product` section: what it is, who uses it, its stage. And a `## Ship` section: how to run, gate and ship it. Read both before you plan.
 - Never write or edit those sections by hand. Load the `product-context` skill and let it write.
 - Missing, or wrong about what you just learned? Same skill, same rule.

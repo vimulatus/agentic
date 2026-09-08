@@ -31,6 +31,7 @@ Check dependencies against the brief, its base and the queue's readiness policy.
 - `red-green` owns the check and baseline: expected failure for changed behavior, passing equivalence for behavior-preserving refactors.
 - A UI change is proved with `browser-evidence`. Keep the shots for the PR.
 - `unslop` the diff before you commit.
+- The issue or its map carries an SLC brief: load `slc` and compare each scope change with it.
 - Commit as `type(scope): subject`. One logical change per commit.
 
 ## Gate

@@ -97,6 +97,7 @@ class HookRoutingTest(unittest.TestCase):
     def test_skill_references_resolve(self):
         cases = (
             ("route.sh", {"prompt": "where are we"}, "status"),
+            ("route.sh", {"prompt": "scope the mvp"}, "slc"),
             ("product-section.sh", {}, "product-context"),
             ("pr-opened.sh", {
                 "tool_input": {"command": "gh pr create --title example"},

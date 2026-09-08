@@ -16,6 +16,7 @@ route() {   # route <regex> <skill> <what it reads as>
 }
 
 route '\b(review|look at|go through)\b.*\b(pr|prs|pull request|#[0-9]+)\b'                                   review     'a review of a PR someone else opened'
+route '\b(mvp|slc)\b|\b(scope|shape|define|plan) (the |a |our |this )?(first release|v1|release)\b|\bscope (it|this|that|the [a-z ]+) down\b|\bcut (the|this) scope\b|\bready to (release|launch)\b' slc 'a release to shape as simple, lovable and complete'
 route '\b(deploy|release|cut a (new )?(release|version)|publish (the|a|to)|ship it)\b'                       ship       'a change to take to users'
 route '\b(file|create|open|raise|log) (an? |the |new )?(issue|ticket)s?\b'                                   to-tickets 'an issue to file'
 route '\b(what.?s left|what is left|where (are|were) we|remind me|what was this|catch me up|resume)\b'       status     'a return to a project'

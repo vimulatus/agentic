@@ -27,6 +27,7 @@ read the diff ──> run the gate ──> run what it claims ──> drive the 
 - Run the project's required gate for the change: the scripts in `package.json`, the Makefile, or the CI workflow.
 - Run the check the PR claims: the test it added or the command in its body. Inspect a failure against the claim.
 - A UI change: `browser-evidence`. Drive the path a user takes, not the story the author wrote.
+- The PR's issue or map carries an SLC brief: load `slc` and walk its journey against the acceptance checks.
 
 ## Judge
 

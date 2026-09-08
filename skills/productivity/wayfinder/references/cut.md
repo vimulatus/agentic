@@ -17,6 +17,8 @@ A slice is:
 
 Apply rule 4 until it stops splitting. The smallest thing that still passes is the slice.
 
+For product releases, each split must also preserve the SLC brief's destination and reason to prefer. Keep dependent capabilities together when splitting would break either. Login alone can improve an existing product; a new product's first release also needs the job users came to do.
+
 Infrastructure has no slice of its own. It rides along inside the first slice that needs it.
 
 | Candidate | Verdict |
@@ -45,7 +47,7 @@ One issue, labelled `map`. Every ticket is a child of it.
 
 ## Destination
 
-One sentence.
+One sentence. A product release adds the SLC brief's Reason to prefer on one line, then its Acceptance checks, one per line.
 
 ## Slices
 

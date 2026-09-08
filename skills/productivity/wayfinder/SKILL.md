@@ -7,6 +7,8 @@ description: Cut "build X" into releasable slices, then ticket every slice. Use 
 
 You produce the tickets for the whole map. You never write the code.
 
+For product work, load [slc](../slc/SKILL.md) before cutting scope. Its brief's Destination, Reason to prefer, Acceptance checks and Out of scope go into the map. Routine infrastructure work keeps its existing slicing rules.
+
 ## Entry
 
 | The work | Do |
