@@ -2,14 +2,18 @@
 # The listeners this session started, and nobody else's.
 #   Stop        -> reminds the model about remaining listeners using its runtime's output contract
 #   SessionEnd  -> stops them
-# A listener is ours when one of two proofs holds. Anything else is Vasu's or another session's and is never touched.
-#   1. its environment carries this runtime's session id              (every Bash tool child inherits it)
-#   2. its parent chain reaches this session's claude or codex process (a background job the harness still holds)
-# Proof 2 binds to the runtime process that ran this hook, which is the session's own. Run by hand from another
-# session, proof 2 answers for that session: test it with a foreign session_id only from the harness.
+# A listener is ours when its parent chain says a tool call started it. Anything else is Vasu's, an MCP
+# server's or another session's, and is never touched.
+#   chain reaches this session's claude or codex -> ours when a shell sits directly under it. A tool call runs
+#     through a shell; a stdio MCP server is the configured command itself, and drops out with its children.
+#     One residual: an MCP server configured as `sh -c ...` still reads as ours.
+#   chain broke at launchd (nohup, disown) -> ours when its environment carries this runtime's session id.
+# The environment alone proves nothing: claude exports the session id into its MCP servers too.
+# The chain binds to the runtime process that ran this hook, which is the session's own. Run by hand from
+# another session, it answers for that session: test it with a foreign session_id only from the harness.
 # An Apple system binary hides its environment from ps, so one of those, once reparented to launchd, is
 # left alone. A false negative, never a false positive.
-# A subagent runs inside this runtime process, so both proofs hold for its listeners too. The one mark it leaves
+# A subagent runs inside this runtime process, so its listeners read as ours too. The one mark it leaves
 # is its worktree: a listener whose cwd sits under a runtime-managed worktree is that agent's while the worktree stands,
 # and Stop leaves it out of the list. SessionEnd stops it with the rest.
 # Stop speaks only when the set of pid:port pairs differs from the last Stop. The set lives in
@@ -37,14 +41,19 @@ env_has_sid() {
   else ps -E -o command= -p "$1" 2>/dev/null | tr ' ' '\n'; fi \
     | grep -Eq "^(CLAUDE_CODE_SESSION_ID|CODEX_SESSION_ID|CODEX_THREAD_ID)=$sid$"
 }
-descends_from_runtime() {
-  [ -n "$runtime_pid" ] || return 1
-  local p=$1
-  while [ -n "$p" ] && [ "$p" -gt 1 ]; do
-    [ "$p" = "$runtime_pid" ] && return 0
-    p=$(ps -o ppid= -p "$p" 2>/dev/null | tr -d ' ')
-  done
-  return 1
+started_by_this_session() {
+  local p=$1 prev="" comm
+  if [ -n "$runtime_pid" ]; then
+    while [ -n "$p" ] && [ "$p" -gt 1 ]; do
+      if [ "$p" = "$runtime_pid" ]; then
+        comm=$(ps -o comm= -p "$prev" 2>/dev/null)
+        case "${comm##*[-/]}" in sh|bash|zsh|dash|ksh|fish) return 0 ;; *) return 1 ;; esac
+      fi
+      prev=$p
+      p=$(ps -o ppid= -p "$p" 2>/dev/null | tr -d ' ')
+    done
+  fi
+  env_has_sid "$1"
 }
 in_live_worktree() {
   local cwd
@@ -57,7 +66,7 @@ in_live_worktree() {
 mine=""
 while IFS=$'\t' read -r pid port cmd; do
   [ -n "$pid" ] || continue
-  env_has_sid "$pid" || descends_from_runtime "$pid" || continue
+  started_by_this_session "$pid" || continue
   [ "$event" = Stop ] && in_live_worktree "$pid" && continue
   mine="$mine$pid $port $cmd"$'\n'
 done < <(lsof -nP -iTCP -sTCP:LISTEN -Fpcn 2>/dev/null | awk '
