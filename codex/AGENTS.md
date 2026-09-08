@@ -45,5 +45,5 @@ You report. Someone else investigates.
 
 ## Match ceremony to the task
 
-- More than one independent task in a run? Load the `orchestrate` skill. It owns the workers.
+- More than one independent task, or one task that splits into disjoint parts? Load the `orchestrate` skill. It owns the workers.
 - Do ordinary work yourself, in one pass.

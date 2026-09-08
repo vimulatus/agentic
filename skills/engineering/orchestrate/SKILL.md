@@ -1,6 +1,6 @@
 ---
 name: orchestrate
-description: Run workers in parallel and size the fleet to the machine's load. Use when a run holds more than one independent task. Not for one task, which you do yourself.
+description: Run workers in parallel, sized to the machine's load. Use for several independent tasks, or one task that splits into disjoint parts. Not for a chain of dependent steps.
 ---
 
 # Orchestrate
@@ -11,13 +11,27 @@ Delegate for breadth and for adversarial review. Do ordinary work yourself, in o
 
 | Reach for a worker | Do it yourself |
 |---|---|
-| tasks that do not touch each other | one task, however large |
+| tasks that do not touch each other | a chain of steps, each on the last |
+| one task that splits into disjoint parts | the shared contract those parts depend on |
 | a read that would flood your context | a change you are already part way through |
 | a second opinion on your own diff | anything the worker would have to ask you about |
 
 Before spawning workers or starting watches, read the execution reference for the current client: [Claude Code](references/claude.md) or [Codex](references/codex.md). Read only that reference. It owns context inheritance, isolation, process handles, and interruption.
 
 Resolve `<skill-dir>` below to the absolute directory containing this orchestrate `SKILL.md`; substitute the path before running commands.
+
+## The cut
+
+One large task becomes a fleet when it splits by ownership: each worker owns files no other worker touches. Cut by module, package or directory, never by step.
+
+Do the shared contract yourself first: the new signature, the moved interface, the renamed type. Then fan the call sites out to workers.
+
+```
+Worked: rename getUser to fetchUser across 40 packages.
+
+  you      -> the definition and its export, one commit
+  workers  -> one per package. Each fixes its call sites and runs its gate
+```
 
 ## The brief
 
