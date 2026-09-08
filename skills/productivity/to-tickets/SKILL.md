@@ -99,6 +99,8 @@ Never edit a ticket someone is already building. Never close the parent early.
 
 Current behaviour, then expected behaviour. Plain words for a reader who was not in the room. A subtle behaviour gets a worked example with real values. Evidence only from an investigation that already happened: the snippet and the file path.
 
+A screenshot or a recording in a body follows the Embed table in `browser-evidence`: hosted, and `![the claim](<url>)` alone in its paragraph, so it renders inline instead of as a link.
+
 <parent-template>
 
 ## Current behaviour
