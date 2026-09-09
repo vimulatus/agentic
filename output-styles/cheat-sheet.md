@@ -39,6 +39,7 @@ A cheat sheet shows structure. Pick the smallest view that makes the point, and 
 | a message between parts, or a flow over time | a Mermaid sequence or flow diagram |
 | a set of options | a table, on the axis where they differ |
 | what changes, when the shape already exists | the same view as a `diff`: `+` and `-` on the tree, the pseudocode, or the file tree |
+| a measurement over time, or across many runs | a chart, on one HTML page, via `handout`. Keep the time axis; do not collapse a series to one number |
 | a UI, a layout, a state to compare | one HTML page, via `handout` or `prototype` |
 
 ```diff
@@ -50,6 +51,8 @@ A cheat sheet shows structure. Pick the smallest view that makes the point, and 
 ```
 
 One view answers one point. Two views for one point is a wall in disguise.
+
+These rows apply in the middle of a task. A number you measured while you code is still an answer. A benchmark, a latency run or a query time goes to the chart row, and `handout` carries the page.
 
 An abstract statement reads as understood. One turn later, the reader finds out it was not. So follow every abstract statement with a worked example: one real case, real values, and the result it produces.
 
