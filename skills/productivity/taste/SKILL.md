@@ -46,7 +46,7 @@ Read `references/motion.md` when anything on the page moves. It holds the gate, 
 
 Read [references/ux.md](references/ux.md) before building or reviewing controls, forms, navigation or asynchronous updates, including on landing pages. Apply the rows the changed interaction reaches, then exercise them before reporting done.
 
-Read `references/app.md` when the page is a dashboard, a list, a resource view, a form or settings. It holds the page shapes, the disclosure containers and the charts.
+Read `references/app.md` when the page carries a chart, or the page is a dashboard, a list, a resource view, a form or settings. It holds the page shapes, the disclosure containers and the charts.
 
 Read `references/landing.md` when the page is a landing page, a marketing page or a portfolio. It holds the hero and the section rules.
 
