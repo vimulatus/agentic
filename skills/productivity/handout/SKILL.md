@@ -19,7 +19,7 @@ Load `taste` for the layout, the type and the advisor calls. The template carrie
 | A plan to build from | → the `wayfinder` skill. It tickets the slices; the page shows them | |
 | The findings of a long investigation | **Report** | The answer first. The evidence under it. |
 | To understand how something works | **Explainer** | One toy the reader drives. |
-| To understand a topic they are new to | **ELI5** | Big pictures. Few words. One idea per screen. |
+| To understand a topic they are new to | **First principles** | Big pictures. Few words. Real terms, defined in place. |
 | To see it before it is built | **Prototype** | → the `prototype` skill |
 
 ## Progressive disclosure
@@ -41,13 +41,14 @@ Load `taste` for the layout, the type and the advisor calls. The template carrie
 - Sticky nav past five sections.
 - Cite the source next to the claim: `src/pay/refund.ts:42`.
 
-## ELI5
+## First principles
 
-The reader knows nothing about the topic. Assume no term, no acronym, no background.
+The reader is an adult with no background in this topic. Assume no term, no acronym, no analogy.
 
 - The picture carries the idea. The words label the picture.
 - One idea per screen. A screen with two ideas is two screens.
-- Name each thing with a word from the reader's life, then give the real term once, in brackets.
+- Use the real term from its first appearance. Define it in place, with words an earlier screen already gave the reader.
+- Show the real mechanism as a worked example: real inputs, the real steps, the real output. An analogy teaches the analogy, not the topic.
 - Cut every sentence that only a person who already knows the topic can read.
 
 ## Explainer

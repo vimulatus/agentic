@@ -19,7 +19,7 @@ A wrong prediction is the lesson. Say what he expected, what happened, and the o
 
 ## When chat is not enough
 
-A topic that benefits from an interactive toy or a broader reference page: `handout` in ELI5 or Explainer mode. One page, and back to chat.
+A topic that benefits from an interactive toy or a broader reference page: `handout` in First principles or Explainer mode. One page, and back to chat.
 
 ## Never
 
