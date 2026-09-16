@@ -64,6 +64,7 @@ Several **radically different** takes on one route, fast to flip between.
 - 3 to 5 variants. Different structure, not different colors. If two swap in your head, one is wasted.
 - `?v=<n>` is the share link. The arrows wrap. The arrow keys work.
 - Same fake data in every variant.
+- For a design direction, each variant is a canvas of every screen the map needs, so one pick settles the whole product.
 
 ## Skip the polish
 
