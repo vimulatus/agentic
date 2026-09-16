@@ -8,7 +8,7 @@ issue-queue --map <map#>
 
 `issue-queue` runs the tickets in slice order, through `orchestrate` and `dev`, and babysits the PRs. That is the long run Vasu lets loose. It is not this skill's.
 
-An `open:` decision in the map does not wait for the queue. Hand off, and tell Vasu which tickets it holds. Its watch picks them up when they are filed.
+Hand off with the `open:` decisions still open, and name the tickets each one holds. The queue's watch picks them up when they are filed.
 
 Before you hand off, the tickets that are not code:
 
