@@ -6,12 +6,12 @@ Motion is a decision, in this order. Steps 1 and 2 gate the rest: most motion st
 
 | The reader sees it | Decision |
 |---|---|
-| 100+ times a day: a keyboard shortcut, a command palette | No animation. Ever |
+| Repeated throughout the day: a keyboard shortcut, a command palette | Immediate by default; no decorative entrance or exit |
 | Tens of times a day: hover, list navigation | Near-imperceptible, or nothing |
 | Now and then: a modal, a drawer, a toast | Standard |
-| Once: onboarding, a success, a celebration | The delight lives here |
+| Rare or first-time: onboarding, a milestone | Room for expressive motion when it serves the moment |
 
-A keyboard-initiated action never animates. Raycast has no open animation, and that is correct for something opened hundreds of times a day.
+Frequency is a judgment about the workflow, not a measured quota. Keyboard actions get immediate feedback; retain motion only when it explains a meaningful state or spatial change without delaying the next action. Routine success is not an occasion for celebration.
 
 ## 2 — What is it for?
 
@@ -22,15 +22,15 @@ Name one before you continue: **feedback**, **spatial consistency**, **state ind
 | Need | Tool |
 |---|---|
 | Hover, press, colour, a state you toggle with a class | CSS transition |
-| An entrance on mount, no JS state | CSS `@starting-style` |
-| Predetermined motion that must stay smooth while the page loads | CSS animation, off the main thread |
-| Programmatic control with CSS performance | WAAPI, `element.animate()` |
-| A spring, a layout animation, an exit, a gesture | Motion, `motion/react` |
+| An entrance on mount, no JS state | CSS `@starting-style` when supported by the project's browser targets |
+| Predetermined motion | CSS animation |
+| Programmatic playback control | WAAPI, `element.animate()` |
+| Velocity-aware springs or complex gesture handoff | The project's animation library; Motion when a library is needed and none is established |
 
 ## 4 — The properties
 
-- `transform` and `opacity`. They skip layout and paint. `width`, `height`, `margin`, `padding`, `top`, `left` trigger all three. `clip-path` is the sanctioned exception; `height` is tolerated only for an accordion.
-- Enter from `scale(0.95)` and `opacity: 0`, never `scale(0)`. Nothing in the world appears from nothing.
+- Prefer `transform` and `opacity` to avoid layout work. Compositing depends on the browser, content and effect; CSS, WAAPI and library APIs do not guarantee off-main-thread execution. Profile consequential motion under realistic load. Animate layout only when the changing geometry communicates something useful, such as an expanding accordion; inspect clipping and blur for paint cost.
+- If scaling an entrance, start near its resting size, such as `scale(0.95)`, with opacity. Avoid collapsing ordinary UI to `scale(0)`.
 - A popover, a menu, a tooltip scales from its trigger: `transform-origin` at the trigger. A modal is not anchored, so it stays centred.
 - Percentages in `translate()` are relative to the element's own size. `translateY(100%)` moves it by its own height.
 
@@ -43,7 +43,7 @@ Name one before you continue: **feedback**, **spatial consistency**, **state ind
 | Hover, colour | ease |
 | Constant motion: marquee, progress | linear |
 
-`ease-in` never touches UI. It delays the moment the reader is watching. The built-in curves are weak; use these:
+Favor immediate response over slow starts. Inherit the project's curves; these are house starting points when it has none. Judge them at the actual travel distance and duration:
 
 ```css
 --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
@@ -58,24 +58,33 @@ Name one before you continue: **feedback**, **spatial consistency**, **state ind
 | Dropdown, select | 150–250ms |
 | Modal, drawer | 200–500ms |
 
-Routine UI transitions stay under 300ms; modal and drawer transitions may use the table's 200–500ms range. A 180ms dropdown feels faster than a 400ms one. A spring replaces the pair when the motion is a drag, a gesture the reader can reverse, or something that should feel alive: `{ type: "spring", duration: 0.5, bounce: 0.2 }`, bounce between 0.1 and 0.3.
+Routine UI transitions stay under 300ms; modal and drawer transitions may use the table's 200–500ms range. These are starting ranges, not waits before input becomes usable. Springs default to no overshoot; add restrained bounce when momentum or the product's character justifies it. Library spring parameters are not interchangeable physics constants.
 
 ## 6 — Interruption and exit
 
-- A transition, not a keyframe, for anything the reader can fire twice in a second. A transition retargets from where it is; a keyframe restarts from zero.
+- Prefer transitions for rapidly toggled states: retarget from the current appearance. For programmatic animation, explicitly preserve continuity when cancelling or reversing. Do not lock out input to let an animation finish.
 - Exit the way it entered. A toast that slides in from the bottom leaves through the bottom.
 - Slow where the reader is deciding, fast where the system responds: a hold-to-confirm at 2s linear, its release at 200ms ease-out.
-- A group entering together staggers by 30 to 80ms, and never blocks interaction while it plays.
+- Stagger only when sequence helps comprehension or a rare expressive entrance. Keep any offsets short and the total reveal brief; routine lists appear ready to use. Never block interaction while a stagger plays.
+
+## Gestures
+
+Read this section when implementing drag, swipe or sheets. Prefer established accessible components before inventing gesture handling.
+
+- While held, follow the pointer directly and preserve the grab offset. Spring lag belongs in decorative tracking or release motion, not between a functional control and the finger.
+- Capture the active pointer; ignore other pointers and handle cancellation and lost capture. Distinguish scrolling from dragging before committing, and preserve ordinary page scrolling outside the gesture's axis.
+- Estimate release velocity from recent movement, with explicit units and direction. Choose a permitted snap or dismissal target using position and momentum; a quick flick should not need the same travel as a slow drag. Tune to the component instead of copying a universal threshold.
+- Hand release position and velocity to an animation that supports them. Re-grabbing or reversing starts from the current on-screen position without a jump; preserve velocity where the animation API supports it.
+- Use progressive resistance at a soft boundary when it clarifies the limit. Provide tap and keyboard alternatives with the same outcomes.
 
 ## 7 — Ships with the animation
 
-```css
-@media (prefers-reduced-motion: reduce) { .el { animation: fade 200ms ease; } }  /* keep opacity, drop movement */
-@media (hover: hover) and (pointer: fine) { .el:hover { transform: scale(1.05); } } /* touch fires hover on tap */
-```
+For `prefers-reduced-motion: reduce`, remove nonessential travel, scale, parallax and bounce. Use immediate state changes or a short opacity/color transition where it aids comprehension. Override both animations and transitions; do not remove a transform that is needed to position the element. Feedback remains available without motion.
 
-Reduced motion means gentler, not none.
+Gate decorative hover motion with `(hover: hover) and (pointer: fine)`; touch and keyboard retain their own feedback.
+
+Exercise rapid toggle, reversal and dismissal at normal speed. Inspect awkward motion slowed down or frame by frame for jumps, incorrect origins and unsynchronized properties, then restore normal timing. Check reduced motion and realistic load. For gestures, test touch input and cancellation; report when physical-device behavior remains untested.
 
 ## Press feedback
 
-Pointer presses on pressable elements use `transform: scale(0.97)` on `:active`, `transition: transform 160ms var(--ease-out)`. Keyboard activation gets immediate state feedback without a scale animation. Name the property. `transition: all` animates what you did not mean to.
+Give immediate press feedback using the component's established treatment. A subtle scale around `0.97` suits standalone buttons; a surface or border change can fit dense controls better. Keyboard activation gets immediate state feedback without decorative scale. Name the transition properties rather than using `transition: all`.
