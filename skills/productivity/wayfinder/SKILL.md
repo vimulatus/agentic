@@ -35,4 +35,6 @@ Vasu says "from scratch": close the old map and its open tickets, then cut a new
 
 Slices go to ticket depth one at a time, in map order. A slice's decisions land in the map before the next slice opens, so the next slice grills on them and not on guesses.
 
-Done looks like: every slice in the map carries its parent issue number, and every parent has its tickets. Then hand off, L3.
+An `open:` decision in the map holds only the tickets that depend on it; the rest of the slice is filed. The map moves on, and dispatch runs, with the decision open. When Vasu answers, write the answer in the map, file the held tickets under that slice's parent, and the running queue picks them up.
+
+Done looks like: every slice in the map carries its parent issue number, and every parent has its tickets or an `open:` line that names the held ones. Then hand off, L3.
