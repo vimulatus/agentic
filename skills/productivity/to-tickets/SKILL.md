@@ -60,7 +60,7 @@ Give each ticket its **blocking edges**: the work it depends on. Code dependenci
 
 Show the tickets as a numbered list: title, what it delivers, what blocks it. Under it, the calls you made and would take a correction on: the granularity, an edge, a merge or a split. One round, recommended answers, Vasu answers by exception. `grilling` owns the form.
 
-Record reversible planning assumptions in the parent. If a load-bearing decision is unanswered, mark affected tickets blocked for execution and name the decision; continue filing independent work. Do not seek another confirmation for decisions already settled.
+Record reversible planning assumptions in the parent. If a load-bearing decision is unanswered, mark affected tickets blocked for execution and name the decision; continue filing independent work. One exception: a ticket whose body depends on a design direction Vasu has not picked is held, not filed, because the pick rewrites its body. `wayfinder` holds it and files it after the pick. Do not seek another confirmation for decisions already settled.
 
 ## 5 — File
 
