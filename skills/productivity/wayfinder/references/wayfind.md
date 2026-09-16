@@ -26,7 +26,7 @@ Send every blindspot that waits on no other answer to the `research` skill now. 
 
 Call the `grilling` skill on what the research and the map's decisions cannot answer. A question the map answers is settled.
 
-Record reversible planning assumptions in the map as `assumed: <question> — <answer>`. Keep unanswered load-bearing decisions open, mark affected tickets blocked for execution, and continue independent planning. Decisions Vasu already settled need no further confirmation.
+Record reversible planning assumptions in the map as `assumed: <question> — <answer>`. Keep unanswered load-bearing decisions open, mark affected tickets blocked for execution, and continue independent planning. The design direction is the exception: step 4 holds its tickets. Decisions Vasu already settled need no further confirmation.
 
 ## 4. Design direction
 

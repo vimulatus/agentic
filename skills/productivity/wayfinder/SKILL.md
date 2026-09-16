@@ -1,6 +1,6 @@
 ---
 name: wayfinder
-description: Cut "build X" into releasable slices, then ticket every slice. Use when Vasu names work bigger than one ticket, or plans a feature or a migration. Not for a bug or a chore.
+description: Cut "build X" into releasable slices, then ticket every slice. Use when Vasu names work bigger than one ticket, plans a feature or a migration, or answers an `open:` decision in the map, such as picking a prototype variant. Not for a bug or a chore.
 ---
 
 # Wayfinder
@@ -27,6 +27,7 @@ The map is the one open issue labelled `map`. Its state names the level.
 |---|---|---|
 | does not exist | L1 cut | `references/cut.md`, to name the destination and cut the slices |
 | a slice has no parent issue | L2 wayfind | `references/wayfind.md`, to take that slice to its tickets |
+| Vasu has answered an `open:` decision | L2 wayfind | `references/wayfind.md`, step 4: write the answer, file the tickets it held |
 | every slice has a parent issue | L3 dispatch | `references/dispatch.md`, to hand the map to the queue |
 
 Vasu says "from scratch": close the old map and its open tickets, then cut a new one at L1. Never amend a map he has rejected.
