@@ -9,6 +9,8 @@ Make design choices that fit the reader's task and the subject's world. Read the
 
 ## Design decisions
 
+Read the project's `DESIGN.md` before choosing styles or interaction patterns. When implementing UI in a project without one, create it from the existing UI and tokens, or from the chosen direction for a new product. Keep it current as implemented decisions change. Read [references/design-system.md](references/design-system.md) for its contents and maintenance rules. A scoped review reports missing documentation without creating files.
+
 For a new screen or material visual redesign, share the choices that affect the result: palette, type roles, layout, the distinctive element, and changed interaction states. Include a wireframe when it resolves a layout question. Derive these choices from the subject rather than a generic category style.
 
 A behavior fix needs the affected action's pending, success, failure and recovery behavior, including retained input and focus. It does not need a new visual direction or a narrated design plan.
@@ -21,16 +23,28 @@ Use the tool schema to supply the brief and the material being reviewed. If it r
 
 Assess advice against the brief and established design. Apply relevant improvements; explain a material trade-off rather than accepting conflicting advice automatically.
 
-## Build
+## Task checklist
 
-Standards, not a checklist. Each one decides a fork.
+Use this as the task's todo list. Cover each item within the changed scope; mark an item inapplicable when the task does not reach it. A small fix inherits the surrounding system. A review produces findings, not implementation or documentation changes.
+
+- [ ] Read the product context, `DESIGN.md` and the affected UI; identify the user's task and existing conventions.
+- [ ] Establish or inherit the design direction; create or update `DESIGN.md` for implementation work. Share material design choices and use the advisor when required below.
+- [ ] Resolve hierarchy, layout, spacing and density around the primary task.
+- [ ] Set typography roles, colors, shape and elevation using the project's tokens; cover its supported themes.
+- [ ] Follow the affected interaction through discovery, action, waiting, completion, failure and recovery using `references/ux.md`.
+- [ ] Decide whether motion helps; use `references/motion.md` for moving elements and gestures.
+- [ ] Cover keyboard, touch, focus, contrast, reduced motion, enlarged text and responsive layouts.
+- [ ] Exercise the changed flow and inspect the rendered result using the verification section below; fix observed failures.
+- [ ] Reconcile `DESIGN.md` with the result and report exercised behavior, remaining gaps and where to look.
+
+## Design standards
 
 | Axis | The standard |
 |---|---|
 | Hierarchy | Size, weight and contrast carry it. A box, a border, a divider or a number carries information, never decoration |
-| Type | One family, two at most. One scale from one ratio. Lines under 80 characters. Sentence case |
+| Type | One family, two at most. One scale from one ratio. Define roles through size, weight and leading together. Tune tracking to the face and size; body stays near its default. Use optical sizing when the face supports it. Reading lines under 80 characters. Sentence case |
 | Colour | A neutral ramp and one accent, locked for the whole page. Colour carries state, and nothing else |
-| Shape | One radius scale for the page. One shadow, tinted to the ground, or none |
+| Shape and elevation | One radius scale. Flat by default; shadows distinguish raised or overlapping layers. Use a small elevation scale tinted to the ground, with stronger separation only where hierarchy needs it. Translucency must earn its place and remain legible over actual content; provide solid surfaces for reduced transparency and stronger boundaries for increased contrast |
 | Space | One spacing scale. Group by space before you group by line |
 | Theme | One theme per page. Where the project has light and dark, build both and look at both |
 | Density | Minimal by default: what the job needs now on the screen, the rest one tap away. Where the job is dense, the table is dense and the page around it is not. Numbers sit in a table, in tabular figures |
