@@ -4,10 +4,14 @@ The small things are part of the feature. The reader should know what they can d
 
 ## Make the next action apparent
 
+Favor familiarity, agency and visible context: people should know where they are, what they can do next and how to leave. Put controls near what they affect. Hiding a prerequisite to make a screen look sparse adds work for the reader; disclose optional complexity while keeping the common path apparent.
+
 | When | The standard |
 |---|---|
 | A control repeats | Keep its meaning, placement and behavior consistent. Use native links for destinations and buttons for actions; preserve open-in-new-tab and browser Back |
 | Something is interactive | Make it look actionable before hover. Give pressed, selected and expanded states distinct feedback. Keep the visible control and its hit area aligned; reveal ordinary actions without requiring a guessed gesture |
+| A pointer presses a control | Show feedback on press; commit through the control's normal activation behavior. Preserve cancellation when the pointer leaves or the gesture becomes a scroll. Visual feedback must not trigger the action early |
+| Tooltips supplement controls | Keep essential information available without hover. Delay the first hover tooltip, then let adjacent tooltips appear immediately while the tooltip group is active; support focus and dismissal through the component's accessible pattern |
 | A choice needs context | Keep labels, current selections, units and necessary constraints visible beside the choice. Put optional detail behind disclosure; keep prerequisites and consequences visible before commitment |
 | A flow has steps | Show the current step and what remains. Back keeps prior answers. Frequent actions stay easy to reach; shortcuts supplement a visible route |
 | An action is unavailable | Show the reason and how to unblock it near the control. An unexplained disabled button is a dead end |
