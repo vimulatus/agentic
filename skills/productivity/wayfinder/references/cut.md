@@ -63,7 +63,7 @@ Everything Vasu said he might build. Unordered, one line each. An idea becomes a
 
 ## Decisions
 
-One line per answered question, with its answer. A reversible guess starts `assumed:`. A question Vasu has not answered starts `open:` and names what it holds.
+One line per answered question, with its answer. A reversible guess starts `assumed:`. An unanswered question starts `open:`, carries the recommended answer, and names the tickets it holds.
 
 ## Out of scope
 

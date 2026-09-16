@@ -1,6 +1,6 @@
 ---
 name: wayfinder
-description: Cut "build X" into releasable slices, then ticket every slice. Use when Vasu names work bigger than one ticket, plans a feature or a migration, or answers an `open:` decision in the map, such as picking a prototype variant. Not for a bug or a chore.
+description: Cut "build X" into releasable slices, then ticket every slice. Use when Vasu names work bigger than one ticket, plans a feature or a migration, or picks a prototype variant the map holds open. Not for a bug or a chore.
 ---
 
 # Wayfinder
@@ -27,7 +27,7 @@ The map is the one open issue labelled `map`. Its state names the level.
 |---|---|---|
 | does not exist | L1 cut | `references/cut.md`, to name the destination and cut the slices |
 | a slice has no parent issue | L2 wayfind | `references/wayfind.md`, to take that slice to its tickets |
-| Vasu has answered an `open:` decision | L2 wayfind | `references/wayfind.md`, step 4: write the answer, file the tickets it held |
+| Vasu answers an `open:` decision | L2 wayfind | `references/design.md`, to file the tickets it held |
 | every slice has a parent issue | L3 dispatch | `references/dispatch.md`, to hand the map to the queue |
 
 Vasu says "from scratch": close the old map and its open tickets, then cut a new one at L1. Never amend a map he has rejected.
@@ -36,6 +36,6 @@ Vasu says "from scratch": close the old map and its open tickets, then cut a new
 
 Slices go to ticket depth one at a time, in map order. A slice's decisions land in the map before the next slice opens, so the next slice grills on them and not on guesses.
 
-An `open:` decision in the map holds only the tickets that depend on it; the rest of the slice is filed. The map moves on, and dispatch runs, with the decision open. When Vasu answers, write the answer in the map, file the held tickets under that slice's parent, and the running queue picks them up.
+An `open:` decision holds only the tickets that depend on it. The map, and the queue, move on without them.
 
 Done looks like: every slice in the map carries its parent issue number, and every parent has its tickets or an `open:` line that names the held ones. Then hand off, L3.
