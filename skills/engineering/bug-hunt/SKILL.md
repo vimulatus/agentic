@@ -1,59 +1,67 @@
 ---
 name: bug-hunt
-description: Explore a running web app for bugs and UX issues, and report each with a repro, shots and a recording. Use when Vasu says bug hunt, dogfood, QA or find issues. Not for proving one change, which browser-evidence owns.
+description: Explore a running web app for bugs and UX issues with a fleet of persona agents, and report each finding with a repro, shots and a recording. Use when Vasu says bug hunt, dogfood, QA or find issues. Not for proving one change, which browser-evidence owns.
 ---
 
 # Bug hunt
 
-You use the app as its user would, and you report what breaks. Someone else investigates and fixes.
+Personas use the app as its users would, and they report what breaks, what drags and what hides. Someone else investigates and fixes.
+
+Resolve `<skill-dir>` from this skill's loaded `SKILL.md` path, and `<evidence-dir>` from the `browser-evidence` skill's directory. Workers do not inherit either; every brief receives both as absolute paths.
 
 ```
-scope ──> browser-evidence setup ──> explore + document, one pass ──> report ──> file, on Vasu's word
+scope ──┬── environment ──┐
+        │                 ├──> one hunter per persona ──> dedupe + report ──> show ──> file, on Vasu's word
+        └── personas ─────┘
 ```
 
-`browser-evidence` owns the server, the session, auth, capture, hosting and embedding. Load it first. Everything below is the hunt on top of it.
+| Stage | Worker | Model | Brief |
+|---|---|---|---|
+| environment | one | opus | [references/environment.md](references/environment.md) |
+| personas | one, in parallel with environment | opus | [references/personas.md](references/personas.md) |
+| hunt | one per persona, in parallel | sonnet | [references/hunter.md](references/hunter.md) |
+| dedupe | one, after every hunter returns | sonnet | [references/dedupe.md](references/dedupe.md) |
+
+Run the stages with the current client's reference: [Claude Code](references/claude.md) runs the workflow script, [Codex](references/codex.md) runs the same stages as `orchestrate` workers. Each worker reads its own brief from `<skill-dir>/references/`; the brief is the contract, and the client reference only carries the run.
 
 ## Scope
 
-Vasu names the app, and sometimes an area. Read the project's `## Product` section for who the user is, then be that user. No area named: the core workflows first, the edges after.
+Vasu names the app, and sometimes an area. Read the project's `## Product` section for who the app serves; the personas worker turns that into the people who hunt. No area named: the core workflows first, the edges after.
 
-Findings come from the browser: what rendered, what the console said, what a request returned. Do not read the app's source while you explore. The report describes behaviour, and the investigator owns the cause.
+The **task** is a kebab-case slug for this hunt, one per run: `bug-hunt-<app>-<date>`. Everything lands under `${TMPDIR:-/tmp}/vimulatus/<task>/`, nothing in the repo.
 
-## Explore and document
+Findings come from the browser: what rendered, how long it took, what the console said, what a request returned. No worker reads the app's source. The report describes behaviour, and the investigator owns the cause.
 
-One pass. When something is wrong, stop exploring and document it before you move on. A finding that waits for the end of the session is a finding that is lost when the session is.
+## What counts as a bug
 
-| Before you capture | Do |
+A bug is a bug. There is no severity; the class tells the investigator where to look.
+
+| Class | It means |
 |---|---|
-| it happened once | reproduce it once more. A one-off is not a finding |
-| it involves an action, timing or a state change | record the repro, per `browser-evidence`, with a screenshot at each step |
-| it is visible on load: a typo, clipped text, a misaligned row | one screenshot, cropped to the element. No recording |
-| the console or a request failed | capture `console` and `errors`, and quote the line |
+| functional | the app does the wrong thing, errors, or loses data |
+| performance | it works, and the user waits too long: no feedback within 1 s of an action, or a page or action past 3 s |
+| navigation | it works, and the user cannot find it: the goal takes more than 3 hops from where the persona starts, a dead end, or no way back |
+| visual | clipped, misaligned, overlapping or unreadable on the screen |
+| content | a typo, a wrong label, a stale or empty message where one is due |
 
 Depth over count. Five findings a reader can replay beat twenty a reader has to trust.
 
-| Severity | It means |
-|---|---|
-| critical | blocks a core workflow, loses data, or crashes the app |
-| high | a feature is unusable, and there is no workaround |
-| medium | it works, with a workaround or a visible problem |
-| low | cosmetic |
-
 ## The report
 
-Write to `${TMPDIR:-/tmp}/vimulatus/<task>/report.md`, one finding at a time as you go. Host every shot and recording, and embed them by the `browser-evidence` Embed table, so the report reads the same on GitHub as on disk.
+The dedupe worker writes `${TMPDIR:-/tmp}/vimulatus/<task>/report.md`: a findings table, then one block per finding. Two personas hitting the same behaviour is one finding that names both personas.
 
 Each finding is one issue body, in the shape `to-tickets` files:
 
 ```markdown
 ## <verb phrase in the user's words, one line>
 
-**Severity:** critical | high | medium | low
+**Class:** functional | performance | navigation | visual | content
 **Where:** <URL>
+**Seen by:** <persona>, <persona>
 
 ### Current behaviour
 
-What happens, in the fewest clear lines. Quote the console line or the failed request when there is one.
+What happens, in the fewest clear lines. Quote the console line, the failed request, or the measured wait when there is one.
 
 ### Expected behaviour
 
@@ -74,17 +82,20 @@ What the user should see instead.
 [Recording](<url of the .webm>)
 ```
 
-The title names the behaviour, not the guess at the cause: "Search shows no results for a two-word query", not "Search query is not split". Real values in the steps: the text typed, the button clicked, the row that broke.
-
-Open the report with a table of the findings: title, severity, where. Fill it as you go; the counts must match the findings when you stop.
+The title names the behaviour, not the guess at the cause: "Search shows no results for a two-word query", not "Search query is not split". Real values in the steps: the text typed, the button clicked, the row that broke, the seconds waited.
 
 ## Done
 
-Close your session per `browser-evidence`. Then report to Vasu: the path of the report, the findings table, and the one finding that matters most.
+Every hunter closes its own browser session. Then:
 
-Vasu says file: `to-tickets`, one issue per finding. Search first and file, and skip its read-the-code step: the report is the evidence. The `##` line is the issue title and leaves the body; the rest of the block is the body. Add the repo's severity label when it has one.
+1. Stop the server only when the environment worker started it; its return names the stop command. A listener that was there before the run is Vasu's.
+2. `"<evidence-dir>/scripts/check-embeds.sh" <report.md>` passes.
+3. Show Vasu the path of the report and the findings table: title, class, where, seen by.
+
+Vasu says file: `to-tickets`, one issue per finding. Search first and file, and skip its read-the-code step: the report is the evidence. The `##` line is the issue title and leaves the body; the rest of the block is the body.
 
 - [ ] Every finding reproduced twice, and its evidence hosted and embedded.
-- [ ] Console and errors captured on every functional finding.
+- [ ] Console and errors captured on every functional finding; the wait measured on every performance finding.
 - [ ] The findings table matches the findings.
 - [ ] Nothing in the report came from the app's source.
+- [ ] Every browser session this run opened is closed, and every server it started is stopped.
