@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { mkdtempSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync, chmodSync } from "node:fs"
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync, chmodSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import { promote, publish } from "./promote"
+import { promote, publish, stage, writePatch } from "./promote"
 
 const categories = ["engineering", "productivity"]
 
@@ -62,5 +62,25 @@ describe("promote", () => {
     writeFileSync(join(source, "SKILL.md"), "# Coding\n\nA new line.\n")
     expect(promote(source, target, categories)).toBe("updated")
     expect(readFileSync(join(target, "SKILL.md"), "utf8")).toBe("# Coding\n\nA new line.\n")
+  })
+})
+
+describe("stage", () => {
+  test("applies the patch written from an edited copy, deletions included", async () => {
+    const source = mkdtempSync(join(tmpdir(), "promote-"))
+    mkdirSync(join(source, "scripts"))
+    writeFileSync(join(source, "SKILL.md"), "# Evidence\n\nHost it with fs.\n")
+    writeFileSync(join(source, "scripts", "host.sh"), "fs put\n")
+
+    const edited = mkdtempSync(join(tmpdir(), "promote-"))
+    writeFileSync(join(edited, "SKILL.md"), "# Evidence\n\nAttach it with gh.\n")
+
+    const patch = join(mkdtempSync(join(tmpdir(), "promote-")), "evidence.patch")
+    await writePatch(source, edited, patch)
+    const staged = await stage(source, patch)
+
+    expect(readFileSync(join(staged, "SKILL.md"), "utf8")).toBe("# Evidence\n\nAttach it with gh.\n")
+    expect(existsSync(join(staged, "scripts", "host.sh"))).toBe(false)
+    expect(await stage(source)).not.toBe(source)
   })
 })

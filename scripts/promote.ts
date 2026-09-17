@@ -1,11 +1,14 @@
 #!/usr/bin/env bun
 // Promote one skill to the public checkout of vimulatus/skills, then commit it there.
-//   bun run scripts/promote.ts <skill>          SKILLS_REPO overrides the checkout path
-// The public copy is derived: "Vasu" becomes "the user" and the category level folds away.
-// Edit the source here; a promote overwrites the copy.
+//   bun run scripts/promote.ts <skill>                  SKILLS_REPO overrides the checkout path
+//   bun run scripts/promote.ts <skill> --stage          copy the skill to a temp dir, patch applied, and print it
+//   bun run scripts/promote.ts <skill> --patch <dir>    write public/<skill>.patch from the edited copy
+// The public copy is derived: "Vasu" becomes "the user", the category level folds away, and
+// public/<skill>.patch holds what the public copy says differently. Edit the source here or the patch.
 import { $ } from "bun"
 import { createHash } from "node:crypto"
-import { chmodSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs"
+import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs"
+import { tmpdir } from "node:os"
 import { dirname, join, resolve } from "node:path"
 
 type Entry = { rel: string; bytes: Uint8Array; exec: boolean }
@@ -66,6 +69,24 @@ export function promote(source: string, target: string, categories: string[]): "
   return "updated"
 }
 
+// Copy `source` to a fresh dir and apply `patch` to it. With `reject`, hunks that fail land as .rej files.
+export async function stage(source: string, patch?: string, reject = false): Promise<string> {
+  const dir = mkdtempSync(join(tmpdir(), "promote-"))
+  cpSync(source, dir, { recursive: true })
+  if (patch) await $`git -C ${dir} apply -p2 ${reject ? ["--reject"] : []} ${patch}`.quiet()
+  return dir
+}
+
+// Write the diff from `source` to `edited` as a patch that `stage` applies.
+export async function writePatch(source: string, edited: string, out: string) {
+  const dir = mkdtempSync(join(tmpdir(), "promote-"))
+  cpSync(source, join(dir, "a"), { recursive: true })
+  cpSync(edited, join(dir, "b"), { recursive: true })
+  const diff = await $`git -C ${dir} diff --no-index a b`.nothrow().quiet()
+  mkdirSync(dirname(out), { recursive: true })
+  writeFileSync(out, diff.stdout)
+}
+
 // Every markdown link in `dir` that leaves the file and lands nowhere.
 function danglingLinks(dir: string): string[] {
   return walk(dir).flatMap((e) => {
@@ -79,9 +100,9 @@ function danglingLinks(dir: string): string[] {
 }
 
 if (import.meta.main) {
-  const name = process.argv[2]
-  if (!name) {
-    console.error("usage: bun run scripts/promote.ts <skill>")
+  const [name, flag, edited] = process.argv.slice(2)
+  if (!name || (flag === "--patch" && !edited)) {
+    console.error("usage: bun run scripts/promote.ts <skill> [--stage | --patch <dir>]")
     process.exit(2)
   }
 
@@ -92,6 +113,22 @@ if (import.meta.main) {
     console.error(sources.length ? `${name} is in more than one category` : `no skill named ${name} under skills/`)
     process.exit(1)
   }
+
+  const patchPath = join(root, "public", `${name}.patch`)
+  const patch = existsSync(patchPath) ? patchPath : undefined
+  if (flag === "--stage") {
+    console.log(await stage(sources[0], patch, true))
+    process.exit(0)
+  }
+  if (flag === "--patch") {
+    await writePatch(sources[0], edited, patchPath)
+    console.log(`wrote ${patchPath}`)
+    process.exit(0)
+  }
+  const staged = await stage(sources[0], patch).catch(() => {
+    console.error(`${patchPath} no longer applies. Rebuild it: --stage, resolve the .rej files in that dir, then --patch <dir>`)
+    process.exit(1)
+  })
 
   const repo = process.env.SKILLS_REPO ?? resolve(root, "..", "skills")
   if (!existsSync(repo)) await $`gh repo clone vimulatus/skills ${repo}`
@@ -107,7 +144,7 @@ if (import.meta.main) {
   await $`git -C ${repo} pull -q --ff-only`
 
   const target = join(repo, "skills", name)
-  if (promote(sources[0], target, categories) === "unchanged") {
+  if (promote(staged, target, categories) === "unchanged") {
     console.log(`${name} is up to date`)
     process.exit(0)
   }
