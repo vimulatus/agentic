@@ -68,7 +68,7 @@ function danglingLinks(dir: string): string[] {
   return walk(dir).flatMap((e) => {
     if (!e.rel.endsWith(".md")) return []
     const text = utf8.decode(e.bytes)
-    return [...text.matchAll(/\]\(([^)#:]+)\)/g)]
+    return [...text.matchAll(/\]\(([^)#:<]+)\)/g)]
       .map((m) => m[1])
       .filter((link) => !existsSync(resolve(dir, dirname(e.rel), link)))
       .map((link) => `${e.rel} -> ${link}`)
