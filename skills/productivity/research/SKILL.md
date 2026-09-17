@@ -1,6 +1,6 @@
 ---
 name: research
-description: Answer from primary sources - docs, source, specs - inline or as a report. Use when Vasu wants a topic researched, docs read, or a library or vendor claim checked.
+description: Answer from primary sources - docs, source, specs - inline or as a report. Use when the user wants a topic researched, docs read, or a library or vendor claim checked.
 ---
 
 # Research

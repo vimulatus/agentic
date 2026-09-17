@@ -4,7 +4,7 @@ Turn "build X" into an ordered list of slices, then write the map.
 
 ## 1. Name the destination
 
-Name one coherent outcome and who benefits. Ask Vasu to choose when the request contains competing destinations.
+Name one coherent outcome and who benefits. Ask the user to choose when the request contains competing destinations.
 
 ## 2. Cut into slices
 
@@ -37,7 +37,7 @@ Infrastructure has no slice of its own. It rides along inside the first slice th
 
 ## 3. Order them
 
-The first slice is the thinnest one Vasu would actually run. Each slice after it builds on what has landed.
+The first slice is the thinnest one the user would actually run. Each slice after it builds on what has landed.
 
 ## 4. Write the map
 
@@ -59,7 +59,7 @@ A slice gains ` — #<parent>` when its tickets are filed.
 
 ## Ideas
 
-Everything Vasu said he might build. Unordered, one line each. An idea becomes a slice only when Vasu promotes it.
+Everything the user said he might build. Unordered, one line each. An idea becomes a slice only when the user promotes it.
 
 ## Decisions
 

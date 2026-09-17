@@ -1,6 +1,6 @@
 ---
 name: bug-hunt
-description: Explore a running web app for bugs and UX issues, and report each with a repro, shots and a recording. Use when Vasu says bug hunt, dogfood, QA or find issues. Not for proving one change, which browser-evidence owns.
+description: Explore a running web app for bugs and UX issues, and report each with a repro, shots and a recording. Use when the user says bug hunt, dogfood, QA or find issues. Not for proving one change, which browser-evidence owns.
 ---
 
 # Bug hunt
@@ -8,14 +8,14 @@ description: Explore a running web app for bugs and UX issues, and report each w
 You use the app as its user would, and you report what breaks. Someone else investigates and fixes.
 
 ```
-scope ──> browser-evidence setup ──> explore + document, one pass ──> report ──> file, on Vasu's word
+scope ──> browser-evidence setup ──> explore + document, one pass ──> report ──> file, on the user's word
 ```
 
 `browser-evidence` owns the server, the session, auth, capture, hosting and embedding. Load it first. Everything below is the hunt on top of it.
 
 ## Scope
 
-Vasu names the app, and sometimes an area. Read the project's `## Product` section for who the user is, then be that user. No area named: the core workflows first, the edges after.
+The user names the app, and sometimes an area. Read the project's `## Product` section for who the user is, then be that user. No area named: the core workflows first, the edges after.
 
 Findings come from the browser: what rendered, what the console said, what a request returned. Do not read the app's source while you explore. The report describes behaviour, and the investigator owns the cause.
 
@@ -80,9 +80,9 @@ Open the report with a table of the findings: title, severity, where. Fill it as
 
 ## Done
 
-Close your session per `browser-evidence`. Then report to Vasu: the path of the report, the findings table, and the one finding that matters most.
+Close your session per `browser-evidence`. Then report to the user: the path of the report, the findings table, and the one finding that matters most.
 
-Vasu says file: `to-tickets`, one issue per finding. Search first and file, and skip its read-the-code step: the report is the evidence. The `##` line is the issue title and leaves the body; the rest of the block is the body. Add the repo's severity label when it has one.
+The user says file: `to-tickets`, one issue per finding. Search first and file, and skip its read-the-code step: the report is the evidence. The `##` line is the issue title and leaves the body; the rest of the block is the body. Add the repo's severity label when it has one.
 
 - [ ] Every finding reproduced twice, and its evidence hosted and embedded.
 - [ ] Console and errors captured on every functional finding.

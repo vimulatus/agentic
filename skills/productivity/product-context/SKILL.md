@@ -14,7 +14,7 @@ Read only the current client's reference before choosing the file: [references/c
 
 <one line: what it does, and for whom>
 
-**Stage:** <where it is, in Vasu's words>
+**Stage:** <where it is, in the user's words>
 
 - **Users** — who they are, and what they use today instead of this
 - **Works when** — the outcome that means it worked
@@ -54,7 +54,7 @@ Every session that contradicts the section rewrites it, in that session, before 
 | What you learn | What you change |
 |---|---|
 | A user you had not heard of | `Users` |
-| A feature Vasu killed | `Non-goals`, and say why |
+| A feature the user killed | `Non-goals`, and say why |
 | A spike that people now depend on | `Stage`, and raise your rigor to match |
 | Anything that proves a `?` line | Drop the `?` |
 

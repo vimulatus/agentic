@@ -1,15 +1,15 @@
 ---
 name: architecture
-description: Find architectural friction worth fixing. Use when Vasu asks to improve codebase architecture or find refactoring opportunities. Not for implementing an already chosen refactor.
+description: Find architectural friction worth fixing. Use when the user asks to improve codebase architecture or find refactoring opportunities. Not for implementing an already chosen refactor.
 ---
 
 # Architecture
 
-Find changes that make the next change easier. Deliver a recommendation Vasu can judge before designing the implementation.
+Find changes that make the next change easier. Deliver a recommendation the user can judge before designing the implementation.
 
 ## Find the cost
 
-- Start with the area Vasu named. Otherwise, use recent commit history to locate recurring work; churn directs the search, not the verdict.
+- Start with the area the user named. Otherwise, use recent commit history to locate recurring work; churn directs the search, not the verdict.
 - Read the project's own domain terms and relevant recorded decisions wherever they live. Use those names in the findings.
 - Trace a concrete behaviour through its callers, implementation and tests. Record where understanding or changing it requires knowledge scattered across files.
 - Prefer a demonstrated maintenance cost over a hypothetical future need. If nothing warrants a refactor, say so.
@@ -38,10 +38,10 @@ Each candidate carries:
 - The expected testing benefit, migration cost and uncertainty.
 - A recommendation: pursue, investigate further, or leave alone.
 
-Keep proposed signatures for the selected candidate. Deliver the report and ask which opportunity Vasu wants to pursue, unless the request already chose it.
+Keep proposed signatures for the selected candidate. Deliver the report and ask which opportunity the user wants to pursue, unless the request already chose it.
 
 ## Resolve the chosen change
 
 Load `grilling` for the load-bearing decisions. Settle reversible implementation choices yourself. Compare competing designs when they expose a meaningful trade-off.
 
-Finish with the responsibility being moved, the caller contract, the behaviour tests must preserve and the smallest useful migration. Match the next action to Vasu's request: `to-tickets` for filing, `wayfinder` for work spanning tickets, `coding` for implementation. A review request ends with the recommendation.
+Finish with the responsibility being moved, the caller contract, the behaviour tests must preserve and the smallest useful migration. Match the next action to the user's request: `to-tickets` for filing, `wayfinder` for work spanning tickets, `coding` for implementation. A review request ends with the recommendation.

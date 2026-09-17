@@ -6,12 +6,12 @@ description: Land a change as a PR or on the local trunk, and take the PR to rea
 # PR
 
 ```
-  branch ──> commits ──> open ──> watch ──> ready. Vasu merges.
+  branch ──> commits ──> open ──> watch ──> ready. The user merges.
                   │
                   └── no remote, or "no PR" ──> land on the trunk. Done.
 ```
 
-Vasu merges, never you.
+The user merges, never you.
 
 ## 1 — The branch and the commits
 
@@ -37,7 +37,7 @@ The hooks run. `--no-verify` is a red check you hid.
 | The repo | Land it |
 |---|---|
 | has a remote, and nobody said "no PR" | step 3 |
-| has no remote, or Vasu said "local", "no PR", "test locally first" | rebase onto the trunk, run the gate, `git switch <trunk> && git merge --ff-only <branch>`. Report the sha. Done |
+| has no remote, or the user said "local", "no PR", "test locally first" | rebase onto the trunk, run the gate, `git switch <trunk> && git merge --ff-only <branch>`. Report the sha. Done |
 
 ## 3 — Open it
 
@@ -51,7 +51,7 @@ gh pr create --base <base> --title "<title>" --body-file <file>
 | Title | Simple, plain words |
 | Body, first | The problem, in the fewest clear lines |
 | Body, then | How you solved it |
-| `## Assumptions` | Every assumption you made where Vasu would have answered a question. One line each. No assumptions, no section |
+| `## Assumptions` | Every assumption you made where the user would have answered a question. One line each. No assumptions, no section |
 | `Closes #N` | Every issue the PR resolves, not only the one you opened it for |
 | Screenshots | A UI change carries them, before and after. `browser-evidence` takes them, hosts them and writes the embed, so they render inline |
 | Size | What it touches and what can break, never a clock |

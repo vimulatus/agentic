@@ -94,7 +94,7 @@ Text-only pushes need none of this.
 
 ## 6 — Ready
 
-Stop the watch using its retained process handle. Report the PR URL, every thread and comment with what you did and whether it is open, every check that went red and what fixed it, and the issues the PR closes. Then wait. Vasu merges.
+Stop the watch using its retained process handle. Report the PR URL, every thread and comment with what you did and whether it is open, every check that went red and what fixed it, and the issues the PR closes. Then wait. The user merges.
 
 ## 7 — Merged
 
