@@ -31,7 +31,7 @@ lsof -nP -iTCP:<port> -sTCP:LISTEN
 
 | The port | Do |
 |---|---|
-| has a listener | it is Vasu's. Drive it. Never kill it, never start a second one on another port |
+| has a listener | it is the user's. Drive it. Never kill it, never start a second one on another port |
 | is free | start your own, to a log file, and stop it when you are done |
 
 ## One session per task

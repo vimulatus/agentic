@@ -5,7 +5,7 @@ description: Pick the home and write the lines - project instructions, rule, ski
 
 # Context engineering
 
-Keep the workflow and Vasu's preferences shared. Before writing client mechanics, read only the target client's reference: [Claude Code](references/claude.md) or [Codex](references/codex.md). For changes shared by both clients, check both.
+Keep the workflow and the user's preferences shared. Before writing client mechanics, read only the target client's reference: [Claude Code](references/claude.md) or [Codex](references/codex.md). For changes shared by both clients, check both.
 
 Tool names, configuration fields, instruction-file locations and lifecycle assumptions belong in those references. A workflow points to the applicable reference at the step that needs it. Optional tools branch on availability; each required step has a supported way to finish.
 
@@ -61,7 +61,7 @@ When creating or editing agent documents, look for these smells in the draft and
 | Verification rituals: "double-check your work", "verify twice before responding" | Remove generic reassurance and repeated checks. Keep checks tied to an observable result, such as a test command or acceptance criterion |
 | Mandatory procedures and scratchpads: "think step by step", fixed reasoning templates | Remove prescribed thinking steps and scratchpad scaffolds. State the outcome and constraints; keep an ordered procedure only when a real dependency or operational risk requires that order |
 | Stale examples and few-shot scaffolding | Default to no examples. Remove examples that merely rehearse behavior the model already knows; retain only current examples that resolve a specific ambiguity or define a required format |
-| Contradictory rules within or across applicable documents | Identify the conflicting lines and their sources. Apply explicit instruction precedence and decisions Vasu has already made; bring unresolved choices to Vasu using the grilling skill |
+| Contradictory rules within or across applicable documents | Identify the conflicting lines and their sources. Apply explicit instruction precedence and decisions the user has already made; bring unresolved choices to the user using the grilling skill |
 | Pressure language or hedged requirements | State requirements plainly; reserve emphasis for demonstrated routing failures |
 | Output micromanagement: word ceilings, update cadences, formatting bans | Describe the reader's needs; preserve actual interface limits |
 | Incident patches and migration narratives | Trace their purpose; express current rules and retire obsolete workarounds |
@@ -70,7 +70,7 @@ When creating or editing agent documents, look for these smells in the draft and
 
 Base removals on the target model and runtime, using history or current documentation. Old-looking wording alone warrants a flag, not deletion. Preserve protections against demonstrated failures. A clean audit can produce no changes.
 
-For unresolved contradictions, show the competing instructions, explain how each changes behavior, and recommend a choice. Grill Vasu until the choice is settled; leave the disputed rule unchanged while continuing independent edits. Record the answer in its owning document and reconcile conflicting copies within scope.
+For unresolved contradictions, show the competing instructions, explain how each changes behavior, and recommend a choice. Grill the user until the choice is settled; leave the disputed rule unchanged while continuing independent edits. Record the answer in its owning document and reconcile conflicting copies within scope.
 
 ## Language
 
@@ -132,7 +132,7 @@ Distinguish running a script from reading its implementation. Describe what the 
 
 ## Invocation
 
-Preserve the existing invocation policy. New skills use automatic discovery unless Vasu requests an explicit-only entrypoint; configure the chosen policy for each client.
+Preserve the existing invocation policy. New skills use automatic discovery unless the user requests an explicit-only entrypoint; configure the chosen policy for each client.
 
 | | Model-invoked | User-invoked |
 |---|---|---|
@@ -151,7 +151,7 @@ Read the target client's reference when the skill needs arguments, tool grants, 
 
 Tool descriptions are contracts: include parameter meaning, limits, failures and omitted results. Keep conversational steering in the workflow. Skill descriptions route; tool descriptions explain execution.
 
-A skill description should identify the capability and the requests that need it. Use words Vasu would type, distinguish nearby skills when misrouting is plausible, and put execution details in the body. Keep it concise without a fixed word or sentence count; preserve the information needed to select the right skill.
+A skill description should identify the capability and the requests that need it. Use words the user would type, distinguish nearby skills when misrouting is plausible, and put execution details in the body. Keep it concise without a fixed word or sentence count; preserve the information needed to select the right skill.
 
 ## Project instructions
 

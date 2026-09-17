@@ -9,7 +9,7 @@ Name what you do not know that you should know. Give each one its cheapest probe
 | Blindspot | Probe |
 |---|---|
 | What the repo already does here | grep the call sites |
-| What the domain assumes and you do not | ask Vasu |
+| What the domain assumes and you do not | ask the user |
 | What the external API actually returns | read its docs |
 | Who else reads or writes this data | grep the consumers |
 | How it fails in production | read the error paths |
@@ -26,7 +26,7 @@ Send every blindspot that waits on no other answer to the `research` skill now. 
 
 Call the `grilling` skill on what the research and the map's decisions cannot answer. A question the map answers is settled.
 
-Record reversible planning assumptions in the map as `assumed: <question> — <answer>`. Keep unanswered load-bearing decisions open, mark affected tickets blocked for execution, and continue independent planning. Decisions Vasu already settled need no further confirmation.
+Record reversible planning assumptions in the map as `assumed: <question> — <answer>`. Keep unanswered load-bearing decisions open, mark affected tickets blocked for execution, and continue independent planning. Decisions the user already settled need no further confirmation.
 
 ## 4. Tickets
 

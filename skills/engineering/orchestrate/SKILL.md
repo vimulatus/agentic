@@ -50,7 +50,7 @@ Describe the task and constraints; leave implementation steps to the worker.
 
 Before relaying a worker's claim as fact, inspect its supporting artifact, diff or check results. Reproduce a check when that evidence leaves uncertainty about the claim.
 
-When Vasu asks what a worker is doing, answer per worker: the task, how long it has run, what it has changed. "Still running" is not an answer.
+When the user asks what a worker is doing, answer per worker: the task, how long it has run, what it has changed. "Still running" is not an answer.
 
 ## Isolation
 

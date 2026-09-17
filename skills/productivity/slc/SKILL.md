@@ -5,9 +5,9 @@ description: Define and preserve Simple, Lovable, Complete product releases. Use
 
 # SLC
 
-SLC is Vasu's default for product work. Use it to choose the destination of a release and to judge changes to that destination.
+SLC is the user's default for product work. Use it to choose the destination of a release and to judge changes to that destination.
 
-Based on Jason Cohen's [Your customers hate MVPs. Make a SLC instead.](https://longform.asmartbear.com/slc/), adapted to Vasu's planning and building skills.
+Based on Jason Cohen's [Your customers hate MVPs. Make a SLC instead.](https://longform.asmartbear.com/slc/), adapted to the planning and building skills in this collection.
 
 ## The standard
 
@@ -19,7 +19,7 @@ All three are release requirements. Cut breadth before the experience that makes
 
 ## Shape the destination
 
-Describe the users' path from their starting situation to a usable result. A cut that strands them on that path is out. Keep only the capabilities that path or the reason to prefer needs. Explain each consequential exclusion so Vasu can price it.
+Describe the users' path from their starting situation to a usable result. A cut that strands them on that path is out. Keep only the capabilities that path or the reason to prefer needs. Explain each consequential exclusion so the user can price it.
 
 Make lovability concrete: the frustrating alternative, the moment this product improves, and the behavior that shows users value it. An untested claim about preference is a hypothesis.
 

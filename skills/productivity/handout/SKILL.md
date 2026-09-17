@@ -1,6 +1,6 @@
 ---
 name: handout
-description: Answer with one HTML page. Use when Vasu asks for a report or an explainer, or the answer is too long for chat. Not for a prototype, nor for work to build, which wayfinder tickets.
+description: Answer with one HTML page. Use when the user asks for a report or an explainer, or the answer is too long for chat. Not for a prototype, nor for work to build, which wayfinder tickets.
 ---
 
 # Handout
@@ -68,4 +68,4 @@ Read only the delivery reference that matches the available capability:
 - An Artifact tool that publishes HTML is available: read [references/artifact.md](references/artifact.md).
 - Otherwise: read [references/local.md](references/local.md) for a complete standalone HTML file.
 
-Give Vasu the resulting URL or file link, and one line on what is inside. Revise the same file when the page changes.
+Give the user the resulting URL or file link, and one line on what is inside. Revise the same file when the page changes.

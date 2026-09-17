@@ -30,4 +30,6 @@ Categories organize the source; skill names and invocation remain the same.
 
 Repo-maintenance skills stay in `.agents/skills/` and `.claude/skills/`.
 
+Public copies live in [vimulatus/skills](https://github.com/vimulatus/skills). `bun run scripts/promote.ts <skill>` promotes one skill into that checkout, with `public/<skill>.patch` applied where the public copy differs, and its `scripts/release.sh` pushes `main`.
+
 Run `python3 scripts/test-skill-layout.py` after moving skills or changing discovery paths. It checks category layout, matching client inventories, and relative Markdown links. The existing hook-routing and PR-watcher checks cover their skill references and commands.

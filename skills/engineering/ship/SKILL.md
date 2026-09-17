@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Take a merged change to users - deploy, cut a release, publish a package. Use when Vasu asks to deploy, release, cut a version, or asks how a change reaches users.
+description: Take a merged change to users - deploy, cut a release, publish a package. Use when the user asks to deploy, release, cut a version, or asks how a change reaches users.
 ---
 
 # Ship
@@ -29,9 +29,9 @@ git switch <trunk> && git fetch origin && git status -sb    # "behind" or dirty:
 git log --oneline $(git describe --tags --abbrev=0 2>/dev/null || echo HEAD~20)..HEAD
 ```
 
-The log is what ships. Read it. A change Vasu did not name in the ask is still going out: list it.
+The log is what ships. Read it. A change the user did not name in the ask is still going out: list it.
 
-The version: Vasu names the bump, or the log decides. A breaking change is major, a feature is minor, a fix is patch. Packages that version together, version together.
+The version: the user names the bump, or the log decides. A breaking change is major, a feature is minor, a fix is patch. Packages that version together, version together.
 
 ## 3 — Watch the run
 

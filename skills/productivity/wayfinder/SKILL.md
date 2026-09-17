@@ -1,6 +1,6 @@
 ---
 name: wayfinder
-description: Cut "build X" into releasable slices, then ticket every slice. Use when Vasu names work bigger than one ticket, or plans a feature or a migration. Not for a bug or a chore.
+description: Cut "build X" into releasable slices, then ticket every slice. Use when the user names work bigger than one ticket, or plans a feature or a migration. Not for a bug or a chore.
 ---
 
 # Wayfinder
@@ -17,7 +17,7 @@ For product work, load [slc](../slc/SKILL.md) before cutting scope. Its brief's 
 | a few independent issues, no order between them | `to-tickets` files them flat. No map. Stop. |
 | more than that | read the map |
 
-A map for a small problem is the failure Vasu named: "this skill would happily create 10s of tickets for a small problem". Ten tickets is a lot. Twenty is a map that should have been three.
+A map for a small problem is the failure the user named: "this skill would happily create 10s of tickets for a small problem". Ten tickets is a lot. Twenty is a map that should have been three.
 
 ## Read the map
 
@@ -29,7 +29,7 @@ The map is the one open issue labelled `map`. Its state names the level.
 | a slice has no parent issue | L2 wayfind | `references/wayfind.md`, to take that slice to its tickets |
 | every slice has a parent issue | L3 dispatch | `references/dispatch.md`, to hand the map to the queue |
 
-Vasu says "from scratch": close the old map and its open tickets, then cut a new one at L1. Never amend a map he has rejected.
+The user says "from scratch": close the old map and its open tickets, then cut a new one at L1. Never amend a map they have rejected.
 
 ## Walk the map
 

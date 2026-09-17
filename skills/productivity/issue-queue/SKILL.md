@@ -1,6 +1,6 @@
 ---
 name: issue-queue
-description: Work the open GitHub issues to PRs with the dev subagent, and watch for new ones. Use only when Vasu explicitly asks to run the issue queue.
+description: Work the open GitHub issues to PRs with the dev subagent, and watch for new ones. Use only when the user explicitly asks to run the issue queue.
 argument-hint: "[--workers <n>] [--map <n>]"
 ---
 
@@ -12,7 +12,7 @@ Before starting watches or workers, read the current client’s execution refere
 
 Resolve `<skill-dir>` below to the absolute directory containing this issue-queue `SKILL.md`; substitute the path before running commands.
 
-Work the queue until it is empty, then idle on the watch. Stop when Vasu says stop, or when you are **blocked**.
+Work the queue until it is empty, then idle on the watch. Stop when the user says stop, or when you are **blocked**.
 
 ## Scope
 
@@ -49,7 +49,7 @@ Then run `queue-list.sh` once and read every body with `gh issue view <n>`. Each
 | Lane | The issue |
 |---|---|
 | **Ready** | names the current behaviour, the wanted behaviour, and the surface it touches |
-| **Skip** | needs a call only Vasu can make, duplicates another issue, or names no observable change |
+| **Skip** | needs a call only the user can make, duplicates another issue, or names no observable change |
 
 Report the Skip lane, one line each with the reason. Then start the Ready lane on your own.
 
@@ -102,7 +102,7 @@ Run `gh stack sync` again after a PR in the stack merges. It fast-forwards trunk
 
 ## 6 — Babysit the window
 
-Vasu merges the oldest PR first. So the oldest open PR is the only one that can merge next, and a green PR behind it waits either way.
+The user merges the oldest PR first. So the oldest open PR is the only one that can merge next, and a green PR behind it waits either way.
 
 The **window** is the 5 oldest open PRs this queue filed. Run `pr` on those, and only those. This replaces the default: you do not babysit every PR you file.
 
@@ -135,7 +135,7 @@ Never interrupt a `dev` run for an issue that only shares a file. The rebase cos
 
 ## Blocked
 
-Three states are blocked. Report what you tried, take the next independent issue, and come back when Vasu answers.
+Three states are blocked. Report what you tried, take the next independent issue, and come back when the user answers.
 
 - a rebase conflict that requires an unresolved product decision or unavailable input
 - a gate that stays red for a reason the issue did not cause
@@ -149,4 +149,4 @@ When the queue empties, one table: issue, PR, base, state. Then the Skip lane, u
 
 When a `--map` queue empties, the current slice is done. Say so: the next slice waits on `wayfinder`, not on you.
 
-When Vasu says stop or the run ends, stop its queue, PR, and load watches, interrupt its workers, and stop the processes they started. Report the same table with unfinished tasks.
+When the user says stop or the run ends, stop its queue, PR, and load watches, interrupt its workers, and stop the processes they started. Report the same table with unfinished tasks.

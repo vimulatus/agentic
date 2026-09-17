@@ -1,15 +1,15 @@
 ---
 name: handoff
-description: Write the current session down so another session can pick it up. Use only when Vasu invokes it.
+description: Write the current session down so another session can pick it up. Use only when the user invokes it.
 argument-hint: "What will the other session be used for?"
 disable-model-invocation: true
 ---
 
 # Handoff
 
-Write one Markdown file that a fresh session reads first. It holds what that session cannot derive from the repo: where the work stands, what Vasu decided, and what comes next.
+Write one Markdown file that a fresh session reads first. It holds what that session cannot derive from the repo: where the work stands, what the user decided, and what comes next.
 
-| Vasu passed | The file covers |
+| The user passed | The file covers |
 |---|---|
 | an argument | the next session's task, and only the parts of this session it needs |
 | nothing | the whole conversation |
@@ -22,7 +22,7 @@ Lead with the objective and the named next action. Then:
 
 - The working directory, the branch, its base, and the open PR or issue URLs.
 - Uncommitted changes, and what they are for.
-- Each decision Vasu made, with its reason, so the next session does not re-ask.
+- Each decision the user made, with its reason, so the next session does not re-ask.
 - What is open, blocked or untested.
 - Which skills the next session should load, by name.
 
