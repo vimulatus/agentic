@@ -7,7 +7,7 @@ description: Define and preserve Simple, Lovable, Complete product releases. Use
 
 SLC is the user's default for product work. Use it to choose the destination of a release and to judge changes to that destination.
 
-Based on Jason Cohen's [Your customers hate MVPs. Make a SLC instead.](https://longform.asmartbear.com/slc/), adapted to the user's planning and building skills.
+Based on Jason Cohen's [Your customers hate MVPs. Make a SLC instead.](https://longform.asmartbear.com/slc/), adapted to the planning and building skills in this collection.
 
 ## The standard
 

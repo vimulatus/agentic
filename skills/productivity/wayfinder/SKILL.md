@@ -29,7 +29,7 @@ The map is the one open issue labelled `map`. Its state names the level.
 | a slice has no parent issue | L2 wayfind | `references/wayfind.md`, to take that slice to its tickets |
 | every slice has a parent issue | L3 dispatch | `references/dispatch.md`, to hand the map to the queue |
 
-The user says "from scratch": close the old map and its open tickets, then cut a new one at L1. Never amend a map he has rejected.
+The user says "from scratch": close the old map and its open tickets, then cut a new one at L1. Never amend a map they have rejected.
 
 ## Walk the map
 

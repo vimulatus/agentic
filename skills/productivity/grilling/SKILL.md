@@ -21,7 +21,7 @@ A decision is load-bearing when a wrong answer is expensive to undo, or when onl
 | A trade-off the user prices: cost, scope, who gets cut | An edge case with a safe default |
 | Where the plan contradicts itself, or the product | A gap a reasonable assumption closes |
 
-The user does not hold the tech stack, and does not want to. A question he would answer with "you decide" was never load-bearing.
+The user may not hold the tech stack. A question they would answer with "you decide" was never load-bearing.
 
 The filter cuts the volume, not the depth. Grill hard on what passes it: push back, take the other side, find the contradiction.
 

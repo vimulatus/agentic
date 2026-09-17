@@ -75,4 +75,4 @@ Several **radically different** takes on one route, fast to flip between.
 
 Use taste's basic responsive and keyboard floor. Exercise the interactions and simulated states this prototype demonstrates; report its limitations.
 
-Deliver it through `handout`'s applicable delivery reference and give the resulting URL or file link. On the user's own machine, open the file as well. Never a TUI, never a hosted planning tool: one HTML file he can open.
+Deliver it through `handout`'s applicable delivery reference and give the resulting URL or file link. On the user's own machine, open the file as well. Never a TUI, never a hosted planning tool: one HTML file they can open.

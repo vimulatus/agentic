@@ -16,8 +16,8 @@ It prints the trunk, what landed, the open PRs by the user, the open issues, the
 Orient the user with the project, what changed, and the next action. Cover:
 
 1. What this project is. The `## Product` section has it.
-2. What landed since he was last here.
-3. What is open: PRs waiting on him, PRs waiting on a fix, issues with no PR.
+2. What landed since they were last here.
+3. What is open: PRs waiting on them, PRs waiting on a fix, issues with no PR.
 4. The next thing to do, named: a ticket number, a PR to merge, a decision to make.
 
 Include material uncertainty or a blocker when it changes the next action.

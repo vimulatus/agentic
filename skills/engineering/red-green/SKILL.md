@@ -23,7 +23,7 @@ Use an unattended, agent-runnable command that asserts the symptom or requiremen
 
 Keep the check focused and reproducible. Control the clock, randomness and filesystem where they affect the result.
 
-When no command decides the outcome, use the available evidence and state what remains untested. Settle reversible implementation choices yourself. Ask the user when progress requires an unresolved product decision, unavailable access or an action only he can perform; explain the missing input and continue independent work.
+When no command decides the outcome, use the available evidence and state what remains untested. Settle reversible implementation choices yourself. Ask the user when progress requires an unresolved product decision, unavailable access or an action only they can perform; explain the missing input and continue independent work.
 
 ## Establish the baseline
 
