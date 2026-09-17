@@ -12,15 +12,18 @@ type Entry = { rel: string; bytes: Uint8Array; exec: boolean }
 
 const utf8 = new TextDecoder("utf-8", { fatal: true })
 
-// Rewrite one file's text for the public repo. Idempotent.
+// "Vasu" becomes "the user", capitalized where a sentence starts. Idempotent.
+export function rename(text: string): string {
+  return text.replace(/\bVasu\b/g, (_, offset: number, whole: string) => {
+    const sentenceStart = /(?:^|[\n.!?|])[ \t]*(?:[-*]|\d+\.)?[ \t]*(?:\*\*|_)?$/.test(whole.slice(0, offset))
+    return sentenceStart ? "The user" : "the user"
+  })
+}
+
+// Rewrite one file's text for the public repo: the rename, and links that fold the category level away.
 export function publish(text: string, categories: string[]): string {
   const crossCategory = new RegExp(`\\.\\./\\.\\./(?:${categories.join("|")})/`, "g")
-  return text
-    .replace(crossCategory, "../")
-    .replace(/\bVasu\b/g, (_, offset: number, whole: string) => {
-      const sentenceStart = /(?:^|[\n.!?|])[ \t]*(?:[-*]|\d+\.)?[ \t]*(?:\*\*|_)?$/.test(whole.slice(0, offset))
-      return sentenceStart ? "The user" : "the user"
-    })
+  return rename(text).replace(crossCategory, "../")
 }
 
 function walk(dir: string, rel = ""): Entry[] {
