@@ -149,11 +149,14 @@ if (cast.personas.length > personas.length) {
 }
 log(`${env.baseUrl}, server started by ${env.startedBy}, auth ${env.authState}. ${personas.length} persona(s): ${personas.map(p => p.slug).join(', ')}`)
 
+// Hunters never touch the server, so they do not see how to stop it.
+const { stopCommand, ...hunterEnv } = env
+
 // Barrier: dedupe needs every hunter's findings at once.
 const hunts = (await parallel(personas.map(p => () => agent(
   [
     common,
-    `Environment: ${JSON.stringify(env)}`,
+    `Environment: ${JSON.stringify(hunterEnv)}`,
     `Your persona: ${JSON.stringify(p)}`,
     `Your directory: ${taskDir}/${p.slug}/`,
     `Read ${refs}/hunter.md and do what it says. Return exactly its Return object.`,

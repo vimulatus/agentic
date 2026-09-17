@@ -7,7 +7,7 @@ description: Explore a running web app for bugs and UX issues with a fleet of pe
 
 Personas use the app as its users would, and they report what breaks, what drags and what hides. Someone else investigates and fixes.
 
-Resolve `<skill-dir>` from this skill's loaded `SKILL.md` path, and `<evidence-dir>` from the `browser-evidence` skill's directory. Workers do not inherit either; every brief receives both as absolute paths.
+Resolve `<skill-dir>` from this skill's loaded `SKILL.md` path. `<evidence-dir>` is `<skill-dir>/../browser-evidence`, the skill that owns the browser, capture, hosting and embedding. Workers do not inherit either; every brief receives both as absolute paths, and a worker reads `<evidence-dir>/SKILL.md` itself.
 
 ```
 scope ──┬── environment ──┐
