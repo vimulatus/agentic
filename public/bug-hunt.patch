@@ -1,0 +1,42 @@
+diff --git a/a/SKILL.md b/b/SKILL.md
+index a6b32ca..1f123a2 100644
+--- a/a/SKILL.md
++++ b/b/SKILL.md
+@@ -41,7 +41,7 @@ Depth over count. Five findings a reader can replay beat twenty a reader has to
+ 
+ ## The report
+ 
+-Write to `${TMPDIR:-/tmp}/vimulatus/<task>/report.md`, one finding at a time as you go. Host every shot and recording, and embed them by the `browser-evidence` Embed table, so the report reads the same on GitHub as on disk.
++Write to `${TMPDIR:-/tmp}/vimulatus/<task>/report.md`, one finding at a time as you go. Embed every shot and recording by the `browser-evidence` Embed table, against the local file: nothing is attached yet, and `to-tickets` attaches each one when it files the finding.
+ 
+ Each finding is one issue body, in the shape `to-tickets` files:
+ 
+@@ -64,14 +64,15 @@ What the user should see instead.
+ 1. Open <URL>.
+ 2. Type `acme` in the search field and press Enter.
+ 
+-   ![the results list stays empty](<url>)
++   ![the results list stays empty](<local path>)
+ 
+ 3. **Observe:** the list is empty and the console shows `TypeError: results is undefined`.
+ 
+-   ![the console shows the TypeError](<url>)
++   ![the console shows the TypeError](<local path>)
+ 
+-![the whole repro](<url of the GIF>)
+-[Recording](<url of the .webm>)
++The whole repro, start to end.
++
++![the whole repro](<local path of the .webm>)
+ ```
+ 
+ The title names the behaviour, not the guess at the cause: "Search shows no results for a two-word query", not "Search query is not split". Real values in the steps: the text typed, the button clicked, the row that broke.
+@@ -84,7 +85,7 @@ Close your session per `browser-evidence`. Then report to the user: the path of
+ 
+ The user says file: `to-tickets`, one issue per finding. Search first and file, and skip its read-the-code step: the report is the evidence. The `##` line is the issue title and leaves the body; the rest of the block is the body. Add the repo's severity label when it has one.
+ 
+-- [ ] Every finding reproduced twice, and its evidence hosted and embedded.
++- [ ] Every finding reproduced twice, and its evidence captured and embedded.
+ - [ ] Console and errors captured on every functional finding.
+ - [ ] The findings table matches the findings.
+ - [ ] Nothing in the report came from the app's source.

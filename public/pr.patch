@@ -1,0 +1,80 @@
+diff --git a/a/SKILL.md b/b/SKILL.md
+index 34ca0bc..df6756d 100644
+--- a/a/SKILL.md
++++ b/b/SKILL.md
+@@ -53,7 +53,7 @@ gh pr create --base <base> --title "<title>" --body-file <file>
+ | Body, then | How you solved it |
+ | `## Assumptions` | Every assumption you made where the user would have answered a question. One line each. No assumptions, no section |
+ | `Closes #N` | Every issue the PR resolves, not only the one you opened it for |
+-| Screenshots | A UI change carries them, before and after. `browser-evidence` takes them, hosts them and writes the embed, so they render inline |
++| Screenshots | A UI change carries them, before and after. `browser-evidence` takes them and writes the embed; pass each file to `gh pr create` as `--attach <file>` and it renders inline |
+ | Size | What it touches and what can break, never a clock |
+ 
+ ## 4 — Watch it
+diff --git a/a/references/watch.md b/b/references/watch.md
+index 4fa74b4..0d5c5eb 100644
+--- a/a/references/watch.md
++++ b/b/references/watch.md
+@@ -81,14 +81,16 @@ A resolved thread tells the reviewer "handled", so a false one costs them a seco
+ 
+ A screenshot proves the diff that was there when you took it. Every push moves the diff.
+ 
+-After a push that changes what a user sees, retake the shot and swap the URL in the body.
++After a push that changes what a user sees, retake the shot and swap it in place.
+ 
+ ```bash
+ # browser-evidence writes the new shot, then:
+-"<skill-dir>/scripts/refresh-shot.sh" <N> <task> "${TMPDIR:-/tmp}/vimulatus/<task>/after.png"
++"<skill-dir>/scripts/refresh-shot.sh" <N> "${TMPDIR:-/tmp}/vimulatus/<task>/after.png" "<the alt text already in the body>"
+ ```
+ 
+-It uploads under the current sha and swaps the URL. The old URL keeps working.
++It finds the image with that alt text in the body, puts the new file where the old URL was, and attaches it. The old URL keeps working; the body now points at the new one.
++
++A stale recording has no alt text to find by: `--attach` drops it from the body when the video first went in. Retake it, then edit the body by hand: replace the old asset URL, alone in its paragraph, with the new file's absolute path, and run `gh pr edit <N> --body-file <body> --attach <file>`.
+ 
+ Text-only pushes need none of this.
+ 
+diff --git a/a/scripts/refresh-shot.sh b/b/scripts/refresh-shot.sh
+index 2b2356f..992182d 100755
+--- a/a/scripts/refresh-shot.sh
++++ b/b/scripts/refresh-shot.sh
+@@ -1,22 +1,24 @@
+ #!/bin/sh
+-# Re-upload a screenshot under the current sha and swap its URL in the PR body.
+-#   refresh-shot.sh <pr> <task> <file> [sha]
+-# The old URL keeps working, so a reviewer part way through the body keeps the picture.
++# Swap a stale screenshot for a fresh one, keeping its place in the PR body.
++#   refresh-shot.sh <pr> <file> "<alt text>"
++# The old URL is opaque and carries no reference to the file, so the alt text
++# is the anchor: find `![<alt text>](url)` in the body, put the local file
++# back in its place, and let `--attach` upload and rewrite it.
+ set -eu
+-pr=${1:?usage: refresh-shot.sh <pr> <task> <file> [sha]}
+-task=${2:?task slug}
+-file=${3:?path to the new shot}
+-sha=${4:-$(git rev-parse --short HEAD)}
++pr=${1:?usage: refresh-shot.sh <pr> <file> "<alt text>"}
++file=${2:?path to the new shot}
++alt=${3:?the alt text already in the body, exactly as written}
+ 
+-base=$(basename "$file"); stem=${base%.*}; ext=${base##*.}
+-url=$(fs put "$file" --bucket evidence --key "$task/$stem-$sha.$ext")
++esc_grep=$(printf '%s' "$alt" | sed -e 's/[.[\*^$]/\\&/g')
++esc_sed=$(printf '%s' "$alt" | sed -e 's/[.[\*^$&/\]/\\&/g')
+ 
+ body=$(mktemp)
+ gh pr view "$pr" --json body --jq .body > "$body"
+-if ! grep -qE "https://[^ )\"]*/$task/$stem[^ )\"]*\.$ext" "$body"; then
+-  echo "no $task/$stem.$ext URL in the body of #$pr. Uploaded to $url — embed it yourself." >&2
++if ! grep -qE "!\[$esc_grep\]\([^)]+\)" "$body"; then
++  echo "no ![$alt](...) in the body of #$pr. Attach $file and write the reference yourself." >&2
+   exit 1
+ fi
+-sed -E -i.bak "s#https://[^ )\"]*/$task/$stem[^ )\"]*\.$ext#$url#g" "$body"
+-gh pr edit "$pr" --body-file "$body"
+-echo "$url"
++sed -E -i.bak "s#!\[$esc_sed\]\([^)]+\)#![$esc_sed]($(printf '%s' "$file" | sed -e 's/[&/\]/\\&/g'))#" "$body"
++gh pr edit "$pr" --body-file "$body" --attach "$file"
++
++gh pr view "$pr" --json body --jq .body | grep -oE "!\[$esc_grep\]\([^)]+\)"
