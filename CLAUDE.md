@@ -13,8 +13,9 @@ Vasu's personal skills, hooks and agent workflows for Claude Code and Codex, sha
 ## Ship
 
 - **Run** — this is a plugin, with no app server or port. Install using `README.md` and start a new client session to load changes. Codex CLI requires reviewing and trusting new or changed hooks in `/hooks`.
-- **Gate** — run `python3 scripts/test-hook-routing.py`, `python3 scripts/test-watch-pr.py`, and `git diff --check`; exercise a changed skill in a fresh session with an ordinary request, and exercise changed hooks or scripts on their relevant inputs. Check changes in both clients when they affect shared behavior.
+- **Gate** — run `python3 scripts/test-hook-routing.py`, `python3 scripts/test-watch-pr.py`, `bun test scripts`, and `git diff --check`; exercise a changed skill in a fresh session with an ordinary request, and exercise changed hooks or scripts on their relevant inputs. Check changes in both clients when they affect shared behavior.
 - **Ship** — `new` is the release channel for both clients. Load the repo-local `release` skill for releases; `scripts/release.sh` bumps both manifests, commits, tags `v<version>` and pushes. It requires a clean tree on `new`; `sh scripts/release.sh patch -n` previews a patch release without publishing.
+- **Share** — `bun run scripts/promote.ts <skill>` copies one skill into the public [vimulatus/skills](https://github.com/vimulatus/skills) checkout at `../skills` (or `SKILLS_REPO`), with `Vasu` rewritten to `the user`, and commits it there. `scripts/release.sh` in that checkout pushes `main`, which is what consumers install from.
 
 ## Glossary
 
