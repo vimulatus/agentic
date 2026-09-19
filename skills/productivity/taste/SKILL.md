@@ -64,6 +64,8 @@ Read `references/app.md` when the page carries a chart or a data table, or the p
 
 Read `references/landing.md` when the page is a landing page, a marketing page or a portfolio. It holds the hero and the section rules.
 
+Read `references/surface.md` when the page shows images or avatars, or a flat colour surface wants texture. It holds the inset image edge and the grain overlay.
+
 The strings are copy. Load `copy` for them.
 
 ## Use it, then look at it
