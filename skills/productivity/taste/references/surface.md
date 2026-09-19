@@ -21,7 +21,16 @@ Avatars are where it matters most: small, round, and often mostly white.
 
 ## Grain
 
-Grain is a layer of random light and dark pixels over a flat colour. It hides gradient banding and gives the colour texture. It is decoration, so it spends the boldness budget: at most on the distinctive element, never on a data surface, a reading surface or a control.
+Grain is a layer of random light and dark pixels over a flat colour. It hides gradient banding and gives the colour texture. The default is none.
+
+### When
+
+Grain is decoration, so it spends the boldness budget. Add it only when both hold:
+
+- The surface is the page's one distinctive element: a hero, a cover, a single feature panel. One grained surface per page.
+- It fixes something you can see in the screenshot: visible banding on a gradient, or a large block of one saturated colour that reads as an unfinished placeholder.
+
+Never on a data surface, a reading surface, a control, a neutral shadcn surface, or a card that repeats in a grid. A brief that says "premium" or "tactile" is not a reason on its own; the two conditions above still apply. Grain that a second person notices is too strong, so if `0.08` reads as texture rather than tone, lower it or remove it.
 
 | Rule | Value |
 |---|---|
@@ -47,4 +56,4 @@ Grain is a layer of random light and dark pixels over a flat colour. It hides gr
 }
 ```
 
-For the live filter, put the `<filter id="grain">` in one `<svg class="absolute size-0" aria-hidden="true">` on the page and give the overlay `filter: url(#grain)` in place of the background image.
+For the live filter, put the `<filter id="grain">` in one zero-size, hidden `<svg>` anywhere on the page and give the overlay `filter: url(#grain)` in place of the background image.
