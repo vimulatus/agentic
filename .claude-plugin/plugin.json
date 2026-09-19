@@ -1,7 +1,7 @@
 {
   "name": "vimulatus",
   "description": "My personal skills, workflows and agents",
-  "version": "4.11.1",
+  "version": "4.11.2",
   "skills": [
     "./skills/engineering",
     "./skills/productivity",
