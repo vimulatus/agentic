@@ -30,6 +30,7 @@ Name one before you continue: **feedback**, **spatial consistency**, **state ind
 ## 4 — The properties
 
 - Prefer `transform` and `opacity` to avoid layout work. Compositing depends on the browser, content and effect; CSS, WAAPI and library APIs do not guarantee off-main-thread execution. Profile consequential motion under realistic load. Animate layout only when the changing geometry communicates something useful, such as an expanding accordion; inspect clipping and blur for paint cost.
+- Do not add `will-change` by default. Reach for it only after a profile shows a paint or layer problem on that element, set it just before the motion and remove it after, and never on many elements at once or on text.
 - If scaling an entrance, start near its resting size, such as `scale(0.95)`, with opacity. Avoid collapsing ordinary UI to `scale(0)`.
 - A popover, a menu, a tooltip scales from its trigger: `transform-origin` at the trigger. A modal is not anchored, so it stays centred.
 - Percentages in `translate()` are relative to the element's own size. `translateY(100%)` moves it by its own height.
