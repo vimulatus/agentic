@@ -66,7 +66,7 @@ Read `references/landing.md` when the page is a landing page, a marketing page o
 
 Read `references/surface.md` when the page shows images or avatars, or a flat colour surface wants texture. It holds the inset image edge and the grain overlay.
 
-Read `references/type.md` when a number changes or sits in a column, a button carries an icon, or a quote opens a block. It holds tabular figures and optical alignment.
+Read `references/type.md` when a number changes or sits in a column, or a button carries an icon. It holds tabular figures and optical alignment.
 
 The strings are copy. Load `copy` for them.
 

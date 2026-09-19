@@ -27,10 +27,7 @@ Aligning an icon by its bounding box is often wrong, because the box is not wher
 | An icon centred in a button | Blur it heavily in the inspector, or squint. The blob sits at the icon's weight, not its box; move it back to centre by that distance. A play triangle moves left; a star or a download arrow moves up. The amount is per icon, one or two pixels, never a global rule |
 | A button with an icon and a label | The icon has air inside its box, and that air adds to the padding beside it. Shave a few pixels off the padding on the icon side |
 | Shapes in one row | A circle or a triangle drawn in the same box as a square looks smaller. Draw it slightly larger so the weights match |
-| A quote that opens with a quotation mark | The mark is mostly whitespace, so the line looks indented. Hang it: `hanging-punctuation: first`, with `text-indent: -0.42em` where that is unsupported |
 
 ```css
 .play-icon { transform: translateX(1px); }
-blockquote { hanging-punctuation: first; }
-@supports not (hanging-punctuation: first) { blockquote { text-indent: -0.42em; } }
 ```
