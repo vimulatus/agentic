@@ -21,6 +21,7 @@ route '\b(deploy|release|cut a (new )?(release|version)|publish (the|a|to)|ship 
 route '\b(file|create|open|raise|log) (an? |the |new )?(issue|ticket)s?\b'                                   to-tickets 'an issue to file'
 route '\b(what.?s left|what is left|where (are|were) we|remind me|what was this|catch me up|resume)\b'       status     'a return to a project'
 route '\b(i.?m (completely )?blank|i am (completely )?blank|explain .* (basics|from scratch)|teach me|walk me through)\b' teach 'a topic to teach, not code to write'
+route '\bpolish pass\b|\bpolish (the |this |our |my )?([a-z-]+ ){0,2}(flow|app|it)\b'                                                                    polish     'a shipped flow to measure for polish'
 route '\b(landing page|(design|style|restyle|redesign|polish|mock ?up) (the |a |an |this |my |me a |our )?([a-z-]+ ){0,2}(page|screen|ui|component|layout|dashboard|chart|table|form|hero|nav|homepage|site))\b' taste 'a screen to design'
 route '\b(looks?|feels?) (too |very |kinda |a bit )?(generic|boring|ugly|templated|dated|bland|off|like ai)\b|\bmake it (look|feel) (better|nicer|good|great|premium|polished|less generic)\b' taste 'a screen to design'
 route '\b(dogfood|bug hunt|find (the |some |any )?(bugs|issues)|qa (this|the|it|my)|exploratory test)\b'                                    bug-hunt   'an app to explore for bugs and UX issues'
