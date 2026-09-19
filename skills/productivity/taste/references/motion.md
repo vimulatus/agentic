@@ -7,7 +7,7 @@ Motion is a decision, in this order. Steps 1 and 2 gate the rest: most motion st
 | The reader sees it | Decision |
 |---|---|
 | Repeated throughout the day: a keyboard shortcut, a command palette | Immediate by default; no decorative entrance or exit |
-| Tens of times a day: hover, list navigation | Near-imperceptible, or nothing |
+| Tens of times a day: hover, list navigation | Instant. A highlight that follows the pointer gets no transition: a cursor crosses ten nav items a second, and a fade leaves the interface a few frames behind it. A panel flipped forty times a day is in this tier, however it is opened |
 | Now and then: a modal, a drawer, a toast | Standard |
 | Rare or first-time: onboarding, a milestone | Room for expressive motion when it serves the moment |
 
@@ -40,7 +40,7 @@ Name one before you continue: **feedback**, **spatial consistency**, **state ind
 |---|---|
 | Entering or exiting | ease-out |
 | Moving or morphing on screen | ease-in-out |
-| Hover, colour | ease |
+| Colour, where it transitions at all | ease |
 | Constant motion: marquee, progress | linear |
 
 Favor immediate response over slow starts. Inherit the project's curves; these are house starting points when it has none. Judge them at the actual travel distance and duration:
