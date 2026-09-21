@@ -42,5 +42,5 @@ Bold is wider than regular. A nav link that turns bold when selected pushes its 
 
 ```css
 .nav a { display: inline-flex; flex-direction: column; }
-.nav a::after { content: attr(data-text); font-weight: 600; height: 0; overflow: hidden; visibility: hidden; }
+.nav a::after { content: attr(data-text); font-weight: 600; /* the selected weight */ height: 0; overflow: hidden; visibility: hidden; }
 ```

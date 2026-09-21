@@ -41,4 +41,4 @@ Any page with a public URL: the landing page, a doc, a public share link. A link
 |---|---|
 | Tags | Open Graph title, description and image on every public page |
 | Format | PNG or JPEG at 1200 by 630. WebP renders on some platforms and not on others |
-| Safe zone | Text and logo stay in the centre 1000 by 500. Platforms crop the rest |
+| Safe zone | Text and logo stay in the centre 1000 by 500. Platforms crop the rest, and a square thumbnail crops tighter |

@@ -25,7 +25,7 @@ Content scrolls under a sticky header, or past the end of a scrolling container.
 
 | Rule | Value |
 |---|---|
-| Plain text under the header | a gradient mask, ground colour to transparent |
+| Plain text under the header | a gradient overlay, ground colour to transparent |
 | Photos, colour or detail under the header | a progressive blur: three stacked `backdrop-filter` layers, each masked to its own band, blur rising toward the edge. It fades the detail, not the colour, so nothing looks washed out |
 | Backdrop blur on the header | lower it while the reader scrolls, restore it 120ms after the scroll stops. Heavy blur in motion costs GPU and reads as stutter |
 | A fade on a scrollable container | ends before the scrollbar. Mask the content element, not the scroller, or inset the mask by the scrollbar's width |
