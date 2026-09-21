@@ -21,14 +21,11 @@ Avatars are where it matters most: small, round, and often mostly white.
 
 ## Scroll edge
 
-Content scrolls under a sticky header, or past the end of a scrolling container. The edge decides whether the cut looks placed or accidental.
+Content scrolls under a sticky header, or past the end of a scrolling container. Three rules decide whether the cut looks placed or accidental.
 
-| Rule | Value |
-|---|---|
-| Plain text under the header | a gradient overlay, ground colour to transparent |
-| Photos, colour or detail under the header | a progressive blur: three stacked `backdrop-filter` layers, each masked to its own band, blur rising toward the edge. It fades the detail, not the colour, so nothing looks washed out |
-| Backdrop blur on the header | lower it while the reader scrolls, restore it 120ms after the scroll stops. Heavy blur in motion costs GPU and reads as stutter |
-| A fade on a scrollable container | ends before the scrollbar. Mask the content element, not the scroller, or inset the mask by the scrollbar's width |
+- Fade the detail, not the colour. A gradient overlay in the ground colour works on plain text and washes out photos and saturated UI. Elsewhere, a progressive blur: stacked `backdrop-filter` layers, each masked to its own band, blur rising toward the edge.
+- Blur costs while things move. Lower it while the reader scrolls and restore it once the scroll settles; heavy blur in motion reads as stutter.
+- An edge effect never covers a control. The fade ends before the scrollbar: mask the content, not the scroller.
 
 ```css
 /* .scroll-edge sits inside the sticky header, so it stays at the top while the content scrolls under it */

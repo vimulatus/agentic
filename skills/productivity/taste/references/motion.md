@@ -63,8 +63,7 @@ Routine UI transitions stay under 300ms; modal and drawer transitions may use th
 ## 6 — Interruption and exit
 
 - Prefer transitions for rapidly toggled states: retarget from the current appearance. For programmatic animation, explicitly preserve continuity when cancelling or reversing. Do not lock out input to let an animation finish.
-- Exit the way it entered. A toast that slides in from the bottom leaves through the bottom. An item expanded from a grid returns to its cell, at the cell's current position if the page scrolled meanwhile.
-- A button that morphs into a field keeps the cursor steady until the morph ends: the field takes `pointer-events: none` while it transitions.
+- Continuity holds through the transition. A thing exits the way it entered and returns to where it came from, at that place's current position if the page scrolled. The cursor keeps its shape until a morph ends: the field takes `pointer-events: none` while it transitions.
 - Slow where the reader is deciding, fast where the system responds: a hold-to-confirm at 2s linear, its release at 200ms ease-out.
 - Stagger only when sequence helps comprehension or a rare expressive entrance. Keep any offsets short and the total reveal brief; routine lists appear ready to use. Never block interaction while a stagger plays.
 

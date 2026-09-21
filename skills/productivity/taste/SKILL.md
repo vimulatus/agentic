@@ -46,8 +46,7 @@ Use this as the task's todo list. Cover each item within the changed scope; mark
 | Colour | A neutral ramp and one accent, locked for the whole page. Colour carries state, and nothing else |
 | Shape and elevation | One radius scale. Flat by default; shadows distinguish raised or overlapping layers. Use a small elevation scale tinted to the ground, with stronger separation only where hierarchy needs it. Translucency must earn its place and remain legible over actual content; provide solid surfaces for reduced transparency and stronger boundaries for increased contrast |
 | Space | One spacing scale. Group by space before you group by line |
-| Theme | One theme per page. Where the project has light and dark, build both and look at both. An image that carries its own ground gets a version per theme: `<picture>` with a `prefers-color-scheme` source, or the theme class |
-| Selection | Style `::selection` from the accent at low opacity, on both themes. Selected text stays legible |
+| Theme | One theme per page. Where the project has light and dark, build both and look at both, down to the images that carry their own ground and the selected text: a `<picture>` source per theme, `::selection` from the accent |
 | Density | Minimal by default: what the job needs now on the screen, the rest one tap away. Where the job is dense, the table is dense and the page around it is not. Numbers sit in a table, in tabular figures |
 | Disclosure | Optional explanations open on tap and on keyboard, anchored to their trigger: a popover, an accordion, a sheet. Prerequisites and consequences stay visible before commitment. Hover has no thumb |
 | Components | shadcn/ui is the house look. React installs it, the rest borrows the look, and the tokens come from the project's install |
