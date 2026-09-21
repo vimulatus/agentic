@@ -16,7 +16,7 @@ Name it in the plan: the one question the screen answers, or the one action it t
 | Form | One column, the label above the field, one action at the end. The error sits under its field | the advanced fields, in a closed section with a summary |
 | Settings | Sections in the order the reader changes them. Each section saves itself, or one save for the page. Never both | the danger zone, at the end, behind its own confirmation |
 
-A wide table draws a row-and-column guide under the pointer. While a click highlights a cell, the guide fades, so the highlight reads alone.
+A wide table draws a row-and-column guide under the pointer. While a click highlights a cell, the guide hides, so the highlight reads alone.
 
 ## Disclosure
 
