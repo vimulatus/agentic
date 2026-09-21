@@ -15,7 +15,7 @@ Favor familiarity, agency and visible context: people should know where they are
 | A choice needs context | Keep labels, current selections, units and necessary constraints visible beside the choice. Put optional detail behind disclosure; keep prerequisites and consequences visible before commitment |
 | A flow has steps | Show the current step and what remains. Back keeps prior answers. Frequent actions stay easy to reach; shortcuts supplement a visible route |
 | A shortcut is offered | Modifier plus key by default. A bare key, `F` for find, suits a view with no editable field, a high-frequency action and readers who value speed; it never fires while focus is in a field. Where labels have no room, holding the modifier reveals the shortcut list |
-| An action is unavailable | Show the reason and how to unblock it near the control. An unexplained disabled button is a dead end. Let a press on it answer: `aria-disabled` keeps the click arriving, so the control can shake briefly and surface the reason. Under reduced motion, the reason alone |
+| An action is unavailable | Show the reason and how to unblock it near the control. An unexplained disabled button is a dead end. A press on it reinforces that reason: `aria-disabled` keeps the click arriving, so the control can shake briefly and point at the reason. Under reduced motion, no shake |
 | Searching | Scope by where the reader stands: "John" in mail finds messages, in contacts a person. Rank by intent, not the exact term, so nobody learns the product's vocabulary first |
 | An action affects several items | Show the selection count and whether the scope is this page, selected items or all matches. Make clearing selection easy. After partial failure, distinguish what succeeded from what still needs action |
 
@@ -24,10 +24,10 @@ Favor familiarity, agency and visible context: people should know where they are
 | When | The standard |
 |---|---|
 | Entering data | Persistent, associated labels; required or optional status; suitable input type, input mode and autocomplete. Accept paste and unambiguous formatting. Keep identifiers with leading zeros as text. Reuse information already supplied; let the reader correct it |
-| The input can read its content | Let it. A URL renders a preview: Open Graph for an external link, the record itself for the product's own private link. A regex shows its live matches beside it. A value in one unit shows the other, `°C` beside `°F`. `->` renders as an arrow. Enter does what the content implies. Cut takes a word's trailing space; paste restores the spaces around it |
-| Entering a time | Read it as the reader means it. At 1 am, "tomorrow at 9" means after this sleep: today, 9 am. An 8:00 entered at 2 pm asks whether 8 pm was meant. "Tomorrow morning" resolves to a waking hour |
+| The input can read its content | Let it. A URL renders a preview: Open Graph for an external link, the record itself for the product's own private link. A value in one unit shows the other, `°C` beside `°F`. In a text editor, a regex shows its live matches, `->` renders as an arrow, and cut and paste keep the spaces between words right |
+| Entering a time | Read it as the reader means it. At 1 am, "tomorrow at 9" means after this sleep: today, 9 am. An 8:00 entered at 2 pm asks whether 8 pm was meant |
 | Input has a length limit | Let the reader finish the thought. Never cut input at the limit; show the count over it, `15/12`, and disable Save with that count as its visible reason |
-| Signing in | One email field, password optional. A blank password sends a link or a code; a filled one signs in at once. One form carries both routes |
+| Signing in with a password or a link | Where the product offers both, one form carries both: one email field, password optional. A blank password sends the link or code; a filled one signs in at once |
 | An id is shown to the reader | Build it from words, `brave-otter-41`, so it can be read aloud and typed. An id the reader never sees stays random |
 | Checking before commitment | For consequential submissions, show the actual values and scope before confirming. Let the reader edit the relevant answer and return to review with the rest intact; revisit only steps affected by that change |
 | Validating | Default to validation on submit. Earlier feedback earns its place when it prevents wasted work. Keep entered values; associate errors with fields. On failed submit, focus the error summary for a long form, or the first invalid field for a short one |

@@ -57,8 +57,6 @@ Use this as the task's todo list. Cover each item within the changed scope; mark
 
 Spend the boldness in one place. The distinctive element is the one that speaks. Everything around it stays disciplined.
 
-An easter egg for the habitual reader is welcome when it sits off the task's path and costs nothing to miss.
-
 Read `references/motion.md` when anything on the page moves. It holds the gate, the curves and the durations.
 
 Read [references/ux.md](references/ux.md) before building or reviewing controls, forms, navigation or asynchronous updates, including on landing pages. Apply the rows the changed interaction reaches, then exercise them before reporting done.
@@ -67,7 +65,7 @@ Read `references/app.md` when the page carries a chart or a data table, or the p
 
 Read `references/landing.md` when the page is a landing page, a marketing page or a portfolio, or it has a public URL that gets shared. It holds the hero, the section rules and the link card.
 
-Read `references/surface.md` when the page shows images or avatars, content scrolls under a sticky header, or a flat colour surface wants texture. It holds the inset image edge, the scroll edge and the grain overlay.
+Read `references/surface.md` when the page shows images or avatars, content scrolls under a sticky header, a scrolling container fades at its edge, or a flat colour surface wants texture. It holds the inset image edge, the scroll edge and the grain overlay.
 
 Read `references/type.md` when a number changes or sits in a column, a button carries an icon, or text changes weight on selection. It holds tabular figures, optical alignment and the reserved bold width.
 

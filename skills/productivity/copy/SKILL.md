@@ -60,7 +60,7 @@ Your stack is not the reader's business. Name the thing they see, never the thin
 - Second person, present tense, imperative: "Open **Settings**".
 - Passive voice hides the actor. "queries are validated" becomes "the compiler validates queries".
 - Precision does not save a line. A sentence that fits any other project says nothing about this one, and a sentence that fits nowhere else can still change nothing. Both go.
-- A label names the thing, a guide step names the action: the menu item says "Settings", the step says "Open **Settings**". A label carries a verb only where there is no object: "Log out".
+- A destination names the thing, an action names the verb, a guide step names the action: the menu item says "Settings", the button says "Log out", the step says "Open **Settings**".
 - Near-synonyms are not interchangeable. "Send" and "Submit" tell different stories about the same action; pick the one that matches what happens.
 - One concept, one word, across the product: "Remove member" everywhere, never "Remove" here and "Delete user" there.
 - A platform's badge keeps the platform's words: "Download on the App Store", "Get it on Google Play".
@@ -70,7 +70,7 @@ Your stack is not the reader's business. Name the thing they see, never the thin
 
 | Surface | The What is |
 |---|---|
-| Button, menu item, tab | the action, one or two words |
+| Button, menu item, tab | the action, or the destination, one or two words |
 | Empty state | what goes here, and the one action that puts it there |
 | Error, toast | what happened, then what the reader does |
 | Tooltip, help popover | what this control does |

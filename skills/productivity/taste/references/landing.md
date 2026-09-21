@@ -26,7 +26,6 @@ The logo wall, the trust line, the pricing teaser and the avatar row live in the
 - A grid has exactly as many cells as there is content. An empty cell means the grid is the wrong shape.
 - A grid of six identical text cards is a wall. Two or three cells carry an image, a tint or a pattern.
 - Use the shortest quote that carries the claim, with a name and a role.
-- One label per intent. "Get in touch" in the nav and "Contact us" in the footer are the same button; give them the same words.
 
 ## The chrome
 
