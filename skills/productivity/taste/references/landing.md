@@ -20,11 +20,9 @@ The logo wall, the trust line, the pricing teaser and the avatar row live in the
 
 ## The sections
 
-- One layout family appears once. Eight sections use at least four families: full width, split, stacked, grid, marquee, quote.
-- Two image-and-text splits in a row is the cap. The third is a different family.
+- Vary the layout family. Two of one family in a row is the cap, and eight sections use at least four families: full width, split, stacked, grid, marquee, quote.
 - A small label above a heading appears on at most one section in three. The heading alone is enough; the section's place on the page already categorises it.
-- A grid has exactly as many cells as there is content. An empty cell means the grid is the wrong shape.
-- A grid of six identical text cards is a wall. Two or three cells carry an image, a tint or a pattern.
+- A grid has exactly as many cells as there is content, and two or three of them carry an image, a tint or a pattern. An empty cell means the grid is the wrong shape; six identical text cards is a wall.
 - Use the shortest quote that carries the claim, with a name and a role.
 
 ## The chrome

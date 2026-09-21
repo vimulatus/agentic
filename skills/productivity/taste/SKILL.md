@@ -89,15 +89,12 @@ What a model draws when nobody decides. Each one is right for some brief and a d
 
 | The tell | What it stands in for |
 |---|---|
-| Cream ground, serif display, terracotta accent | the palette that answers every "premium" brief |
-| Near-black ground, one acid-green or vermilion accent | the palette that answers every "tech" brief |
-| Purple-to-blue gradient, a glow, a mesh background | the accent nobody chose |
+| A palette picked by the brief's genre word: cream ground, serif display and terracotta accent for "premium"; near-black ground and one acid-green or vermilion accent for "tech"; a purple-to-blue gradient, a glow or a mesh background when the brief has none | the palette nobody chose |
 | Identical rounded cards in a row of three, one grey shadow each | grouping by box instead of by space |
 | A tracked-out ALL-CAPS eyebrow above every heading | a label where the heading already says it |
 | One word of a heading in italic, bold or a colour | emphasis the sentence did not earn |
 | Middle dots between meta strings, an arrow after link text | template chrome |
-| A big number, a small label, a gradient wash | the hero nobody decided |
-| Four stat cards in a row, each with an icon, a sparkline and a green arrow | the dashboard nobody decided |
+| An opener that answers the page type instead of the subject: a big number, a small label and a gradient wash for a hero; four stat cards in a row, each with an icon, a sparkline and a green arrow, for a dashboard | the first screen nobody decided |
 | Help that shows on hover | an explanation the phone never gets |
 | Fade-and-slide-up on every section, hover lift on every card | motion that answers no one |
 | `John Doe`, `Acme`, `99.99%`, "Elevate", "Seamless" | content nobody wrote |
