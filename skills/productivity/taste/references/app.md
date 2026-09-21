@@ -25,7 +25,7 @@ A wide table draws a row-and-column guide under the pointer. While a click highl
 | The reader needs | The container | It opens on |
 |---|---|---|
 | a term or a number explained | a popover, anchored to its trigger | tap, click and keyboard. It closes on an outside tap or Escape |
-| a section they may skip | an accordion, closed. The summary states the outcome. Collapse it with `hidden="until-found"` and open on `beforematch`, so find-in-page reaches the content; `display: none` hides it from search | tap |
+| a section they may skip | an accordion, closed. The summary states the outcome. Where the component allows, collapse it with `hidden="until-found"` and open on `beforematch`, so find-in-page reaches the content; `display: none` hides it from search | tap |
 | an announcement they may want back: what's new, a tip | a panel that collapses to a pill, never a close that loses it | its own toggle |
 | to create or edit without leaving the list | a sheet from the side, or a dialog for a form under five fields | the row's action |
 | to confirm a loss | a dialog that names what goes away, in numbers | the destructive action |

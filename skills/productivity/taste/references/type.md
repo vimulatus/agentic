@@ -37,7 +37,7 @@ Aligning an icon by its bounding box is often wrong, because the box is not wher
 Bold is wider than regular. A nav link that turns bold when selected pushes its neighbours over. Reserve the bold width at both weights: an invisible `::after` carries the same text at the bold weight, so the box is always bold-sized.
 
 ```html
-<a data-text="Projects">Projects</a>
+<nav class="nav"><a data-text="Projects">Projects</a></nav>
 ```
 
 ```css
