@@ -35,10 +35,6 @@ The logo wall, the trust line, the pricing teaser and the avatar row live in the
 
 ## The shared link
 
-Any page with a public URL: the landing page, a doc, a public share link. A link that will be shared gets a link card drawn for it, never the default.
+A public URL is a surface: the landing page, a doc, a public share link. It gets Open Graph title, description and image, and a link that will be shared gets a card drawn for it, never the default.
 
-| Part | The rule |
-|---|---|
-| Tags | Open Graph title, description and image on every public page |
-| Format | PNG or JPEG at 1200 by 630. WebP renders on some platforms and not on others |
-| Safe zone | Text and logo stay in the centre 1000 by 500. Platforms crop the rest, and a square thumbnail crops tighter |
+Build the card for the strictest platform. PNG or JPEG at 1200 by 630, because WebP renders on some platforms and not others. Text and logo in the centre 1000 by 500, because platforms crop and a square thumbnail crops tighter.
