@@ -13,6 +13,7 @@ Favor familiarity, agency and visible context: people should know where they are
 | A pointer presses a control | Show feedback on press; commit through the control's normal activation behavior. Preserve cancellation when the pointer leaves or the gesture becomes a scroll. Visual feedback must not trigger the action early |
 | Tooltips supplement controls | Keep essential information available without hover. Delay the first hover tooltip about 600ms so it does not fire on the way past; once one has shown, neighbours open at once with no delay and no animation, and close without delay. Support focus and dismissal through the component's accessible pattern |
 | A choice needs context | Keep labels, current selections, units and necessary constraints visible beside the choice. Put optional detail behind disclosure; keep prerequisites and consequences visible before commitment |
+| Content stands for more than it shows | Make it a handle. A popover anchored to it reveals what stands behind it, and can re-render it in place: a link previews its page; a value with a unit opens a unit picker and shows in the unit chosen. It opens on hover with a pointer, after the tooltip delay, and on tap and focus everywhere |
 | A flow has steps | Show the current step and what remains. Back keeps prior answers. Frequent actions stay easy to reach; shortcuts supplement a visible route |
 | The reader repeats it all day | Give the habitual reader a faster path that costs the newcomer nothing. The visible route stays. The fast path is a bare key where no field can take it, or the shortcut list under a held modifier where labels have no room |
 | An action is unavailable | Show the reason and how to unblock it near the control. An unexplained disabled button is a dead end. A press on it points at that reason; `aria-disabled` keeps the click arriving |
@@ -23,7 +24,7 @@ Favor familiarity, agency and visible context: people should know where they are
 | When | The standard |
 |---|---|
 | Entering data | Persistent, associated labels; required or optional status; suitable input type, input mode and autocomplete. Accept paste and unambiguous formatting. Keep identifiers with leading zeros as text. Reuse information already supplied; let the reader correct it |
-| Input means more than it says | Resolve it the way the reader would, and ask only when two readings are both likely. "Tomorrow at 9" typed at 1 am is this morning. "John" in mail is a message, in contacts a person. A URL becomes its preview; a value in one unit shows the other |
+| Input means more than it says | Resolve it the way the reader would, and ask only when two readings are both likely. "Tomorrow at 9" typed at 1 am is this morning. "John" in mail is a message, in contacts a person |
 | The reader hits a limit | Let them finish, then block the commit, with the reason at the control. A count over the limit, `15/12`, beside the disabled Save; never a refused keystroke |
 | Two routes reach one outcome | One form, not a choice screen. An email field with an optional password serves both the link and the password sign-in |
 | An id will be read aloud or typed | Build it from words, `brave-otter-41`. An id the reader never sees stays random |
