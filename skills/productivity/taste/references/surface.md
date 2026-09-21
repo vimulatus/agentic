@@ -39,6 +39,7 @@ Content scrolls under a sticky header, or past the end of a scrolling container.
 ```
 
 ```js
+const nav = document.querySelector(".navbar");
 let settled;
 window.addEventListener("scroll", () => {
   nav.style.backdropFilter = "blur(8px)";
