@@ -6,12 +6,11 @@ Motion is a decision, in this order. Steps 1 and 2 gate the rest: most motion st
 
 | The reader sees it | Decision |
 |---|---|
-| Repeated throughout the day: a keyboard shortcut, a command palette | Immediate by default; no decorative entrance or exit |
-| Tens of times a day: hover, list navigation | Instant. A highlight that follows the pointer gets no transition: a cursor crosses ten nav items a second, and a fade leaves the interface a few frames behind it. A panel flipped forty times a day is in this tier, however it is opened |
+| Many times a day: a keyboard shortcut, a command palette, hover, list navigation, a panel flipped forty times a day, however it is opened | Immediate. No decorative entrance or exit; motion stays only where it explains a meaningful state or spatial change without delaying the next action. A highlight that follows the pointer gets no transition: a cursor crosses ten nav items a second, and a fade leaves the interface a few frames behind it |
 | Now and then: a modal, a drawer, a toast | Standard |
 | Rare or first-time: onboarding, a milestone | Room for expressive motion when it serves the moment |
 
-Frequency is a judgment about the workflow, not a measured quota. Keyboard actions get immediate feedback; retain motion only when it explains a meaningful state or spatial change without delaying the next action. Routine success is not an occasion for celebration.
+Frequency is a judgment about the workflow, not a measured quota. Routine success is not an occasion for celebration.
 
 ## 2 — What is it for?
 
