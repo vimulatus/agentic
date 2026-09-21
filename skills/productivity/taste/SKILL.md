@@ -46,7 +46,8 @@ Use this as the task's todo list. Cover each item within the changed scope; mark
 | Colour | A neutral ramp and one accent, locked for the whole page. Colour carries state, and nothing else |
 | Shape and elevation | One radius scale. Flat by default; shadows distinguish raised or overlapping layers. Use a small elevation scale tinted to the ground, with stronger separation only where hierarchy needs it. Translucency must earn its place and remain legible over actual content; provide solid surfaces for reduced transparency and stronger boundaries for increased contrast |
 | Space | One spacing scale. Group by space before you group by line |
-| Theme | One theme per page. Where the project has light and dark, build both and look at both |
+| Theme | One theme per page. Where the project has light and dark, build both and look at both. An image that carries its own ground gets a version per theme: `<picture>` with a `prefers-color-scheme` source, or the theme class |
+| Selection | Style `::selection` from the accent at low opacity, on both themes. Selected text stays legible |
 | Density | Minimal by default: what the job needs now on the screen, the rest one tap away. Where the job is dense, the table is dense and the page around it is not. Numbers sit in a table, in tabular figures |
 | Disclosure | Optional explanations open on tap and on keyboard, anchored to their trigger: a popover, an accordion, a sheet. Prerequisites and consequences stay visible before commitment. Hover has no thumb |
 | Components | shadcn/ui is the house look. React installs it, the rest borrows the look, and the tokens come from the project's install |
@@ -56,17 +57,19 @@ Use this as the task's todo list. Cover each item within the changed scope; mark
 
 Spend the boldness in one place. The distinctive element is the one that speaks. Everything around it stays disciplined.
 
+An easter egg for the habitual reader is welcome when it sits off the task's path and costs nothing to miss.
+
 Read `references/motion.md` when anything on the page moves. It holds the gate, the curves and the durations.
 
 Read [references/ux.md](references/ux.md) before building or reviewing controls, forms, navigation or asynchronous updates, including on landing pages. Apply the rows the changed interaction reaches, then exercise them before reporting done.
 
 Read `references/app.md` when the page carries a chart or a data table, or the page is a dashboard, a list, a resource view, a form or settings. It holds the page shapes, the disclosure containers and the data representation.
 
-Read `references/landing.md` when the page is a landing page, a marketing page or a portfolio. It holds the hero and the section rules.
+Read `references/landing.md` when the page is a landing page, a marketing page or a portfolio, or it has a public URL that gets shared. It holds the hero, the section rules and the link card.
 
-Read `references/surface.md` when the page shows images or avatars, or a flat colour surface wants texture. It holds the inset image edge and the grain overlay.
+Read `references/surface.md` when the page shows images or avatars, content scrolls under a sticky header, or a flat colour surface wants texture. It holds the inset image edge, the scroll edge and the grain overlay.
 
-Read `references/type.md` when a number changes or sits in a column, or a button carries an icon. It holds tabular figures and optical alignment.
+Read `references/type.md` when a number changes or sits in a column, a button carries an icon, or text changes weight on selection. It holds tabular figures, optical alignment and the reserved bold width.
 
 The strings are copy. Load `copy` for them.
 

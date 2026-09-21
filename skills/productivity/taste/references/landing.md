@@ -33,3 +33,13 @@ The logo wall, the trust line, the pricing teaser and the avatar row live in the
 - The navigation renders on one line at 1024 and stands at most 80 pixels tall.
 - Images are real. A product preview built from `<div>` rectangles is a tell. When no image exists, leave a labelled slot and say so in the report.
 - One theme for the whole page. A cream section inside a dark page is a different website mid-scroll.
+
+## The shared link
+
+Any page with a public URL: the landing page, a doc, a public share link. A link that will be shared gets a link card drawn for it, never the default.
+
+| Part | The rule |
+|---|---|
+| Tags | Open Graph title, description and image on every public page |
+| Format | PNG or JPEG at 1200 by 630. WebP renders on some platforms and not on others |
+| Safe zone | Text and logo stay in the centre 1000 by 500. Platforms crop the rest |
