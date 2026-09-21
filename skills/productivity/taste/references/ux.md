@@ -9,12 +9,14 @@ Favor familiarity, agency and visible context: people should know where they are
 | When | The standard |
 |---|---|
 | A control repeats | Keep its meaning, placement and behavior consistent. Use native links for destinations and buttons for actions; preserve open-in-new-tab and browser Back |
-| Something is interactive | Make it look actionable before hover. Give pressed, selected and expanded states distinct feedback. Keep the visible control and its hit area aligned; reveal ordinary actions without requiring a guessed gesture |
+| Something is interactive | Make it look actionable before hover. Give pressed, selected and expanded states distinct feedback. The hit area may exceed the drawing and never falls short of it; centre a small icon in its target. Reveal ordinary actions without requiring a guessed gesture |
 | A pointer presses a control | Show feedback on press; commit through the control's normal activation behavior. Preserve cancellation when the pointer leaves or the gesture becomes a scroll. Visual feedback must not trigger the action early |
 | Tooltips supplement controls | Keep essential information available without hover. Delay the first hover tooltip about 600ms so it does not fire on the way past; once one has shown, neighbours open at once with no delay and no animation, and close without delay. Support focus and dismissal through the component's accessible pattern |
 | A choice needs context | Keep labels, current selections, units and necessary constraints visible beside the choice. Put optional detail behind disclosure; keep prerequisites and consequences visible before commitment |
 | A flow has steps | Show the current step and what remains. Back keeps prior answers. Frequent actions stay easy to reach; shortcuts supplement a visible route |
-| An action is unavailable | Show the reason and how to unblock it near the control. An unexplained disabled button is a dead end |
+| A shortcut is offered | Modifier plus key by default. A bare key, `F` for find, suits a view with no editable field, a high-frequency action and readers who value speed; it never fires while focus is in a field. Where labels have no room, holding the modifier reveals the shortcut list |
+| An action is unavailable | Show the reason and how to unblock it near the control. An unexplained disabled button is a dead end. Let a press on it answer: `aria-disabled` keeps the click arriving, so the control can shake briefly and surface the reason. Under reduced motion, the reason alone |
+| Searching | Scope by where the reader stands: "John" in mail finds messages, in contacts a person. Rank by intent, not the exact term, so nobody learns the product's vocabulary first |
 | An action affects several items | Show the selection count and whether the scope is this page, selected items or all matches. Make clearing selection easy. After partial failure, distinguish what succeeded from what still needs action |
 
 ## Keep the reader's work
@@ -22,6 +24,11 @@ Favor familiarity, agency and visible context: people should know where they are
 | When | The standard |
 |---|---|
 | Entering data | Persistent, associated labels; required or optional status; suitable input type, input mode and autocomplete. Accept paste and unambiguous formatting. Keep identifiers with leading zeros as text. Reuse information already supplied; let the reader correct it |
+| The input can read its content | Let it. A URL renders a preview: Open Graph for an external link, the record itself for the product's own private link. A regex shows its live matches beside it. A value in one unit shows the other, `°C` beside `°F`. `->` renders as an arrow. Enter does what the content implies. Cut takes a word's trailing space; paste restores the spaces around it |
+| Entering a time | Read it as the reader means it. At 1 am, "tomorrow at 9" means after this sleep: today, 9 am. An 8:00 entered at 2 pm asks whether 8 pm was meant. "Tomorrow morning" resolves to a waking hour |
+| Input has a length limit | Let the reader finish the thought. Never cut input at the limit; show the count over it, `15/12`, and disable Save with that count as its visible reason |
+| Signing in | One email field, password optional. A blank password sends a link or a code; a filled one signs in at once. One form carries both routes |
+| An id is shown to the reader | Build it from words, `brave-otter-41`, so it can be read aloud and typed. An id the reader never sees stays random |
 | Checking before commitment | For consequential submissions, show the actual values and scope before confirming. Let the reader edit the relevant answer and return to review with the rest intact; revisit only steps affected by that change |
 | Validating | Default to validation on submit. Earlier feedback earns its place when it prevents wasted work. Keep entered values; associate errors with fields. On failed submit, focus the error summary for a long form, or the first invalid field for a short one |
 | Waiting for an action | Acknowledge the press immediately, show pending state where it happened, and prevent duplicate submission while pending. Keep unrelated controls usable. A submitted request is still pending until its outcome is known |
@@ -40,7 +47,7 @@ Favor familiarity, agency and visible context: people should know where they are
 | Using a keyboard | Tab order follows the screen; focus stays visible and clear of sticky UI. Preserve native key behavior: Enter submits where the form supports it, inserts a newline in a textarea, and accepts an active choice in a picker. Respect text composition |
 | Opening and closing | A modal gets an accessible name, deliberate initial focus, a contained Tab sequence and inert background. Escape and a visible close control leave it safely. Restore focus to its trigger, or a logical successor if that item disappeared. Menus and nonmodal popovers use their own keyboard pattern |
 | Communicating state | Give icon buttons accessible names. Pair color with text or another cue. Announce relevant asynchronous status to assistive technology without moving focus; routine progress uses polite announcements |
-| Touching, zooming or dragging | Aim for 44 by 44 CSS px touch targets as the house default, with space between neighbors. Keep browser zoom available. At narrow widths and enlarged text, keep labels, errors and actions reachable, including above the onscreen keyboard. Give drag actions a tap and keyboard alternative |
+| Touching, zooming or dragging | Aim for 44 by 44 CSS px touch targets as the house default, with space between neighbors. Keep browser zoom available. At narrow widths and enlarged text, keep labels, errors and actions reachable, including above the onscreen keyboard. Give drag actions a tap and keyboard alternative. A container that scrolls sideways sets `overscroll-behavior-x: contain`, so a swipe past its end does not navigate Back |
 | Content varies | Try long names, large values and missing content. Wrap or disclose truncated essentials. Localize dates and numbers; show units and time zones where ambiguity changes the decision |
 
 ## Exercise the changed flow
