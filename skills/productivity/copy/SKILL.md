@@ -60,6 +60,11 @@ Your stack is not the reader's business. Name the thing they see, never the thin
 - Second person, present tense, imperative: "Open **Settings**".
 - Passive voice hides the actor. "queries are validated" becomes "the compiler validates queries".
 - Precision does not save a line. A sentence that fits any other project says nothing about this one, and a sentence that fits nowhere else can still change nothing. Both go.
+- A name needs no verb: "Settings", not "Open Settings". A verb stands alone only where there is no object: "Log out".
+- Near-synonyms are not interchangeable. "Send" and "Submit" tell different stories about the same action; pick the one that matches what happens.
+- One concept, one word, across the product: "Remove member" everywhere, never "Remove" here and "Delete user" there.
+- A platform's badge keeps the platform's words: "Download on the App Store", "Get it on Google Play".
+- A string has a shape on the screen. A label that wraps or a paragraph that fills a dialog is rewritten for the space, not only for the meaning.
 
 ## Surfaces
 
