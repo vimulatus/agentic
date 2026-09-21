@@ -1,18 +1,18 @@
 # Vimulatus
 
-Vasu's personal skills and agent workflows for Claude Code and Codex. The `new` branch is the release channel for both clients.
+Vasu's personal skills and agent workflows for Claude Code and Codex. The `main` branch is the release channel for both clients.
 
 ## Claude Code
 
 ```text
-/plugin marketplace add vimulatus/agentic@new
+/plugin marketplace add vimulatus/agentic@main
 /plugin install default@vimulatus-personal
 ```
 
 ## Codex
 
 ```sh
-codex plugin marketplace add vimulatus/agentic --ref new
+codex plugin marketplace add vimulatus/agentic --ref main
 codex plugin add default@vimulatus-personal
 ```
 

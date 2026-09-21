@@ -7,7 +7,7 @@ part=minor; dry=""
 for a in "$@"; do case "$a" in major|minor|patch) part=$a ;; -n) dry=1 ;; *) echo "usage: release.sh [major|minor|patch] [-n]" >&2; exit 2 ;; esac; done
 
 root=$(git rev-parse --show-toplevel)
-release_branch=new
+release_branch=main
 claude_manifest="$root/.claude-plugin/plugin.json"
 codex_manifest="$root/.codex-plugin/plugin.json"
 cur=$(jq -r .version "$claude_manifest")
