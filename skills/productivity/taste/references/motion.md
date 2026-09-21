@@ -6,12 +6,11 @@ Motion is a decision, in this order. Steps 1 and 2 gate the rest: most motion st
 
 | The reader sees it | Decision |
 |---|---|
-| Repeated throughout the day: a keyboard shortcut, a command palette | Immediate by default; no decorative entrance or exit |
-| Tens of times a day: hover, list navigation | Instant. A highlight that follows the pointer gets no transition: a cursor crosses ten nav items a second, and a fade leaves the interface a few frames behind it. A panel flipped forty times a day is in this tier, however it is opened |
+| Many times a day: a keyboard shortcut, a command palette, hover, list navigation, a panel flipped forty times a day, however it is opened | Immediate. No decorative entrance or exit; motion stays only where it explains a meaningful state or spatial change without delaying the next action. A highlight that follows the pointer gets no transition: a cursor crosses ten nav items a second, and a fade leaves the interface a few frames behind it |
 | Now and then: a modal, a drawer, a toast | Standard |
 | Rare or first-time: onboarding, a milestone | Room for expressive motion when it serves the moment |
 
-Frequency is a judgment about the workflow, not a measured quota. Keyboard actions get immediate feedback; retain motion only when it explains a meaningful state or spatial change without delaying the next action. Routine success is not an occasion for celebration.
+Frequency is a judgment about the workflow, not a measured quota. Routine success is not an occasion for celebration.
 
 ## 2 — What is it for?
 
@@ -64,7 +63,7 @@ Routine UI transitions stay under 300ms; modal and drawer transitions may use th
 ## 6 — Interruption and exit
 
 - Prefer transitions for rapidly toggled states: retarget from the current appearance. For programmatic animation, explicitly preserve continuity when cancelling or reversing. Do not lock out input to let an animation finish.
-- Exit the way it entered. A toast that slides in from the bottom leaves through the bottom.
+- Continuity holds through the transition. A thing exits the way it entered and returns to where it came from, at that place's current position if the page scrolled. The cursor keeps its shape until a morph ends: the field takes `pointer-events: none` while it transitions.
 - Slow where the reader is deciding, fast where the system responds: a hold-to-confirm at 2s linear, its release at 200ms ease-out.
 - Stagger only when sequence helps comprehension or a rare expressive entrance. Keep any offsets short and the total reveal brief; routine lists appear ready to use. Never block interaction while a stagger plays.
 

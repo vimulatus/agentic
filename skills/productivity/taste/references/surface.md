@@ -1,6 +1,6 @@
 # Surface
 
-Two finishing lines for a surface: an edge on an image, and grain on a flat colour. Both sit on top of the pixels and take no layout space.
+Three finishing lines for a surface: an edge on an image, a soft edge where content scrolls under chrome, and grain on a flat colour. All sit on top of the pixels and take no layout space.
 
 ## Image edge
 
@@ -18,6 +18,33 @@ img { outline: 1px solid rgb(0 0 0 / 0.1); outline-offset: -1px; }
 ```
 
 Avatars are where it matters most: small, round, and often mostly white.
+
+## Scroll edge
+
+Content scrolls under a sticky header, or past the end of a scrolling container. Three rules decide whether the cut looks placed or accidental.
+
+- Fade the detail, not the colour. A gradient overlay in the ground colour works on plain text and washes out photos and saturated UI. Elsewhere, a progressive blur: stacked `backdrop-filter` layers, each masked to its own band, blur rising toward the edge.
+- Blur costs while things move. Lower it while the reader scrolls and restore it once the scroll settles; heavy blur in motion reads as stutter.
+- An edge effect never covers a control. The fade ends before the scrollbar: mask the content, not the scroller.
+
+```css
+/* .scroll-edge sits inside the sticky header, so it stays at the top while the content scrolls under it */
+.scroll-edge { position: absolute; inset: 0 0 auto; height: 80px; pointer-events: none; }
+.scroll-edge > * { position: absolute; inset: 0; }
+.scroll-edge > :nth-child(1) { backdrop-filter: blur(4px);  mask-image: linear-gradient(to bottom, #000 40%, #0000 70%); }
+.scroll-edge > :nth-child(2) { backdrop-filter: blur(8px);  mask-image: linear-gradient(to bottom, #000 20%, #0000 50%); }
+.scroll-edge > :nth-child(3) { backdrop-filter: blur(16px); mask-image: linear-gradient(to bottom, #000 0%, #0000 30%); }
+```
+
+```js
+const nav = document.querySelector(".navbar");
+let settled;
+window.addEventListener("scroll", () => {
+  nav.style.backdropFilter = "blur(8px)";
+  clearTimeout(settled);
+  settled = setTimeout(() => { nav.style.backdropFilter = "blur(24px)"; }, 120);
+}, { passive: true });
+```
 
 ## Grain
 

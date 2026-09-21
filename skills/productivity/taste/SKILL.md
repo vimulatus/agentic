@@ -46,7 +46,7 @@ Use this as the task's todo list. Cover each item within the changed scope; mark
 | Colour | A neutral ramp and one accent, locked for the whole page. Colour carries state, and nothing else |
 | Shape and elevation | One radius scale. Flat by default; shadows distinguish raised or overlapping layers. Use a small elevation scale tinted to the ground, with stronger separation only where hierarchy needs it. Translucency must earn its place and remain legible over actual content; provide solid surfaces for reduced transparency and stronger boundaries for increased contrast |
 | Space | One spacing scale. Group by space before you group by line |
-| Theme | One theme per page. Where the project has light and dark, build both and look at both |
+| Theme | One theme per page. Where the project has light and dark, build both and look at both, down to the images that carry their own ground and the selected text: a `<picture>` source per theme, `::selection` from the accent |
 | Density | Minimal by default: what the job needs now on the screen, the rest one tap away. Where the job is dense, the table is dense and the page around it is not. Numbers sit in a table, in tabular figures |
 | Disclosure | Optional explanations open on tap and on keyboard, anchored to their trigger: a popover, an accordion, a sheet. Prerequisites and consequences stay visible before commitment. Hover has no thumb |
 | Components | shadcn/ui is the house look. React installs it, the rest borrows the look, and the tokens come from the project's install |
@@ -60,13 +60,13 @@ Read `references/motion.md` when anything on the page moves. It holds the gate, 
 
 Read [references/ux.md](references/ux.md) before building or reviewing controls, forms, navigation or asynchronous updates, including on landing pages. Apply the rows the changed interaction reaches, then exercise them before reporting done.
 
-Read `references/app.md` when the page carries a chart or a data table, or the page is a dashboard, a list, a resource view, a form or settings. It holds the page shapes, the disclosure containers and the data representation.
+Read `references/app.md` when the page carries a chart, a data table, an accordion or a collapsible panel, or the page is a dashboard, a list, a resource view, a form or settings. It holds the page shapes, the disclosure containers and the data representation.
 
-Read `references/landing.md` when the page is a landing page, a marketing page or a portfolio. It holds the hero and the section rules.
+Read `references/landing.md` when the page is a landing page, a marketing page or a portfolio, or it has a public URL that gets shared. It holds the hero, the section rules and the link card.
 
-Read `references/surface.md` when the page shows images or avatars, or a flat colour surface wants texture. It holds the inset image edge and the grain overlay.
+Read `references/surface.md` when the page shows images or avatars, content scrolls under a sticky header, a scrolling container fades at its edge, or a flat colour surface wants texture. It holds the inset image edge, the scroll edge and the grain overlay.
 
-Read `references/type.md` when a number changes or sits in a column, or a button carries an icon. It holds tabular figures and optical alignment.
+Read `references/type.md` when a number changes or sits in a column, a button carries an icon, or text changes weight on selection. It holds tabular figures, optical alignment and the reserved bold width.
 
 The strings are copy. Load `copy` for them.
 
@@ -89,15 +89,12 @@ What a model draws when nobody decides. Each one is right for some brief and a d
 
 | The tell | What it stands in for |
 |---|---|
-| Cream ground, serif display, terracotta accent | the palette that answers every "premium" brief |
-| Near-black ground, one acid-green or vermilion accent | the palette that answers every "tech" brief |
-| Purple-to-blue gradient, a glow, a mesh background | the accent nobody chose |
+| A palette picked by the brief's genre word: cream ground, serif display and terracotta accent for "premium"; near-black ground and one acid-green or vermilion accent for "tech"; a purple-to-blue gradient, a glow or a mesh background when the brief has none | the palette nobody chose |
 | Identical rounded cards in a row of three, one grey shadow each | grouping by box instead of by space |
 | A tracked-out ALL-CAPS eyebrow above every heading | a label where the heading already says it |
 | One word of a heading in italic, bold or a colour | emphasis the sentence did not earn |
 | Middle dots between meta strings, an arrow after link text | template chrome |
-| A big number, a small label, a gradient wash | the hero nobody decided |
-| Four stat cards in a row, each with an icon, a sparkline and a green arrow | the dashboard nobody decided |
+| An opener that answers the page type instead of the subject: a big number, a small label and a gradient wash for a hero; four stat cards in a row, each with an icon, a sparkline and a green arrow, for a dashboard | the first screen nobody decided |
 | Help that shows on hover | an explanation the phone never gets |
 | Fade-and-slide-up on every section, hover lift on every card | motion that answers no one |
 | `John Doe`, `Acme`, `99.99%`, "Elevate", "Seamless" | content nobody wrote |

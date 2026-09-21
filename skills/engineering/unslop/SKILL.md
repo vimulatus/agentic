@@ -46,9 +46,7 @@ Every string you write is copy: comments, commit messages, log lines, error text
 
 Keep text that helps its intended reader understand the behavior or make a decision. Remove narration of the agent's process.
 
-Your own reasoning is the usual offender. You settle something while building, then ship the rationale as a caption, a log line, or a paragraph in the PR body. The reader was not in the room and does not need to be. Ship the conclusion.
-
-Load the `copy` skill for the two tests and the table of tells. It owns them.
+Load the `copy` skill for the What, the Why and the How, and the table of tells. It owns them.
 
 ## Before you report done
 

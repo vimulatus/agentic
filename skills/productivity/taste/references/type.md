@@ -1,6 +1,6 @@
 # Type details
 
-Two adjustments the eye notices and the math misses: which digits a number uses, and where an icon or a quote actually sits.
+Three adjustments the eye notices and the math misses: which digits a number uses, where an icon actually sits, and how wide a word gets when it turns bold.
 
 ## Tabular figures
 
@@ -30,4 +30,17 @@ Aligning an icon by its bounding box is often wrong, because the box is not wher
 
 ```css
 .play-icon { transform: translateX(1px); }
+```
+
+## Weight without shift
+
+Bold is wider than regular. A nav link that turns bold when selected pushes its neighbours over. Reserve the bold width at both weights: an invisible `::after` carries the same text at the bold weight, so the box is always bold-sized.
+
+```html
+<nav class="nav"><a data-text="Projects">Projects</a></nav>
+```
+
+```css
+.nav a { display: inline-flex; flex-direction: column; }
+.nav a::after { content: attr(data-text); font-weight: 600; /* the selected weight */ height: 0; overflow: hidden; visibility: hidden; }
 ```

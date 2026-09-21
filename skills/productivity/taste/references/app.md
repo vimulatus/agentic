@@ -16,6 +16,8 @@ Name it in the plan: the one question the screen answers, or the one action it t
 | Form | One column, the label above the field, one action at the end. The error sits under its field | the advanced fields, in a closed section with a summary |
 | Settings | Sections in the order the reader changes them. Each section saves itself, or one save for the page. Never both | the danger zone, at the end, behind its own confirmation |
 
+A reading aid yields to a signal. The hover guide on a wide table hides while a click highlights a cell, so the highlight reads alone.
+
 ## Disclosure
 
 `copy` holds the model: the What on the screen, the Why one tap away, the How never. This table picks the container.
@@ -24,6 +26,7 @@ Name it in the plan: the one question the screen answers, or the one action it t
 |---|---|---|
 | a term or a number explained | a popover, anchored to its trigger | tap, click and keyboard. It closes on an outside tap or Escape |
 | a section they may skip | an accordion, closed. The summary states the outcome | tap |
+| an announcement they may want back: what's new, a tip | a panel that collapses to a pill, never a close that loses it | its own toggle |
 | to create or edit without leaving the list | a sheet from the side, or a dialog for a form under five fields | the row's action |
 | to confirm a loss | a dialog that names what goes away, in numbers | the destructive action |
 
