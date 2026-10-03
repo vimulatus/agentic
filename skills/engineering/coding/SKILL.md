@@ -33,22 +33,22 @@ Design deep modules: substantial behavior behind a small interface, placed at a 
 
 ## Changing code
 
-**Delete before you add.** Remove the dead code, the unused paths and the redundant checks first, then build on what is left. The smaller base often makes the next design obvious. Design for the usage you can see, not for an edge case you imagine.
+**Delete before you add.** In the code the task touches, remove the dead code, the unused paths and the redundant guards first, then build on what is left. The smaller base often makes the next design obvious. A deletion in the diff is not a destructive action; Vasu reviews it there.
 
 ```
 Task: add a 4th payment adapter. Two of the three adapters have no caller.
   delete the 2 dead adapters -> 1 adapter is left -> design the 2nd beside it
 ```
 
-**One decision, one place.** Make the smallest change that solves the problem. When a new value has to pass through several layers (types, schemas, pipelines), stop and look for a direct path: read the value where it is used, or keep the decision in one place and pass its result.
+**One decision, one place.** When a new value has to pass through several layers (types, schemas, pipelines), stop and look for a direct path: read the value where it is used, or keep the decision in one place and pass its result.
 
 ```
 Task: hide prices for guest users.
-  thread isGuest: route -> controller -> service -> view model -> template    5 files
-  ask once: the template reads session.isGuest                                1 file
+  thread isGuest: route -> controller -> service -> view model -> template, each checks it   5 decisions
+  decide once: PricingService returns no prices for a guest; the template renders what it gets   1 decision
 ```
 
-**Build the requirement in.** A new requirement changes the design as if it had been there from the start. Ask: if we wrote this today, with the requirement, what would we build? Then carry the change through every reference: types, docs, examples, tests. Plan the whole redesign, then deliver it in steps.
+**Build the requirement in.** When a new requirement would add a branch at many sites, design what you would build if it had been there from the start, and carry it through types, docs, examples and tests.
 
 ```
 Requirement: each customer sees only their own data.
@@ -56,17 +56,17 @@ Requirement: each customer sees only their own data.
   built in:  the repository takes a tenant, and no query runs without one
 ```
 
-**Move every caller, then delete the old path.** When a new internal API replaces an old one, list the callers, move them all, and delete the old API in the same change. Do not keep a compatibility layer for an internal caller. In a planned migration, a step may break what the next step fixes. Say where, and run the full gate at the end.
+**Move every caller in the change that replaces the API.** When a new internal API replaces an old one, list its callers and move them all in the same change. `unslop` deletes the old path.
 
-**A reader finds the answer in 30 seconds.** Count two costs: the layers between a question and its answer, and the state a reader must hold in their head. A new reader must answer "where does X come from?" and "what can change X?" in 30 seconds. Inline a wrapper that has one caller and a layer that passes its arguments through unchanged. Prefer a return value to a mutation, a local to a field, and a field to module state. A third-party provider boundary stays, even with one caller: it is a seam for replacement, not a layer for the reader.
+**Short path, little state.** From the entry point, a reader reaches where X is computed, and every place that writes X, without opening a pass-through layer. Inline a layer that passes its arguments through unchanged or hides no decision that can change. Prefer a return value to a mutation, a local to a field, and a field to module state. A third-party provider boundary stays, even with one caller: it is a seam for replacement, not a layer for the reader.
 
 ```
 Where does the discount come from?
   before: Controller -> DiscountService -> DiscountManager -> DiscountHelper.calc()   4 files, 3 pass-throughs
-  after:  Controller -> discount(order)                                               1 function
+  after:  Controller -> PricingService.discount(order)                                1 hop, the rule is in the Service
 ```
 
-The final message has one line for each rule in this section that changed a decision: `<rule>: <what it changed>`, where `<rule>` is the bold name.
+When a rule in this section changed what you built, the done report carries one line per rule: `<bold name>: <what it changed>`. When none did, add no line.
 
 ## Third-party providers
 
