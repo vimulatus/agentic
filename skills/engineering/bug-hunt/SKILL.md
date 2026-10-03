@@ -15,7 +15,7 @@ scope ──> browser-evidence setup ──> explore + document, one pass ──
 
 ## Scope
 
-Vasu names the app, and sometimes an area. Read the project's `## Product` section for who the user is, then be that user. No area named: the core workflows first, the edges after.
+Vasu names the app, and sometimes an area. Read the project's `## Product` section for who the user is, then be that user. No area named: the core workflows first, the edges after. A project with a `verify-<app>` skill lists its features in `features/README.md`, and its Launch section starts the app.
 
 Findings come from the browser: what rendered, what the console said, what a request returned. Do not read the app's source while you explore. The report describes behaviour, and the investigator owns the cause.
 
