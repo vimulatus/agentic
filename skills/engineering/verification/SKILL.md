@@ -1,6 +1,6 @@
 ---
 name: verification
-description: Write a project's verify-<app> skill - how to launch the app, check it is healthy, drive each feature the way a user does, capture evidence and clean up. Use when a project has no scripted way to prove its UI, CLI or service works, or Vasu asks for a verification or control skill. Not for proving one change, which browser-evidence owns.
+description: Write a project's verify-<app> skill - how to launch the app, check it is healthy, drive each feature the way a user does, capture evidence and clean up - and keep that skill true as the app changes. Use when Vasu asks to write a verify or verification skill, a control skill, or to audit or update one. Not for running the app once or proving one change, which run and browser-evidence own.
 ---
 
 # Verification
@@ -10,6 +10,8 @@ You write a skill for the next agent. It reads the skill cold, mid-task, and has
 ```
 read the repo ──> fix a broken start ──> write verify-<app> ──> seed the feature map ──> run it once ──> record it in Ship
 ```
+
+When the project already has a `verify-<app>` skill and the task is to audit or update it, read [references/maintain.md](references/maintain.md) and follow it instead.
 
 ## Read the repo, not Vasu
 
@@ -23,19 +25,19 @@ Answer from the code. Ask Vasu only for what you cannot observe, such as a crede
 | Observe: what proves a result | screenshots, transcripts, response bodies, logs, exit codes, database rows |
 | Isolate: can two instances run side by side | ports, data directories, profiles |
 
-A repo with several surfaces: write the recipe for the primary one, and list the rest in the map README.
+A repo with several surfaces: write the recipe for the primary one.
 
 | Surface | Driver |
 |---|---|
 | Web UI, Electron | `browser-evidence` |
-| CLI, TUI | one tmux session per drive: `tmux new -d -s <task>`, `send-keys`, `capture-pane -p` |
+| CLI, TUI | one tmux session per drive: `tmux new -d -s <task>-<n>`, `send-keys`, `capture-pane -p` |
 | Service, API | `curl` against the running port |
 
 If the checkout does not build or start, fix that first, or report the exact failure. A skill written against a broken start teaches wrong steps.
 
 ## Write the skill
 
-Write `.agents/skills/verify-<app>/SKILL.md` in the project, and link `.claude/skills/verify-<app>` to it with `ln -s ../../.agents/skills/verify-<app>`. Both clients then read one copy. The frontmatter carries `name: verify-<app>` and a description that names the app, its surface, and the words launch, run and verify, so the agent finds it when it has to run the app.
+Write `.agents/skills/verify-<app>/SKILL.md` in the project, and link it for Claude Code: `mkdir -p .claude/skills && ln -s ../../.agents/skills/verify-<app> .claude/skills/verify-<app>`. Both clients then read one copy. The frontmatter carries `name: verify-<app>` and a description that names the app, its surface, and the words launch, run and verify, so the agent finds it when it has to run the app.
 
 Every section comes from what you found. No placeholder survives.
 
@@ -50,26 +52,24 @@ Every section comes from what you found. No placeholder survives.
 
 ## Seed the feature map
 
-Write `features/README.md` and one file per user-facing feature. Start with the top 3 to 5, from routes, commands, menus or docs.
+Write `.agents/skills/verify-<app>/features/README.md` and one file per user-facing feature beside it. Start with the top 3 to 5, from routes, commands, menus or docs.
 
 The README holds what every recipe shares: the baseline state, the driving conventions, what counts as proof, and an index with one line per feature. List the surfaces the recipe does not drive.
 
-Each feature file has an H1, one paragraph on what the user sees, then four H2s in this order:
+Each feature file has an H1, one paragraph on what the user sees, then four H2s in this order. The third names this repo's driver: `Driving it with <driver>`.
 
 ```markdown
 # Create a note
 
-A user saves a titled note from the browser or the CLI, and finds it again in the list.
+A user saves a titled note and finds it again in the list.
 
 ## Sub-features
 
 - `create-save` saves a title and a body.
-- `create-cli` creates the same note from the terminal.
 
 ## How to get to it (user POV)
 
 - The `New note` button in the toolbar.
-- `notes create --title <title> --body <body>` in a terminal.
 
 ## Driving it with agent-browser
 
@@ -97,4 +97,5 @@ Load `product-context`, and point the Ship section's Gate line at `verify-<app>`
 
 - [ ] `verify-<app>` is in `.agents/skills/`, and the `.claude/skills/` link resolves.
 - [ ] One feature ran from end to end by the skill's own words. The report gives the evidence path.
+- [ ] The Ship section's Gate line names `verify-<app>`, written by `product-context`.
 - [ ] Nothing that this run started still runs.
