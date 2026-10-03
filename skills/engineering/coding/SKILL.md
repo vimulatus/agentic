@@ -33,7 +33,7 @@ Task: hide prices for guest users.
   once:     PricingService returns no prices for a guest; the template renders it   1 decision
 ```
 
-**Build the requirement in.** When a requirement would add the same branch at many sites, build what you would have built had it been there from the start: make the violating state unrepresentable, and carry it through types, docs, examples and tests. The repository takes a tenant, so no query runs without one; never `if (tenantId)` in 30 queries.
+**Build the requirement in.** When a requirement would add the same branch at many sites, build what you would have built had it been there from the start: make the violating state unrepresentable (**Make illegal states unrepresentable**), and carry it through types, docs, examples and tests. The repository takes a tenant, so no query runs without one; never `if (tenantId)` in 30 queries.
 
 **Move every caller in the change that replaces the API.** Expand-contract inside one PR: add the new internal API, move every caller, delete the old one, one commit per step. A caller in this repo gets no compatibility layer.
 
@@ -41,7 +41,33 @@ Task: hide prices for guest users.
 
 **Smallest change that solves the class.** Of the designs that satisfy the rules above, ship the one with the fewest decisions and touched sites. Smallest never means skipping a member of the class or a caller of the replaced API.
 
-When a rule in this section changed what you built, the done report carries one line per rule: `<bold name>: <what it changed>`. When none did, add no line.
+## Data and state
+
+**Types before logic.** Before the logic, write the core types and the functions that read and write them, shaped for the most frequent read. A change to a stored shape (a column, a persisted document, a wire format) is a data-model call: name it in the done report, and ask first when it drops or rewrites stored data. In-memory types are yours.
+
+**Make illegal states unrepresentable.** Each state is a variant of a discriminated union that carries only the fields true in that state: no field left over from an earlier state, no booleans that must agree. Parse stored and incoming data into the union at the boundary; an unknown variant throws there. One function takes a state and an event and returns the next state, rejecting each transition the lifecycle forbids. Match exhaustively, so a new variant fails the build (`never` in TypeScript). A rule that grows one branch per feature on the same key becomes a lookup table keyed by it.
+
+```
+{ shipped: boolean, shippedAt?: Date, cancelled: boolean }       shipped and cancelled can both be true
+{ status: "cancelled", reason: string, shippedAt?: Date }         a field left from another state
+{ status: "open" } | { status: "shipped", at: Date } | { status: "cancelled", reason: string }
+cancel: open -> cancelled; shipped -> throws
+```
+
+**Brand what a swap would break.** When two values share a primitive but not a meaning, and meet in one signature or scope where swapping them compiles, give each its own type: `UserId` and `OrderId`, cents and dollars. One parse function mints each brand and holds its only `as`. A value with no such neighbour stays a primitive (**YAGNI**).
+
+**Do not lie to the compiler.** No `as` outside `as const` and a brand's parse function, no non-null `!`, no `any`: parse or narrow instead. Derive a type from the schema that owns the shape (OpenAPI, a migration, protobuf), never a hand-copied parallel type.
+
+**Functional core, imperative shell.** A business rule takes values and returns values: no I/O, clock or randomness inside it; pass `now` in. The Service reads, calls the rule, writes the result. The rule is a plain function in the Service's module, not a new layer. Test it with literal values, and drive the Service once through its interface for the wiring.
+
+**Safe to rerun.** A job, script, migration, queue consumer, webhook handler, or any request a client retries, ends in the same state after one run, two runs, or a rerun after a crash halfway: an upsert or an idempotency key, not a bare insert; a check and its write in one transaction. Prove it on a disposable copy: run it twice, then kill it halfway and run it again.
+
+**Separate before you lock.** When two actors could write the same file, key, branch or row, first give each its own, and merge where they are read. Add a lock, a queue or a single writer only when one shared target is the real invariant; the lock records its owner, so a rerun takes over from a dead one.
+
+```
+two workers write lastRun into state.json        a race
+indexer-state.json + metrics-state.json          no shared write, no lock
+```
 
 ## Comments
 
@@ -71,6 +97,8 @@ When a rule in this section changed what you built, the done report carries one 
 ## Unslop the diff
 
 Before you report done, read the diff against Changing code, Comments, Slop and Words. Remove what adds no information or behavior.
+
+When a rule in Changing code or Data and state changed what you built, the done report carries one line per rule: `<bold name>: <what it changed>`. When none did, add no line.
 
 ## Third-party providers
 
