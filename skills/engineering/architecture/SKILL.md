@@ -24,6 +24,7 @@ A deep module hides substantial complexity behind a small interface. Depth is ab
 | One change repeatedly touches several modules | Which responsibility could own that change in one place? |
 | Tests mock the internal call chain | Could the same behaviour be checked through a stable entry point? |
 | Infrastructure details spread into domain logic | What would an adapter actually hide from its callers? |
+| A new reader needs more than 30 seconds to answer "where does X come from?" or "what can change X?" | Which layers or which shared state could go? |
 
 Price the migration, compatibility and lost flexibility against the saved work. Preserve a useful boundary even when merging files would look simpler. Reopen a recorded decision only with evidence that its trade-off has changed.
 
