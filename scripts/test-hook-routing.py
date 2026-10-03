@@ -100,6 +100,8 @@ class HookRoutingTest(unittest.TestCase):
             ("route.sh", {"prompt": "scope the mvp"}, "slc"),
             ("route.sh", {"prompt": "bug hunt the dashboard"}, "bug-hunt"),
             ("route.sh", {"prompt": "dogfood the new feature"}, "bug-hunt"),
+            ("route.sh", {"prompt": "is this a perf regression"}, "benchmark"),
+            ("route.sh", {"prompt": "the login form is broken"}, "red-green"),
             ("product-section.sh", {}, "product-context"),
             ("pr-opened.sh", {
                 "tool_input": {"command": "gh pr create --title example"},

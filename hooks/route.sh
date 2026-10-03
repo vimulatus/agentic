@@ -25,5 +25,6 @@ route '\b(landing page|(design|style|restyle|redesign|polish|mock ?up) (the |a |
 route '\b(looks?|feels?) (too |very |kinda |a bit )?(generic|boring|ugly|templated|dated|bland|off|like ai)\b|\bmake it (look|feel) (better|nicer|good|great|premium|polished|less generic)\b' taste 'a screen to design'
 route '\b(dogfood|bug hunt|find (the |some |any )?(bugs|issues)|qa (this|the|it|my)|exploratory test)\b'                                    bug-hunt   'an app to explore for bugs and UX issues'
 route '\b(new feature|build (a|an|the|me) |plan (this|the|a|it|out)|break (this|it) (down|into)|in phases|roadmap|slices?)\b' wayfinder 'work bigger than one ticket'
+route '\b(benchmark(s|ed|ing)?|speed ?ups?|latency|throughput|p(50|90|95|99)|perf(ormance)? (regression|numbers?)|(is|was) (it|this|that) (any )?(faster|slower)|how (fast|slow) (is|was))\b' benchmark 'a number to measure or vet'
 route '\b(bug|broken|not working|doesn.?t work|fail(s|ing|ed)|regression|flaky|crash(es|ed|ing)?)\b'         red-green  'a bug or a failing check'
 exit 0

@@ -16,7 +16,7 @@ Use an unattended, agent-runnable command that asserts the symptom or requiremen
 | Bug | A test that reproduces the reported symptom |
 | New behavior | A test written from the requirement, before the code |
 | Flake | The same test under conditions that reproduce the flake, with recorded seeds and repetition counts |
-| Slow path | A benchmark with a performance requirement in the assertion |
+| Slow path | A benchmark with a performance requirement in the assertion, vetted by `benchmark` |
 | Type or lint debt | The compiler, with the rule turned on |
 | Behavior-preserving migration or refactor | A characterization baseline or old/new output comparison |
 | UI change | `browser-evidence`, asserting the visible state |
