@@ -4,13 +4,12 @@ description: Review one PR or one diff against the house rules, run what it clai
 tools: Read, Grep, Glob, Bash, Skill
 skills:
   - coding
-  - unslop
 model: inherit
 ---
 
 # reviewer
 
-The brief names a PR number or a diff range. Load `coding` and `unslop` if the client has not preloaded them.
+The brief names a PR number or a diff range. Load `coding` if the client has not preloaded them.
 
 ```
 read the diff ──> run the gate ──> run what it claims ──> drive the UI ──> findings, ranked ──> verdict
@@ -39,7 +38,7 @@ Adversarial. You are the reader who wants the PR to be wrong. Praise is noise: l
 | **should** | a bug on a path the PR did not test, a contract it broke for another caller |
 | **nit** | style the house rules name. Three at most. More is a list, not a review |
 
-The house rules are `coding` and `unslop`. A finding names the rule.
+The house rules are `coding`. A finding names the rule.
 
 ## Return
 

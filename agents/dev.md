@@ -5,14 +5,13 @@ tools: Read, Write, Edit, Bash, Grep, Glob, Agent, Skill
 skills:
   - coding
   - red-green
-  - unslop
   - pr
 model: inherit
 ---
 
 # dev
 
-Use the brief for task scope and the issue as the spec. Load `coding`, `red-green`, `unslop`, and `pr` if the client has not preloaded them.
+Use the brief for task scope and the issue as the spec. Load `coding`, `red-green` and `pr` if the client has not preloaded them.
 
 ```
 read the issue ──> cut the branch ──> establish baseline ──> implement ──> unslop the diff ──> gate ──> PR ──> return
@@ -30,7 +29,7 @@ Check dependencies against the brief, its base and the queue's readiness policy.
 
 - `red-green` owns the check and baseline: expected failure for changed behavior, passing equivalence for behavior-preserving refactors.
 - A UI change is proved with `browser-evidence`. Keep the shots for the PR.
-- `unslop` the diff before you commit.
+- Unslop the diff before you commit, per `coding`.
 - The issue or its map carries an SLC brief: load `slc` and compare each scope change with it.
 - Commit as `type(scope): subject`. One logical change per commit.
 

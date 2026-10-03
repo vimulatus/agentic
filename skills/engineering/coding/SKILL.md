@@ -1,12 +1,11 @@
 ---
 name: coding
-description: How Vasu wants code written. Use whenever you write or edit code, and before you touch production or a live database.
+description: How Vasu wants code written, and the machine-written tells to cut - narrating comments, unearned abstraction, defensive scaffolding. Use whenever you write or edit code, on the diff before you report done, and before you touch production or a live database.
 ---
 
 # Coding
 
 - Propose the bold idea when it pays. Say what it buys.
-- Keep comments true to the code you change.
 
 ## Solve the class
 
@@ -40,7 +39,7 @@ Task: add a 4th payment adapter. Two of the three adapters have no caller.
   delete the 2 dead adapters -> 1 adapter is left -> design the 2nd beside it
 ```
 
-**One decision, one place.** When a new value has to pass through several layers (types, schemas, pipelines), stop and look for a direct path: read the value where it is used, or keep the decision in one place and pass its result.
+**One decision, one place.** Make the smallest change that solves the problem, unless **Build the requirement in** applies. When a new value has to pass through several layers (types, schemas, pipelines), stop and look for a direct path: read the value where it is used, or keep the decision in one place and pass its result.
 
 ```
 Task: hide prices for guest users.
@@ -56,9 +55,9 @@ Requirement: each customer sees only their own data.
   built in:  the repository takes a tenant, and no query runs without one
 ```
 
-**Move every caller in the change that replaces the API.** When a new internal API replaces an old one, list its callers and move them all in the same change. `unslop` deletes the old path.
+**Move every caller in the change that replaces the API.** When a new internal API replaces an old one, list its callers, move them all, and delete the old API in the same change. An internal caller gets no compatibility layer.
 
-**Short path, little state.** From the entry point, a reader reaches where X is computed, and every place that writes X, without opening a pass-through layer. Inline a layer that passes its arguments through unchanged or hides no decision that can change. Prefer a return value to a mutation, a local to a field, and a field to module state. A third-party provider boundary stays, even with one caller: it is a seam for replacement, not a layer for the reader.
+**Short path, little state.** A new reader answers "where does X come from?" and "what can change X?" without opening a pass-through layer. Inline a layer that passes its arguments through unchanged or hides no decision that can change. Prefer a return value to a mutation, a local to a field, and a field to module state. A third-party provider boundary stays, even with one caller: it is a seam for replacement, not a layer for the reader.
 
 ```
 Where does the discount come from?
@@ -67,6 +66,44 @@ Where does the discount come from?
 ```
 
 When a rule in this section changed what you built, the done report carries one line per rule: `<bold name>: <what it changed>`. When none did, add no line.
+
+## Comments
+
+A concise line above a function, a class or an exported type says how it is used. Inside the body, the code speaks. Keep every comment true to the code you change.
+
+| Keep | Cut |
+|---|---|
+| The doc line above a function, class, or exported type | Narration of the next statement |
+| A constraint from outside our code: a vendor bug, a protocol quirk, a platform limit. Link the issue. | A banner or a section divider |
+| A legal or license header | Commented-out code |
+| A lint suppression whose rule is style-only | Change history: "was X, now Y", "updated to handle Z" |
+| | A sermon defending a workaround |
+
+A comment that explains our own code is a bug report against the code. Rename the symbol, extract the function, or add the type until the comment says nothing new. Then delete the comment.
+
+`@ts-ignore`, `# type: ignore`, `eslint-disable`: read the rule first. If it catches real bugs, fix the code. If you cannot fix it, say so in your report, not in a comment.
+
+## Slop
+
+| Slop | Instead |
+|---|---|
+| `try`/`catch` around code with no known failure | Let it throw. Catch only the failure you can name. |
+| A fallback that swallows the error and returns a default | Fail loud, where the caller sees it |
+| A guard for a state that cannot happen | Trust the type |
+| An interface, a factory, or a config object justified only by hypothetical reuse | Write the one thing |
+| `processV2`, `enhanced_parse`, `SmartCache`, `parse_new` | Edit the original in place |
+| A parameter or a flag nobody passes yet | Add it when the second caller arrives |
+| A hand-rolled copy of something the repo or the stdlib has | Search first, then call it |
+| `✅ Done!`, emoji log lines, progress banners | The value, or nothing |
+| A new `SUMMARY.md` or `IMPLEMENTATION_NOTES.md` after a change | The commit message |
+
+## Words
+
+Every string you write is copy: comments, commit messages, log lines, error text, UI text. Keep text that helps its reader understand the behavior or make a decision. Remove narration of the agent's process. The `copy` skill owns the rest.
+
+## Unslop the diff
+
+Before you report done, read the diff against Changing code, Comments, Slop and Words. Remove what adds no information or behavior.
 
 ## Third-party providers
 
