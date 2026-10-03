@@ -1,6 +1,6 @@
 ---
 name: coding
-description: How Vasu wants code written, and the machine-written tells to cut: narrating comments, unearned abstraction, defensive scaffolding. Use whenever you write or edit code, on the diff before you report done, and before you touch production or a live database.
+description: How Vasu wants code written. Use whenever you write or edit code, and before you touch production or a live database.
 ---
 
 # Coding
