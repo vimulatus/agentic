@@ -53,6 +53,7 @@ gh run view "$run" --log-failed
 
 Reproduce it locally and hand the failing command to `red-green`.
 
+- Red in code the diff never touched: suspect a stale base before a flake. `git merge-base --is-ancestor origin/<base> HEAD` fails means the base moved; rebase, do not rerun.
 - Flaky, and the log shows no assertion: `gh run rerun <run> --failed`. Once. A second flake is a real bug.
 - Red on the base branch too: not yours. Say so and carry on.
 

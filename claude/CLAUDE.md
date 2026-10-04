@@ -14,6 +14,7 @@ How I want code written lives in the `coding` skill. Load it before you write or
 - Decide everything else on the information you have. Where the information runs out, make the reasonable assumption and keep going.
 - I do not hold the tech stack and I do not want to. Which library, which pattern, which edge case: your call.
 - A **reversible** wrong call beats a blocked session. Take the risk, then say in one line what you assumed.
+- A question you can answer by running something is not mine: behaviour, timing, output, layout. Run it and let the result decide.
 
 ## Product context
 
