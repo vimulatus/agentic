@@ -47,3 +47,10 @@ You report. Someone else investigates.
 
 - More than one independent task, or one task that splits into disjoint parts? Load the `orchestrate` skill. It owns the workers.
 - Do ordinary work yourself, in one pass.
+
+## Build the tool
+
+- Before you change or check anything that is not trivial, write the tool that does it or proves it: a codemod, a script, a generator, a check you can rerun. Trivial means a few edits you can check at a glance; the same change across files is not trivial. A one-off gets a tool when the tool is what makes it checkable.
+- Prove the tool on one unit: edit that unit by hand, run the tool on its original, and diff. The diff is empty. Then run the tool on the rest.
+- One tool that covers every unit beats workers that apply the change by hand.
+- The done report names the tool's path and the command that reruns it. Commit the tool when someone runs it again after the merge: a migration, a generator, a check the gate calls. Otherwise it is scratch.

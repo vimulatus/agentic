@@ -115,7 +115,7 @@ Split by relevance rather than a fixed line ceiling. A long section needed only 
 
 ## Scripts
 
-Extract stable commands or repeated logic into scripts. Keep task-specific command shapes visible when the agent needs to adapt them; inspect script implementations when changing or diagnosing them.
+Extract stable commands or repeated logic into scripts. A tool built for one task, outside a skill, follows Build the tool in Vasu's global rules. Keep task-specific command shapes visible when the agent needs to adapt them; inspect script implementations when changing or diagnosing them.
 
 Resolve the skill's directory from the loaded `SKILL.md` path, then use an absolute script path. A reference uses its owning skill's directory, not the reference directory. State that directory beside examples so a reader can substitute it; shell working directories can change.
 
