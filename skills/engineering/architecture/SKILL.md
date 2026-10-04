@@ -43,6 +43,8 @@ Keep proposed signatures for the selected candidate. Deliver the report and ask 
 
 ## Resolve the chosen change
 
-Load `grilling` for the load-bearing decisions. Settle reversible implementation choices yourself. Compare competing designs when they expose a meaningful trade-off.
+Load `grilling` for the load-bearing decisions. Settle reversible implementation choices yourself.
+
+When nothing in the codebase sets the design, sketch 2 to 3 designs that differ in shape: a different owner for the responsibility, or a different seam. Two designs that move the same responsibility behind the same seam are one shape. Compare them in one table on the caller contract, the migration and the testing benefit. Pick one, say why, and draw the before/after picture for the pick.
 
 Finish with the responsibility being moved, the caller contract, the behaviour tests must preserve and the smallest useful migration. Match the next action to Vasu's request: `to-tickets` for filing, `wayfinder` for work spanning tickets, `coding` for implementation. A review request ends with the recommendation.
