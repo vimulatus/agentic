@@ -19,6 +19,8 @@ description: How Vasu wants code written. Use whenever you write or edit code, a
 
 **Deep modules.** A small interface over substantial behavior, at a seam a test can drive through that interface. Split by responsibility, not line count; extracting helpers does not deepen a module. Optimize for a reader finding where a behavior lives.
 
+**Design for the caller.** A library or an internal API serves the colleague who calls it and the engineer who maintains it next. Write the call site first, and shape the interface so that the call site reads plainly.
+
 **A layer earns its place.** The house layers are the entry point (translates transport input and output), the Service (owns business rules and orchestration), the Repository (owns persistence) and injected dependencies. Build one only when it hides a decision that can change. A layer that would only forward its arguments is not built: the entry point calls the next layer that holds a decision. **Third-party providers** are the one exception.
 
 ## Changing code
